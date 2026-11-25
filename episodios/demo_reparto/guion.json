@@ -1,0 +1,51 @@
+{
+  "titulo": "¿Qué pasaría si tu perro pudiera hablar?",
+  "formato": "vertical",
+  "voz": "es-MX-JorgeNeural",
+  "velocidad": "+8%",
+  "escenas": [
+    {
+      "texto": "¿Qué pasaría si tu perro pudiera hablar?",
+      "escenario": "parque", "plano": "zoom_in", "pose": "pensar", "cara": "pensando",
+      "extras": [{"personaje": "perro", "lugar": "derecha", "pose": "de_pie", "cara": "feliz"}],
+      "sfx": [{"sonido": "whoosh", "palabra": 0}],
+      "texto_pantalla": "¿TU PERRO HABLA?"
+    },
+    {
+      "texto": "Lo primero que diría: ¡tengo hambre!",
+      "escenario": "cocina", "plano": "medio", "foco": 1,
+      "pose": "de_pie", "cara": "shock",
+      "extras": [{"personaje": "perro", "lugar": "frente_derecha", "pose": "saltar", "cara": "feliz"}],
+      "sfx": [{"sonido": "boing", "palabra": 4}]
+    },
+    {
+      "texto": "Le contaría a Doña Rosa todos tus secretos.",
+      "escenario": "ciudad", "plano": "grupo", "pose": "temblar", "cara": "miedo",
+      "extras": [
+        {"personaje": "senora", "lugar": "derecha", "pose": "senalar", "cara": "malvado"},
+        {"personaje": "perro", "lugar": "frente_izquierda", "pose": "de_pie", "cara": "malvado"}
+      ],
+      "sfx": [{"sonido": "sorpresa", "palabra": 5}]
+    },
+    {
+      "texto": "Y en la escuela, el profe lo pondría a dar la clase.",
+      "escenario": "escuela", "plano": "general", "pose": "de_pie", "cara": "aburrido",
+      "extras": [{"personaje": "profe", "lugar": "izquierda", "pose": "saludar", "cara": "feliz"},
+                 {"personaje": "perro", "lugar": "derecha", "pose": "de_pie", "cara": "pensando"}],
+      "sfx": [{"sonido": "ding", "palabra": 5}]
+    },
+    {
+      "texto": "Pero de noche te diría: gracias por cuidarme.",
+      "escenario": "bosque", "noche": true, "plano": "primer_plano", "foco": 1,
+      "pose": "de_pie", "cara": "triste",
+      "extras": [{"personaje": "perro", "lugar": "frente_derecha", "pose": "de_pie", "cara": "sonrisa"}],
+      "sfx": [{"sonido": "triste", "palabra": 0, "volumen": 0.3}]
+    },
+    {
+      "texto": "Suscríbete si tu perro también es tu mejor amigo.",
+      "escenario": "playa", "plano": "grupo", "pose": "celebrar", "cara": "feliz",
+      "extras": [{"personaje": "perro", "lugar": "derecha", "pose": "celebrar", "cara": "feliz"}],
+      "sfx": [{"sonido": "ding", "palabra": 0}]
+    }
+  ]
+}

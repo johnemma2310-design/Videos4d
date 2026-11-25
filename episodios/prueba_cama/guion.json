@@ -1,0 +1,42 @@
+{
+  "titulo": "¿Qué pasaría si no te levantas de la cama en 100 días?",
+  "formato": "vertical",
+  "voz": "es-MX-JorgeNeural",
+  "velocidad": "+8%",
+  "escenas": [
+    {
+      "texto": "¿Qué pasaría si no te levantas de la cama en cien días?",
+      "escenario": "habitacion", "plano": "zoom_in", "pose": "pensar", "cara": "pensando",
+      "sfx": [{"sonido": "whoosh", "palabra": 0}],
+      "texto_pantalla": "¿100 DÍAS EN CAMA?"
+    },
+    {
+      "texto": "Día uno. ¡Qué rico! Cero alarma, cero tareas.",
+      "escenario": "habitacion", "plano": "arriba", "pose": "acostado", "cara": "sonrisa",
+      "sfx": [{"sonido": "pop", "palabra": 0}],
+      "texto_pantalla": "DÍA 1"
+    },
+    {
+      "texto": "Día diez. Tu espalda empieza a doler y los músculos se ponen flojitos.",
+      "escenario": "habitacion", "plano": "primer_plano", "pose": "acostado", "cara": "aburrido",
+      "sfx": [{"sonido": "tictac", "palabra": 0}],
+      "texto_pantalla": "DÍA 10"
+    },
+    {
+      "texto": "Día cien. Intentas pararte y...",
+      "escenario": "habitacion", "plano": "medio", "pose": "temblar", "cara": "miedo",
+      "sfx": [{"sonido": "sorpresa", "palabra": 3}],
+      "texto_pantalla": "DÍA 100"
+    },
+    {
+      "texto": "¡Todo te da vueltas!",
+      "escenario": "habitacion", "plano": "primer_plano", "pose": "mareado", "cara": "mareado",
+      "sfx": [{"sonido": "boing", "palabra": 0}, {"sonido": "golpe", "palabra": 3}]
+    },
+    {
+      "texto": "Así que ya sabes: levántate y suscríbete.",
+      "escenario": "exterior", "plano": "medio", "pose": "saludar", "cara": "feliz",
+      "sfx": [{"sonido": "ding", "palabra": 5}]
+    }
+  ]
+}

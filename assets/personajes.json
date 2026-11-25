@@ -1,0 +1,65 @@
+{
+  "_ayuda": "Reparto de personajes. tipo: humano | perro | gato | pajaro | cerdo. cara_extra: capas de assets/faces/extras. accesorios: ver catálogo en CLAUDE.md. colores: color por accesorio (RGB 0-1). escala: tamaño (niños ~0.75).",
+
+  "sticky":   {"nombre": "Sticky", "tipo": "humano",
+               "accesorios": ["bufanda"], "colores": {"bufanda": [0.13, 0.48, 0.95]}},
+
+  "nino":     {"nombre": "Niño", "tipo": "humano", "escala": 0.74,
+               "cara_extra": ["pecas"], "accesorios": ["gorra"], "colores": {"gorra": [0.9, 0.2, 0.2]}},
+
+  "nina":     {"nombre": "Niña", "tipo": "humano", "escala": 0.72,
+               "cara_extra": ["pestanas", "chapitas"], "accesorios": ["coletas", "lazo", "vestido"],
+               "colores": {"pelo": [0.95, 0.75, 0.25], "lazo": [1.0, 0.4, 0.65], "vestido": [1.0, 0.55, 0.75]}},
+
+  "senora":   {"nombre": "Doña Rosa", "tipo": "humano",
+               "cara_extra": ["pestanas", "lentes", "labios"], "accesorios": ["chongo", "vestido", "collar"],
+               "colores": {"pelo": [0.62, 0.62, 0.66], "vestido": [0.6, 0.35, 0.75], "collar": [1, 1, 1]}},
+
+  "mama":     {"nombre": "Mamá", "tipo": "humano",
+               "cara_extra": ["pestanas", "chapitas"], "accesorios": ["pelo_largo", "falda"],
+               "colores": {"pelo": [0.35, 0.2, 0.12], "falda": [0.95, 0.45, 0.35]}},
+
+  "senor_bigote": {"nombre": "Don Bigotes", "tipo": "humano",
+               "cara_extra": ["bigote"], "accesorios": ["pelo_corto", "corbata"],
+               "colores": {"pelo": [0.2, 0.15, 0.12], "corbata": [0.85, 0.15, 0.2]}},
+
+  "abuelo":   {"nombre": "Abuelo", "tipo": "humano",
+               "cara_extra": ["bigote_blanco", "lentes"], "accesorios": ["calvo", "baston"],
+               "colores": {"pelo": [0.85, 0.85, 0.88], "baston": [0.45, 0.28, 0.15]}},
+
+  "chef":     {"nombre": "Chef", "tipo": "humano",
+               "cara_extra": ["bigote"], "accesorios": ["gorro_chef", "delantal"],
+               "colores": {"delantal": [1, 1, 1]}},
+
+  "doctor":   {"nombre": "Doctora", "tipo": "humano",
+               "cara_extra": ["pestanas", "lentes"], "accesorios": ["pelo_largo", "bata"],
+               "colores": {"pelo": [0.15, 0.1, 0.08], "bata": [1, 1, 1]}},
+
+  "profe":    {"nombre": "Profe", "tipo": "humano",
+               "cara_extra": ["lentes", "barba"], "accesorios": ["pelo_corto", "corbata"],
+               "colores": {"pelo": [0.3, 0.2, 0.12], "corbata": [0.2, 0.35, 0.8]}},
+
+  "policia":  {"nombre": "Policía", "tipo": "humano",
+               "cara_extra": ["bigote"], "accesorios": ["gorra_policia", "corbata"],
+               "colores": {"gorra_policia": [0.12, 0.18, 0.4], "corbata": [0.12, 0.18, 0.4]}},
+
+  "rockero":  {"nombre": "Rockero", "tipo": "humano",
+               "cara_extra": ["lentes_sol"], "accesorios": ["pelo_punta"],
+               "colores": {"pelo": [0.95, 0.3, 0.15]}},
+
+  "vaquero":  {"nombre": "Vaquero", "tipo": "humano",
+               "cara_extra": ["bigote", "barba"], "accesorios": ["sombrero", "bufanda"],
+               "colores": {"sombrero": [0.6, 0.38, 0.18], "bufanda": [0.85, 0.2, 0.2]}},
+
+  "perro":    {"nombre": "Firulais", "tipo": "perro", "cara_extra": ["nariz_perro"],
+               "colores": {"cuerpo": [0.86, 0.6, 0.35], "orejas": [0.5, 0.32, 0.18]}},
+
+  "gato":     {"nombre": "Michi", "tipo": "gato", "cara_extra": ["nariz_gato"],
+               "colores": {"cuerpo": [0.98, 0.65, 0.3], "orejas": [0.98, 0.65, 0.3]}},
+
+  "pajaro":   {"nombre": "Pío", "tipo": "pajaro", "cara_extra": ["pico"],
+               "colores": {"cuerpo": [0.35, 0.75, 1.0], "alas": [0.2, 0.55, 0.9]}},
+
+  "cerdo":    {"nombre": "Chancho", "tipo": "cerdo", "cara_extra": ["nariz_cerdo", "chapitas"],
+               "colores": {"cuerpo": [1.0, 0.72, 0.78], "orejas": [1.0, 0.6, 0.68]}}
+}

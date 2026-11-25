@@ -1,0 +1,19 @@
+# renders y archivos generados
+episodios/*/out/
+episodios/*/*.mp4
+docs/_render_*/
+*.blend
+*.blend1
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# sistema
+.DS_Store
+Thumbs.db
+
+# configuración local de Claude Code
+.claude/settings.local.json
