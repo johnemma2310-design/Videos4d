@@ -5,6 +5,20 @@
 > El historial y los pendientes están en [docs/BITACORA.md](docs/BITACORA.md). **Al terminar una tarea,
 > agrega una entrada ahí** (fecha, qué cambió, qué quedó pendiente) para que el próximo Claude sepa dónde vamos.
 
+## Sincronización con GitHub (obligatorio)
+
+Repo: https://github.com/johnemma2510-design/Videos4d (rama `main`). Se edita desde varios dispositivos
+(nuevos personajes, escenarios, poses, guiones), así que el repo debe quedar siempre al día.
+
+- **Al empezar una sesión:** ejecuta `git pull` para traer lo que hicieron en otros dispositivos.
+  Si hay conflictos o cambios locales sin guardar, no los sobrescribas: avisa al usuario.
+- **Al terminar cualquier cambio** (personaje, escenario, pose, cara, sonido, guion, código o docs):
+  1. Agrega una entrada en `docs/BITACORA.md`.
+  2. `git add` solo los archivos del cambio. Nunca `out/`, `.mp4`, `.blend` ni datos personales.
+  3. `git commit` con mensaje claro en español y la línea `Co-Authored-By` del modelo que estés usando.
+  4. `git push`, y verifica con `git status -sb` que quedó igual a `origin/main`.
+- Si un push falla, no uses `--force`; explícale al usuario qué pasó.
+
 ## Qué es
 
 Canal de YouTube **Curiosidades con Sticky** (@StickyElCurioso): videos "¿Qué pasaría si...?" en español,

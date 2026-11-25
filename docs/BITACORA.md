@@ -5,6 +5,10 @@ Historial compartido entre dispositivos y sesiones de Claude. **Agrega una entra
 
 ---
 
+## 2026-11-25: regla de sincronización con GitHub
+- `CLAUDE.md` ahora exige `git pull` al empezar y commit + push al terminar cada cambio, para que todos los dispositivos estén al día.
+- Repo remoto: https://github.com/johnemma2510-design/Videos4d (rama `main`).
+
 ## 2026-11-25: reparto, escenarios y preparación para GitHub
 - Se reorganizó el render en módulos: `bl_util.py`, `personajes_bl.py`, `escenarios.py`, `poses.py` y `blender_render.py`.
 - **Reparto** en `assets/personajes.json`: 17 personajes (13 humanos y 4 animales: perro, gato, pájaro, cerdo).
