@@ -55,11 +55,23 @@ COCINA_PROPS = {"type": "props", "items": [
     {"shape": "cyl", "pos": [2.5, 2.9, -6.8], "size": [0.3, 0.6], "color": "#e05a3a"},
 ]}
 
+CALLE_PROPS = {"type": "props", "items": [
+    {"shape": "box", "pos": [-8.2, 0.8, -12], "size": [1.6, 1.6, 1.6], "color": "#8a6038"},     # cajas
+    {"shape": "box", "pos": [-8.0, 2.2, -12.3], "size": [1.2, 1.2, 1.2], "color": "#a07448"},
+    {"shape": "cyl", "pos": [-8.3, 1.0, -15], "size": [0.8, 2.0], "color": "#6a4428"},         # barril
+    {"shape": "cyl", "pos": [-8.3, 1.0, -16.8], "size": [0.8, 2.0], "color": "#5a3a22"},
+    {"shape": "box", "pos": [-8.4, 0.9, -24], "size": [1.2, 1.8, 4.0], "color": "#4a6a3a"},    # carretilla de flores
+    {"shape": "box", "pos": [-8.4, 2.0, -24], "size": [1.4, 0.5, 4.2], "color": "#e05a7a"},
+    {"shape": "box", "pos": [-8.6, 1.2, -32], "size": [0.4, 2.4, 3.6], "color": "#3a2a1e"},    # banca
+    {"shape": "cyl", "pos": [2.5, 3.0, -20], "size": [0.18, 6.0], "color": "#2a2a30"},         # farol
+    {"shape": "box", "pos": [2.5, 6.2, -20], "size": [0.8, 0.8, 0.8], "color": "#ffe090", "glow": 1.0},
+]}
+
 ESC = {
     "calle_dia": dict(set="fireStreet", look="DAY_SUN", lookOverrides=HAZE,
-                      shadow={"focus": [-3, 0, -8], "extent": 40}, setParams={"houses": {"lit": 0.1}}),
+                      shadow={"focus": [-3, 0, -8], "extent": 40}, setParams={"houses": {"lit": 0.1}}, props=CALLE_PROPS),
     "calle_noche": dict(set="fireStreet", look="NIGHT_EMBER", shadow={"focus": [-3, 0, -8], "extent": 40},
-                        setParams={"houses": {"lit": 0.7}}),
+                        setParams={"houses": {"lit": 0.7}}, props=CALLE_PROPS),
     "plaza": dict(set="tabletPlaza", look="DAY_COOL", shadow={"focus": [0, 0, -4], "extent": 30}),
     "campo_noche": dict(set="nightField", look="NIGHT_EMBER", shadow={"focus": [0, 0, -6], "extent": 40}),
     "cocina": dict(set="kitchen", look="INTERIOR_NEUTRAL", lookOverrides=INTERIOR,
@@ -103,7 +115,20 @@ def F(*pares):
     return out
 
 
-def cam(subj, kind, ang, s=1.0, push=None, whip=0, shake=None, ty=None, dist=None, cy=None, fov=None):
+DRIFT = {"close": 9, "med": 12, "wide": 9, "low": 7, "high": 8}   # v2: giro lento alrededor del sujeto (grados)
+_giro = {"n": 0}
+
+
+def cam(subj, kind, ang, s=1.0, push=None, whip=0, shake=None, ty=None, dist=None, cy=None, fov=None, drift=None):
+    gen = dict(subj=subj, kind=kind, ang=ang, s=s, ty=ty, dist=dist, cy=cy, fov=fov)
+    _giro["n"] += 1
+    dr = (drift if drift is not None else DRIFT[kind]) * (1 if _giro["n"] % 2 else -1)
+    c = _cam(subj, kind, ang, s, push, whip, shake, ty, dist, cy, fov, dr)
+    c["_gen"] = gen
+    return c
+
+
+def _cam(subj, kind, ang, s=1.0, push=None, whip=0, shake=None, ty=None, dist=None, cy=None, fov=None, drift=0.0):
     x, z = subj
     rec = {   # distancia, altura cámara, altura objetivo, fov, push por defecto
         "close": (8.0, 4.7, 4.0, 45, 0.08), "med": (12.0, 4.5, 3.9, 47, 0.18),
@@ -115,7 +140,12 @@ def cam(subj, kind, ang, s=1.0, push=None, whip=0, shake=None, ty=None, dist=Non
     a = math.radians(ang)
     pos = [x + math.sin(a) * d, cy if cy is not None else rec[1] * (s if kind == "close" else 1), z + math.cos(a) * d]
     k = push if push is not None else rec[4]
-    p1 = [round(p + (t - p) * k, 2) for p, t in zip(pos, tgt)]
+    p1 = [p + (t - p) * k for p, t in zip(pos, tgt)]
+    if drift:   # v2: el final de la toma gira alrededor del objetivo (la imagen nunca queda quieta)
+        b = math.radians(drift)
+        dx, dz = p1[0] - tgt[0], p1[2] - tgt[2]
+        p1 = [tgt[0] + dx * math.cos(b) + dz * math.sin(b), p1[1], tgt[2] - dx * math.sin(b) + dz * math.cos(b)]
+    p1 = [round(v, 2) for v in p1]
     keys = []
     if whip:
         keys.append({"f": -1, "pos": pos, "target": [tgt[0] + whip * math.cos(a), tgt[1], tgt[2] - whip * math.sin(a)]})
@@ -146,7 +176,10 @@ ultimo = {"esc": None}
 def S(id_, cue, esc, actors, camera, sfx=None, crowds=None, vfx=None, sound=None):
     sc = json.loads(json.dumps(ESC[esc]))
     props = sc.pop("props", None)
+    gen = camera.pop("_gen", None)
     s = {"id": id_, "cue": cue, **sc, "actors": actors, "camera": camera}
+    if gen:
+        s["_gen"] = gen
     fx = list(sfx or [])
     if ultimo["esc"] is not None and ultimo["esc"] != esc:
         fx.append({"type": "transition", "at": 0, "gain": -3})
@@ -414,10 +447,54 @@ S("28b_visita", c, "campo_noche",
   sfx=[{"type": "thunder", "at": 0, "gain": -4}])
 # 29 "¡Suscríbete y no olvides decir buenas noches!"
 c = wi(29)
-S("29_suscribete", c, "calle_dia",
+S("29_suscribete", c, "calle_noche",
   [A("sticky", st, 15, F("bigHappy", (wi(29, 4), "laugh")), talk=True, clips=[{"clip": "wave", "at": 0}])],
   cam(st, "close", 15, whip=-7), crowds=[gente(n=24)], sfx=[{"type": "bell_pop", "at": 0}])
 
+# ------------------------------------------- v2: cortes extra en tomas largas
+ALT = {"close": "med", "med": "close", "wide": "med", "low": "close", "high": "med"}
+END = W[-1]["end"]
+
+
+def partir(shots):
+    out = []
+    for i, s in enumerate(shots):
+        t0 = W[s["cue"]]["t"]
+        t1 = W[shots[i + 1]["cue"]]["t"] if i + 1 < len(shots) else END
+        gen = s.pop("_gen", None)
+        moving = any("path" in a for a in s["actors"])
+        if not gen or moving or t1 - t0 < 1.75:
+            out.append(s); continue
+        nxt = shots[i + 1]["cue"] if i + 1 < len(shots) else len(W)
+        cand = [w for w in range(s["cue"] + 1, nxt) if W[w]["t"] - t0 >= 0.7 and t1 - W[w]["t"] >= 0.7]
+        if not cand:
+            out.append(s); continue
+        w = min(cand, key=lambda k: abs(W[k]["t"] - (t0 + t1) / 2))
+        b = json.loads(json.dumps(s))
+        b["id"] = s["id"] + "_b"; b["cue"] = w
+        g = dict(gen)
+        if g["s"] == 1 and g["dist"] is None:
+            g["kind"] = ALT[g["kind"]]
+        lado = 1 if i % 2 else -1
+        g["ang"] = g["ang"] + 25 * lado
+        b["camera"] = cam(whip=6 * lado, **g); b["camera"].pop("_gen", None)
+        # el sonido de palabras posteriores pasa a la segunda parte; capas de fondo en las dos
+        s["sfx"] = [x for x in s.get("sfx", []) if x.get("word", -1) < w]
+        b["sfx"] = [x for x in b.get("sfx", []) if x.get("word", -1) >= w or x.get("dur") == "shot"]
+        b["sfx"].append({"type": WHOOSH[i % 3], "at": 0, "gain": -4})
+        b.pop("sound", None)
+        for a in b["actors"]:
+            caras = a["faces"]
+            previo = [f for f in caras if f.get("f") == 0 or f.get("word", 10 ** 6) <= w]
+            a["faces"] = [{"f": 0, "v": previo[-1]["v"]}] + [f for f in caras if f.get("word", -1) > w]
+            if a.get("clips"):
+                a["clips"] = [({"clip": c["clip"], "at": -100} if c.get("word", 10 ** 6) <= w or c.get("at", 1) <= 0 else c)
+                              for c in a["clips"]]
+        out += [s, b]
+    return out
+
+
+shots = partir(shots)
 story = {"audio": "audio/vigilante.wav", "names": ["Vigilante", "Don", "Bigotes"], "sfx": [], "endHoldFrames": 30,
          "shots": shots}
 (HERE / "story.json").write_text(json.dumps(story, ensure_ascii=False, indent=1), encoding="utf-8")

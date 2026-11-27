@@ -5,6 +5,12 @@ Historial compartido entre dispositivos y sesiones de Claude. **Agrega una entra
 
 ---
 
+## 2026-11-27: "El Vigilante" v2 con las lecciones aplicadas
+- `make_story.py`: giro de cámara al final de cada toma, cortes extra automáticos (`partir()`), utilería en la calle
+  (cajas, barriles, farol, carretilla) y final de noche. 67 tomas, 119 sonidos, render ~12 min.
+- Puntaje: medido 77.3 (v1 67.3), final 72.1 (v1 63.6). Cámara 21 → 60, ritmo 66 → 86. Lo más débil ahora: detalle (58).
+
+
 ## 2026-11-27: primer video completo con blocky-studio ("El Vigilante")
 - `blocky-studio/projects/vigilante/`: guion de `episodios/vigilante_noches`, voz por línea con edge-tts (Don Bigotes y el
   Vigilante con su propia voz), 84 s, 181 palabras/min. `make_story.py` arma 44 tomas, 7 lugares (calle día/noche, plaza,

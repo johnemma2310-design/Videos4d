@@ -7,6 +7,15 @@ Remove a lesson that turned out to be wrong, and say so in the report.
 
 ## Open
 
+From "vigilante_v2" (2026-11-27, measured 77.3, visual 60; v1 was 67.3 / 55):
+- **Built into projects/vigilante/make_story.py and worth copying:** `cam()` adds an orbit drift at the end of every
+  shot (close 9°, med 12°) and `partir()` splits any shot over 1.75 s at the word nearest its middle with the
+  counter-shot. Camera rose 21 -> 60 and pacing 66 -> 86 (mean shot 1.45 s vs 1.46).
+- **Detail is now the weakest (58):** edge density 7.7 % vs 13.6 %. Props help little at medium distance; the plaza
+  and night field are large plain surfaces. Next: crowds in two bands behind every exterior shot, textured walls
+  behind interior close-ups, and fewer shots of plain sky.
+- **Camera still 60:** frame change 2.7 vs 9.6. Add faster whip-ins (more `whip`) and a push of 20 % on medium shots.
+
 From "vigilante" (2026-11-27, measured 67.3, visual 55, Spanish, edge-tts voices per line):
 - **Camera is the weakest category (21):** 24 % nearly still frames. Close-ups with push 5-8 % and long two-shots read as still.
   Give every shot at least 15 % push or a sideways drift, and add a slow orbit on dialogue shots over 2 s.
