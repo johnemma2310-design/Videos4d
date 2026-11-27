@@ -7,6 +7,15 @@ Remove a lesson that turned out to be wrong, and say so in the report.
 
 ## Open
 
+From "vigilante_v3" (2026-11-27, measured 77.6, visual 62; v2 77.3 / 60): a plateau.
+- **Props, crowd bands and a bookshelf did not raise detail** (58 -> 54). The measure is dominated by big flat areas:
+  Sticky's black tuxedo in close-ups, plain plaster walls, the gravel plaza. The next gain is engine work
+  (`references/extending.md`): relief/texture on walls and ground (`src/engine/tex/relief.ts`) and a fabric texture
+  on dark outfits, not more boxes.
+- **Colour is the heaviest category (25) and stuck at 77:** mean luma 83 vs 101. Raise exposure on night/interior looks.
+- **Camera 64:** whips on 2 of 3 shots and 13-17° orbits moved it only +4. The target's 9.6 frame change needs faster
+  moves (whip-outs between shots, shorter easing) rather than more drift.
+
 From "vigilante_v2" (2026-11-27, measured 77.3, visual 60; v1 was 67.3 / 55):
 - **Built into projects/vigilante/make_story.py and worth copying:** `cam()` adds an orbit drift at the end of every
   shot (close 9°, med 12°) and `partir()` splits any shot over 1.75 s at the word nearest its middle with the

@@ -5,6 +5,13 @@ Historial compartido entre dispositivos y sesiones de Claude. **Agrega una entra
 
 ---
 
+## 2026-11-27: "El Vigilante" v3
+- Más gente (dos bandas en exteriores), librero con libros y cuadros, casas y cerca en el campo, whip en 2 de 3 tomas,
+  más giro de cámara, primeros planos un poco más abiertos y solapas grises en el esmoquin de Sticky.
+- Puntaje medido 77.6 (v2 77.3): meseta. Cámara 64, detalle 54, color 77. Lo que falta ya es trabajo del motor
+  (texturas en paredes/suelo, exposición de las luces de noche e interior, movimientos de cámara más rápidos).
+
+
 ## 2026-11-27: "El Vigilante" v2 con las lecciones aplicadas
 - `make_story.py`: giro de cámara al final de cada toma, cortes extra automáticos (`partir()`), utilería en la calle
   (cajas, barriles, farol, carretilla) y final de noche. 67 tomas, 119 sonidos, render ~12 min.

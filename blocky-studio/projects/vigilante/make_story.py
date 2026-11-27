@@ -36,6 +36,33 @@ NOCHE_DENTRO = {"lights": {"hemi": {"sky": "#6a7aaa", "ground": "#2a2a3a", "inte
                            "key": {"color": "#a8bcff", "intensity": 1.15, "from": [0.6, 0.7, 0.8], "shadow": True}}}
 HAZE = {"fog": {"color": "#c4d2ec", "density": 0.0035}}
 
+def librero(x, z, w=5.0, h=6.0, filas=4, seed=1):
+    """v3: librero con libros de colores (muchas piezas pequeñas = más detalle)"""
+    import random
+    rnd = random.Random(seed)
+    cols = ["#c83a3a", "#3a6ac8", "#e0b030", "#3a9a5a", "#8a4ab0", "#e07a30", "#2a2a3a", "#d8d0c0"]
+    it = [{"shape": "box", "pos": [x, h / 2, z], "size": [w, h, 1.0], "color": "#5a3a24"}]
+    for f in range(filas):
+        y0 = 0.4 + f * (h - 0.6) / filas
+        it.append({"shape": "box", "pos": [x, y0 - 0.08, z + 0.35], "size": [w - 0.2, 0.14, 0.5], "color": "#7a5236"})
+        cx = x - w / 2 + 0.3
+        while cx < x + w / 2 - 0.4:
+            bw = rnd.uniform(0.18, 0.35); bh = rnd.uniform(0.7, 1.15) * (h - 0.6) / filas * 0.8
+            it.append({"shape": "box", "pos": [cx + bw / 2, y0 + bh / 2, z + 0.45], "size": [bw, bh, 0.5],
+                       "color": rnd.choice(cols), "rotZ": rnd.choice([0, 0, 0, 8])})
+            cx += bw + 0.04
+    return it
+
+
+def cuadros(z=-10.9, y=6.2, xs=(-3.5, 0.5, 4.0)):
+    cols = [("#6a4a2a", "#7ab0e0"), ("#3a2a1a", "#e0c070"), ("#6a4a2a", "#9ad07a")]
+    it = []
+    for (x, (marco, pint)) in zip(xs, cols):
+        it.append({"shape": "box", "pos": [x, y, z], "size": [2.2, 1.7, 0.12], "color": marco})
+        it.append({"shape": "box", "pos": [x, y, z + 0.08], "size": [1.8, 1.3, 0.06], "color": pint})
+    return it
+
+
 CUARTO_PROPS = {"type": "props", "items": [
     {"shape": "box", "pos": [-9, 0.6, -6], "size": [4.5, 1.2, 7], "color": "#6a4a32"},      # cama
     {"shape": "box", "pos": [-9, 1.45, -6], "size": [4.2, 0.5, 6.6], "color": "#eeeae2"},   # colchón
@@ -47,13 +74,13 @@ CUARTO_PROPS = {"type": "props", "items": [
     {"shape": "box", "pos": [6, 3.0, -10.4], "size": [5, 6, 1.2], "color": "#7a5236"},      # ropero
     {"shape": "box", "pos": [6, 3.0, -9.75], "size": [0.12, 5.4, 0.1], "color": "#3a2618"},
     {"shape": "box", "pos": [1, 0.03, -3], "size": [8, 0.06, 6], "color": "#8a3a4a"},       # tapete
-]}
+] + librero(11.5, -10.3, seed=2) + cuadros(xs=(-2.5, 1.5))}
 COCINA_PROPS = {"type": "props", "items": [
     {"shape": "cyl", "pos": [-1.5, 2.85, -6.5], "size": [0.35, 0.5], "color": "#e8e4dc"},    # taza
     {"shape": "box", "pos": [0.5, 2.7, -6.2], "size": [1.4, 0.15, 1.0], "color": "#d8b080"}, # pan
     {"shape": "box", "pos": [9, 2.5, -10.3], "size": [6, 5, 1.0], "color": "#c8d4dc"},       # alacena
     {"shape": "cyl", "pos": [2.5, 2.9, -6.8], "size": [0.3, 0.6], "color": "#e05a3a"},
-]}
+] + librero(3.5, -10.3, w=4.0, h=5.0, seed=5) + cuadros(xs=(-6.0, -2.5), y=6.6)}
 
 CALLE_PROPS = {"type": "props", "items": [
     {"shape": "box", "pos": [-8.2, 0.8, -12], "size": [1.6, 1.6, 1.6], "color": "#8a6038"},     # cajas
@@ -73,7 +100,12 @@ ESC = {
     "calle_noche": dict(set="fireStreet", look="NIGHT_EMBER", shadow={"focus": [-3, 0, -8], "extent": 40},
                         setParams={"houses": {"lit": 0.7}}, props=CALLE_PROPS),
     "plaza": dict(set="tabletPlaza", look="DAY_COOL", shadow={"focus": [0, 0, -4], "extent": 30}),
-    "campo_noche": dict(set="nightField", look="NIGHT_EMBER", shadow={"focus": [0, 0, -6], "extent": 40}),
+    "campo_noche": dict(set="nightField", look="NIGHT_EMBER", shadow={"focus": [0, 0, -6], "extent": 40},
+                        setParams={"houses": {"z": -70, "count": 34, "spanX": 200, "lit": 0.6}},
+                        props={"type": "props", "items": [{"shape": "box", "pos": [x, 0.9, -16], "size": [0.3, 1.8, 0.3],
+                                                            "color": "#5a3a24"} for x in range(-20, 22, 2)]
+                               + [{"shape": "box", "pos": [0, 1.3, -16], "size": [40, 0.2, 0.12], "color": "#6a4a2a"},
+                                  {"shape": "box", "pos": [0, 0.6, -16], "size": [40, 0.2, 0.12], "color": "#6a4a2a"}]}),
     "cocina": dict(set="kitchen", look="INTERIOR_NEUTRAL", lookOverrides=INTERIOR,
                    shadow={"focus": [-4, 3, -3], "extent": 26}, setParams={"chairs": []}, props=COCINA_PROPS),
     "cuarto": dict(set="kitchen", look="INTERIOR_NEUTRAL", lookOverrides=NOCHE_DENTRO,
@@ -115,13 +147,15 @@ def F(*pares):
     return out
 
 
-DRIFT = {"close": 9, "med": 12, "wide": 9, "low": 7, "high": 8}   # v2: giro lento alrededor del sujeto (grados)
+DRIFT = {"close": 13, "med": 17, "wide": 12, "low": 10, "high": 10}   # v2: giro lento alrededor del sujeto (grados)
 _giro = {"n": 0}
 
 
 def cam(subj, kind, ang, s=1.0, push=None, whip=0, shake=None, ty=None, dist=None, cy=None, fov=None, drift=None):
     gen = dict(subj=subj, kind=kind, ang=ang, s=s, ty=ty, dist=dist, cy=cy, fov=fov)
     _giro["n"] += 1
+    if not whip and kind != "wide" and _giro["n"] % 3:   # v3: whip-in en 2 de cada 3 tomas
+        whip = 7 if _giro["n"] % 2 else -7
     dr = (drift if drift is not None else DRIFT[kind]) * (1 if _giro["n"] % 2 else -1)
     c = _cam(subj, kind, ang, s, push, whip, shake, ty, dist, cy, fov, dr)
     c["_gen"] = gen
@@ -131,7 +165,7 @@ def cam(subj, kind, ang, s=1.0, push=None, whip=0, shake=None, ty=None, dist=Non
 def _cam(subj, kind, ang, s=1.0, push=None, whip=0, shake=None, ty=None, dist=None, cy=None, fov=None, drift=0.0):
     x, z = subj
     rec = {   # distancia, altura cámara, altura objetivo, fov, push por defecto
-        "close": (8.0, 4.7, 4.0, 45, 0.08), "med": (12.0, 4.5, 3.9, 47, 0.18),
+        "close": (9.2, 4.8, 4.1, 45, 0.08), "med": (12.0, 4.5, 3.9, 47, 0.24),
         "wide": (26.0, 9.0, 3.4, 47, 0.22), "low": (9.0, 1.2, 4.6, 52, 0.2),
         "high": (15.0, 15.0, 2.0, 47, 0.2),
     }[kind]
@@ -199,6 +233,11 @@ def S(id_, cue, esc, actors, camera, sfx=None, crowds=None, vfx=None, sound=None
         v.append(props)
     if v:
         s["vfx"] = v
+    if not crowds and esc in ("calle_dia", "recuerdo", "plaza"):   # v3: siempre gente atrás, en dos bandas
+        pal = "fire" if esc == "plaza" else "water"
+        near, far = ((-14, -20, 14, -11), (-14, -28, 14, -21)) if esc == "plaza" else ((-9, -30, 6, -14), (-12, -60, 10, -34))
+        crowds = [gente(pal, n=18, walk=0.4, area=near, seed=len(shots)),
+                  gente(pal, n=26, walk=0.2, area=far, seed=len(shots) + 50)]
     if crowds:
         s["crowds"] = crowds
     if sound:
