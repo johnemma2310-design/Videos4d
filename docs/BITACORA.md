@@ -5,6 +5,17 @@ Historial compartido entre dispositivos y sesiones de Claude. **Agrega una entra
 
 ---
 
+## 2026-11-27: motor blocky-studio (skill del tutorial), prueba de 10 s
+- El dueño dejó la carpeta `Skills/` y pidió seguir el paso a paso del video "How to Create a Roblox Style Animation Full Workflow".
+- Revisé el zip antes de instalar (solo descarga sonidos CC0 de Openverse si se le pide). Instalé la skill en
+  `.claude/skills/blocky-3d-story-video` y el estudio en `blocky-studio/` (Node + Remotion + Three.js + faster-whisper).
+- Motor extendido: `extras` en el reparto (bufanda, corbatín, gafas) para Sticky elegante; `align.py` con `ALIGN_LANG=es`.
+- Prueba `projects/sticky10`: voz edge-tts, pausas recortadas (0.64 → 0.36 s), 8 tomas de ~1.4 s, 18 sonidos del paquete,
+  música `tension`. Render de 11 s en 1 min 37 s. Storyboard: color 64/100, detalle 44/100 (escenas vacías).
+- Pendiente: más props por escena (sube "detalle"), escenarios nuevos (plaza del reloj, habitación), que el Vigilante sea
+  más alto (escala en el motor) y un video completo con este motor si al dueño le gusta.
+
+
 ## 2026-11-27: ritmo de Shorts, música por actos, voces por personaje, parpadeo y lip-sync
 - Revisión del demo `pueblo_vidrio` (render completo: 160 min a calidad 50, ~4 s/cuadro) y crítica del dueño (vía Gemini):
   sin música, voz lenta, cámara quieta, caras pobres, guion sin giro.

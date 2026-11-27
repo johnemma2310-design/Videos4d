@@ -1,0 +1,274 @@
+{
+ "pop": {
+  "title": "cartoon poppyup appearances -0003.aiff",
+  "creator": "martian",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/martian/sounds/19286",
+  "source": "freesound",
+  "query": "pop cartoon",
+  "kind": "oneshot",
+  "seconds": 0.5,
+  "check": "event stands 108 dB above the quiet parts, at 0.40 s"
+ },
+ "drip": {
+  "title": "Water_drop_9.wav",
+  "creator": "deleted_user_2104797",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/deleted_user_2104797/sounds/166325",
+  "source": "freesound",
+  "query": "water drip single",
+  "kind": "oneshot",
+  "seconds": 0.47,
+  "check": "event stands 78 dB above the quiet parts, at 0.22 s"
+ },
+ "thunder": {
+  "title": "Thunder Clap",
+  "creator": "DaniloSFX",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/DaniloSFX/sounds/672776",
+  "source": "freesound",
+  "query": "thunder clap",
+  "kind": "oneshot",
+  "seconds": 4.0,
+  "check": "event stands 47 dB above the quiet parts, at 0.15 s"
+ },
+ "splash": {
+  "title": "Water splash, emptying a bucket 1",
+  "creator": "wormer2",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/wormer2/sounds/415668",
+  "source": "freesound",
+  "query": "water splash bucket",
+  "kind": "oneshot",
+  "seconds": 2.0,
+  "check": "event stands 57 dB above the quiet parts, at 0.55 s"
+ },
+ "rain_light": {
+  "title": "Light rain falling at night in Hawaii",
+  "creator": "Sassaby",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/Sassaby/sounds/400178",
+  "source": "freesound",
+  "query": "light rain",
+  "kind": "loop",
+  "seconds": 30.0,
+  "check": "loudness spread 1.2 dB"
+ },
+ "rain_heavy": {
+  "title": "Heavy rain_clear recording",
+  "creator": "dersinnsspace",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/dersinnsspace/sounds/435221",
+  "source": "freesound",
+  "query": "heavy rain downpour",
+  "kind": "loop",
+  "seconds": 30.0,
+  "check": "loudness spread 0.7 dB"
+ },
+ "fire": {
+  "title": "fire crackles",
+  "creator": "florianreichelt",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/florianreichelt/sounds/563766",
+  "source": "freesound",
+  "query": "fire crackling",
+  "kind": "loop",
+  "seconds": 30.0,
+  "check": "loudness spread 1.7 dB"
+ },
+ "crowd_panic": {
+  "title": "Crowd Screaming",
+  "creator": "DigestContent",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/DigestContent/sounds/459101",
+  "source": "freesound",
+  "query": "crowd panic screaming",
+  "kind": "loop",
+  "seconds": 11.73,
+  "check": "loudness spread 1.1 dB"
+ },
+ "crowd_cheer": {
+  "title": "Short Crowd Cheer 2.flac",
+  "creator": "qubodup",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/qubodup/sounds/182572",
+  "source": "freesound",
+  "query": "crowd cheering",
+  "kind": "loop",
+  "seconds": 5.13,
+  "check": "loudness spread 1.9 dB"
+ },
+ "hiss": {
+  "title": "Steam.wav",
+  "creator": "SukritSen",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/SukritSen/sounds/398077",
+  "source": "freesound",
+  "query": "steam hiss",
+  "kind": "oneshot",
+  "seconds": 3.0,
+  "check": "event stands 48 dB above the quiet parts, at 0.53 s"
+ },
+ "whoosh_air": {
+  "title": "clip 1 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 0.97,
+  "what": "whoosh (the click at the end removed)",
+  "where": "camera whips and fast moves"
+ },
+ "bell_pop": {
+  "title": "clip 2 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 0.86,
+  "what": "pop in / pop out with a bell-like ring",
+  "where": "something popping in or out of the picture"
+ },
+ "loading_soft": {
+  "title": "clip 3 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 1.03,
+  "what": "soft loading sound",
+  "where": "when something is loading, filling or getting ready"
+ },
+ "pop_soft_in": {
+  "title": "clip 4 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 0.17,
+  "what": "soft pop-in",
+  "where": "a gentle appearance; a good default pop"
+ },
+ "camera_shutter": {
+  "title": "clip 5 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 0.64,
+  "what": "camera shutter",
+  "where": "a snapshot, a freeze, a reveal held like a photo"
+ },
+ "riser": {
+  "title": "clip 6 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 1.84,
+  "what": "riser",
+  "where": "building up to a cut or a reveal"
+ },
+ "riser_fear": {
+  "title": "clip 7 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 7.15,
+  "what": "fear riser (long)",
+  "where": "dread building: the threat approaches, before the disaster"
+ },
+ "whoosh_quick": {
+  "title": "clip 8 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 0.23,
+  "what": "soft quick whoosh",
+  "where": "small fast moves: a gesture, a quick pan, an object passing"
+ },
+ "clock_tick": {
+  "title": "clip 10 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 2.98,
+  "what": "ticking clock",
+  "where": "time passing, waiting, a countdown"
+ },
+ "pop_soft": {
+  "title": "clip 11 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 0.12,
+  "what": "soft pop",
+  "where": "small appearances and face changes"
+ },
+ "loading_anim": {
+  "title": "clip 12 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 3.81,
+  "what": "soft loading for animation",
+  "where": "under something being built, drawn or assembled on screen"
+ },
+ "money": {
+  "title": "clip 17 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 0.83,
+  "what": "money sound",
+  "where": "money, prices, treasure, a reward"
+ },
+ "pop_b": {
+  "title": "clip 18 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 0.76,
+  "what": "pop",
+  "where": "appearances; alternate with the other pops"
+ },
+ "click": {
+  "title": "clip 19 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 0.19,
+  "what": "click",
+  "where": "a switch, a decision, a small precise action"
+ },
+ "whoosh_short": {
+  "title": "clip 20 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 0.15,
+  "what": "whoosh",
+  "where": "camera whips and fast cuts; alternate with whoosh_air"
+ },
+ "riser_burst": {
+  "title": "clip 23 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 2.31,
+  "what": "soft riser that starts slow and then bursts",
+  "where": "a build that ends in an impact or a big reveal"
+ },
+ "pop_c": {
+  "title": "clip 25 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 0.23,
+  "what": "pop",
+  "where": "appearances; alternate with the other pops"
+ },
+ "transition": {
+  "title": "clip 31 of pack_1103",
+  "creator": "supplied by the user",
+  "licence": "the user's own sound pack",
+  "kind": "oneshot",
+  "seconds": 0.77,
+  "what": "transition sound",
+  "where": "transitions and cuts to a new place or time"
+ }
+}

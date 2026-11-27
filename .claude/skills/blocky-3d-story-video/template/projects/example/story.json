@@ -1,0 +1,564 @@
+{
+ "audio": "audio/example.wav",
+ "names": [
+  "Nana"
+ ],
+ "sfx": [],
+ "shots": [
+  {
+   "id": "1_lamps",
+   "cue": 0,
+   "set": "fireStreet",
+   "look": "DUSK_MAGENTA",
+   "shadow": {
+    "focus": [
+     -2,
+     0,
+     -8
+    ],
+    "extent": 40
+   },
+   "setParams": {
+    "houses": {
+     "lit": 0.6
+    }
+   },
+   "actors": [
+    {
+     "character": "pip",
+     "pos": [
+      -3.5,
+      -2
+     ],
+     "yaw": 25,
+     "clips": [
+      {
+       "clip": "handUpQuick",
+       "word": 3
+      }
+     ],
+     "faces": [
+      {
+       "f": 0,
+       "v": "neutralTalk"
+      },
+      {
+       "word": 3,
+       "v": "bigHappy"
+      }
+     ]
+    }
+   ],
+   "camera": {
+    "fov": 47,
+    "keys": [
+     {
+      "u": 0,
+      "pos": [
+       1.5,
+       4.2,
+       11
+      ],
+      "target": [
+       -3.2,
+       3.8,
+       -2
+      ]
+     },
+     {
+      "u": 1,
+      "pos": [
+       1.2,
+       4.2,
+       9.6
+      ],
+      "target": [
+       -3.2,
+       3.8,
+       -2
+      ],
+      "ease": "linear"
+     }
+    ]
+   }
+  },
+  {
+   "id": "2_every_one",
+   "cue": 6,
+   "set": "fireStreet",
+   "look": "DUSK_MAGENTA",
+   "shadow": {
+    "focus": [
+     -4,
+     0,
+     -30
+    ],
+    "extent": 70
+   },
+   "setParams": {
+    "houses": {
+     "lit": 0.6
+    }
+   },
+   "actors": [
+    {
+     "character": "pip",
+     "pos": [
+      -3.5,
+      -2
+     ],
+     "yaw": 160,
+     "faces": [
+      {
+       "f": 0,
+       "v": "happyArcs"
+      }
+     ]
+    }
+   ],
+   "camera": {
+    "fov": 47,
+    "keys": [
+     {
+      "u": 0,
+      "pos": [
+       0,
+       4,
+       8
+      ],
+      "target": [
+       -5,
+       3.5,
+       -20
+      ]
+     },
+     {
+      "u": 0.5,
+      "pos": [
+       6,
+       12,
+       26
+      ],
+      "target": [
+       -6,
+       3,
+       -40
+      ],
+      "ease": "easeOutQuad"
+     },
+     {
+      "u": 1,
+      "pos": [
+       6.3,
+       12.3,
+       27
+      ],
+      "target": [
+       -6,
+       3,
+       -40
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   "sound": "hit"
+  },
+  {
+   "id": "3_nana",
+   "cue": 9,
+   "set": "kitchen",
+   "look": "INTERIOR_NEUTRAL",
+   "shadow": {
+    "focus": [
+     -4,
+     3,
+     -3
+    ],
+    "extent": 26
+   },
+   "lookOverrides": {
+    "lights": {
+     "hemi": {
+      "sky": "#e6ddd2",
+      "ground": "#8a7a6a",
+      "intensity": 1.9
+     },
+     "key": {
+      "color": "#fff0dc",
+      "intensity": 1.8,
+      "from": [
+       0.5,
+       0.8,
+       0.7
+      ],
+      "shadow": true
+     }
+    }
+   },
+   "actors": [
+    {
+     "character": "nana",
+     "pos": [
+      -4,
+      -3
+     ],
+     "yaw": 40,
+     "clips": [
+      {
+       "clip": "pointUp",
+       "word": 11
+      }
+     ],
+     "faces": [
+      {
+       "f": 0,
+       "v": "neutralTalk"
+      },
+      {
+       "word": 14,
+       "v": "angryTalk"
+      }
+     ]
+    },
+    {
+     "character": "pip",
+     "pos": [
+      -3.5,
+      -5.8
+     ],
+     "yaw": -70,
+     "faces": [
+      {
+       "f": 0,
+       "v": "blank"
+      }
+     ]
+    }
+   ],
+   "camera": {
+    "fov": 40,
+    "keys": [
+     {
+      "u": 0,
+      "pos": [
+       9.6,
+       4.5,
+       2.6
+      ],
+      "target": [
+       -3,
+       4.0,
+       -3.4
+      ]
+     },
+     {
+      "u": 1,
+      "pos": [
+       8.4,
+       4.5,
+       2.1
+      ],
+      "target": [
+       -3,
+       4.0,
+       -3.4
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   "setParams": {
+    "chairs": []
+   }
+  },
+  {
+   "id": "4_joking",
+   "cue": 16,
+   "set": "kitchen",
+   "look": "INTERIOR_NEUTRAL",
+   "shadow": {
+    "focus": [
+     -3.5,
+     3,
+     -5.8
+    ],
+    "extent": 26
+   },
+   "lookOverrides": {
+    "lights": {
+     "hemi": {
+      "sky": "#e6ddd2",
+      "ground": "#8a7a6a",
+      "intensity": 1.9
+     },
+     "key": {
+      "color": "#fff0dc",
+      "intensity": 1.8,
+      "from": [
+       0.5,
+       0.8,
+       0.7
+      ],
+      "shadow": true
+     }
+    }
+   },
+   "actors": [
+    {
+     "character": "pip",
+     "pos": [
+      -3.5,
+      -5.8
+     ],
+     "yaw": 60,
+     "faces": [
+      {
+       "f": 0,
+       "v": "smug"
+      },
+      {
+       "word": 20,
+       "v": "laugh"
+      }
+     ],
+     "clips": [
+      {
+       "clip": "shrugOut",
+       "word": 20
+      }
+     ]
+    }
+   ],
+   "camera": {
+    "fov": 47,
+    "keys": [
+     {
+      "f": -1,
+      "pos": [
+       3.0,
+       4.2,
+       -1.6
+      ],
+      "target": [
+       -3.5,
+       4,
+       -12
+      ]
+     },
+     {
+      "f": 4,
+      "pos": [
+       3.0,
+       4.2,
+       -1.7
+      ],
+      "target": [
+       -3.5,
+       4.1,
+       -5.8
+      ],
+      "ease": "easeOutCubic"
+     },
+     {
+      "u": 1,
+      "pos": [
+       2.3,
+       4.2,
+       -2.1
+      ],
+      "target": [
+       -3.5,
+       4.1,
+       -5.8
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   "setParams": {
+    "chairs": []
+   }
+  },
+  {
+   "id": "5_went_out",
+   "cue": 21,
+   "set": "fireStreet",
+   "look": "NIGHT_EMBER",
+   "shadow": {
+    "focus": [
+     -2,
+     0,
+     -8
+    ],
+    "extent": 40
+   },
+   "setParams": {
+    "flames": false,
+    "houses": {
+     "lit": 0.05
+    }
+   },
+   "actors": [
+    {
+     "character": "pip",
+     "pos": [
+      -3.5,
+      -2
+     ],
+     "yaw": 25,
+     "faces": [
+      {
+       "f": 0,
+       "v": "worried"
+      },
+      {
+       "word": 24,
+       "v": "nervous"
+      }
+     ]
+    }
+   ],
+   "camera": {
+    "fov": 47,
+    "keys": [
+     {
+      "u": 0,
+      "pos": [
+       2.5,
+       5,
+       13
+      ],
+      "target": [
+       -3.4,
+       3.6,
+       -2
+      ]
+     },
+     {
+      "u": 1,
+      "pos": [
+       2.2,
+       5,
+       12
+      ],
+      "target": [
+       -3.4,
+       3.6,
+       -2
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   "sound": "hit"
+  },
+  {
+   "id": "6_thank_you",
+   "cue": 26,
+   "set": "fireStreet",
+   "look": "NIGHT_EMBER",
+   "shadow": {
+    "focus": [
+     -2,
+     0,
+     -8
+    ],
+    "extent": 40
+   },
+   "setParams": {
+    "flames": false,
+    "houses": {
+     "lit": 0.05
+    }
+   },
+   "actors": [
+    {
+     "character": "pip",
+     "pos": [
+      -3.5,
+      -2
+     ],
+     "yaw": 20,
+     "faces": [
+      {
+       "f": 0,
+       "v": "nervous"
+      },
+      {
+       "word": 31,
+       "v": "hollowShock"
+      }
+     ],
+     "clips": [
+      {
+       "clip": "shrugOut",
+       "word": 31
+      }
+     ]
+    }
+   ],
+   "vfx": [
+    {
+     "type": "embers",
+     "count": 200,
+     "box": [
+      40,
+      20,
+      40
+     ],
+     "centre": [
+      -3,
+      9,
+      -14
+     ],
+     "size": 0.16,
+     "gain": 1.2
+    }
+   ],
+   "camera": {
+    "fov": 47,
+    "keys": [
+     {
+      "u": 0,
+      "pos": [
+       -2.4,
+       4.3,
+       5.2
+      ],
+      "target": [
+       -3.5,
+       4.3,
+       -2
+      ]
+     },
+     {
+      "u": 1,
+      "pos": [
+       -2.6,
+       4.3,
+       3.6
+      ],
+      "target": [
+       -3.5,
+       4.3,
+       -2
+      ],
+      "ease": "linear"
+     }
+    ],
+    "shake": [
+     {
+      "f0": 55,
+      "f1": 80,
+      "ampDeg": [
+       0.25,
+       0.35
+      ],
+      "mode": "random"
+     }
+    ]
+   }
+  }
+ ]
+}

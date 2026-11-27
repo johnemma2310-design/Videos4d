@@ -1,0 +1,14 @@
+{
+  "pip":    { "skin": "#d9a27a", "hair": { "style": "bun", "color": "#2a6f6a" },
+              "outfit": { "torso": { "kind": "plain", "color": "#f2c230" },
+                          "sleeves": { "color": "#f2c230", "cuff": "#2b3a67" }, "legs": { "color": "#2b3a67", "shoes": "#141826" } } },
+  "nana":   { "skin": "#b98562", "hair": { "style": "tufts", "color": "#e6e2da" },
+              "outfit": { "torso": { "kind": "stripes", "color": "#7a4a9a", "color2": "#e8d8f0", "bands": 6 },
+                          "sleeves": { "color": "#7a4a9a" }, "legs": { "color": "#4a3a50", "shoes": "#f2f0ee" } } },
+  "baker":  { "skin": "#f0d0b0", "hair": { "style": "beanie", "color": "#f4f2ee" },
+              "outfit": { "torso": { "kind": "plain", "color": "#f4f2ee" },
+                          "sleeves": { "color": "#f4f2ee", "length": 0.4 }, "legs": { "color": "#6a5a4a" } } },
+  "guard":  { "skin": "#8a5a3a", "hair": { "style": "spikyTop", "color": "#1c1a1a" },
+              "outfit": { "torso": { "kind": "plaid", "color": "#2a6f6a", "color2": "#143a38" },
+                          "sleeves": { "color": "#2a6f6a" }, "legs": { "color": "#2b2726" } } }
+}

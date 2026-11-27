@@ -1,0 +1,173 @@
+{
+ "plain": {
+  "left": "#bdb7aa",
+  "right": "#948d98",
+  "leftDark": "#aea899",
+  "rightDark": "#857e8a",
+  "bushes": "#9a9b9c",
+  "bushCount": 420
+ },
+ "canal": {
+  "halfWidth": 20,
+  "flare": 0.25,
+  "flareDist": 300,
+  "curveAmp": 0,
+  "curveWavelength": 1400,
+  "curvePhase": 194,
+  "drift": 0,
+  "waterDark": "#5cbcc6",
+  "waterLight": "#b4e4e6",
+  "foam": 1,
+  "bankLeft": "#d2cdbf",
+  "bankRight": "#8a7064",
+  "bankWidth": 13,
+  "grassStrip": "#a8a878",
+  "length": 9000
+ },
+ "left": {
+  "xInner": 15,
+  "xOuter": 520,
+  "zNear": 110,
+  "zFar": 1064,
+  "ground": "#aab2b8",
+  "wall": "#f4f6f8",
+  "roofs": [
+   "#2c5a78",
+   "#2a6878",
+   "#3a5a88",
+   "#244e66"
+  ],
+  "house": {
+   "w": 9,
+   "d": 8,
+   "h": 5.5,
+   "roof": 4.5
+  },
+  "block": {
+   "nx": 5,
+   "nz": 3,
+   "gap": 2,
+   "street": 9
+  },
+  "vacancy": 0.08,
+  "jitter": 0.8,
+  "clearings": [
+   [
+    150,
+    640,
+    90,
+    70
+   ]
+  ],
+  "crossStreets": [
+   {
+    "dist": 551,
+    "width": 13,
+    "color": "#7fd0d4"
+   },
+   {
+    "dist": 392,
+    "width": 11,
+    "color": "#7fd0d4"
+   }
+  ]
+ },
+ "right": {
+  "xInner": 12,
+  "xOuter": 520,
+  "zNear": 110,
+  "zFar": 1064,
+  "ground": "#8a7a74",
+  "wall": "#5a3c38",
+  "roofs": [
+   "#6e2a2c",
+   "#5a2024",
+   "#7c302c",
+   "#4c181c"
+  ],
+  "house": {
+   "w": 9,
+   "d": 8,
+   "h": 5.5,
+   "roof": 4.5
+  },
+  "block": {
+   "nx": 4,
+   "nz": 3,
+   "gap": 2,
+   "street": 10
+  },
+  "vacancy": 0.08,
+  "jitter": 0.8,
+  "clearings": [
+   [
+    150,
+    600,
+    110,
+    110
+   ]
+  ],
+  "crossStreets": [
+   {
+    "dist": 418,
+    "width": 15,
+    "color": "#9a8a82"
+   },
+   {
+    "dist": 256,
+    "width": 12,
+    "color": "#9a8a82"
+   }
+  ]
+ },
+ "landmarks": [
+  {
+   "x": -164,
+   "dist": 655,
+   "w": 78,
+   "d": 50,
+   "h": 26,
+   "body": "#b9bcc4",
+   "roof": "#58c8bc",
+   "towers": 8,
+   "dome": 7
+  },
+  {
+   "x": 175,
+   "dist": 635,
+   "w": 75,
+   "d": 50,
+   "h": 24,
+   "body": "#3a3440",
+   "roof": "#2a2630",
+   "towers": 8,
+   "dome": 0
+  }
+ ],
+ "island": {
+  "dist": 529,
+  "radius": 11,
+  "color": "#7a7a52"
+ },
+ "smoke": [
+  {
+   "x": 117,
+   "dist": 678,
+   "height": 160,
+   "radius": 20,
+   "color": "#1e0e12",
+   "opacity": 0.8,
+   "lean": 0.04
+  },
+  {
+   "x": 240,
+   "dist": 1163,
+   "height": 165,
+   "radius": 30,
+   "color": "#1e0e12",
+   "opacity": 0.8,
+   "lean": 0.04
+  }
+ ],
+ "seed": 2024
+}

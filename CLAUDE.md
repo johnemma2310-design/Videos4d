@@ -60,6 +60,18 @@ el estilo es "muñecos de bloques" genérico y los personajes son nuestros.
 - Apto para niños: misterio y tensión sí, violencia o sustos fuertes no. Moraleja positiva (amistad, saludar, decir la verdad…).
 - Ejemplos completos: `episodios/vigilante_noches/guion.json` (fórmula nueva) y `episodios/pueblo_vidrio/guion.json`.
 
+## Motor nuevo: blocky-studio (Three.js + Remotion, desde 2026-11-27)
+
+Segundo motor para el estilo de bloques, montado con la skill `blocky-3d-story-video` (`.claude/skills/`, viene del
+paquete de la carpeta `Skills/` y del tutorial https://www.youtube.com/watch?v=w-wq3uCyCxE). Renderiza en el navegador:
+**10 s de video en ~1.5 min** (Blender tarda horas). Sigue el paso a paso de la skill: títulos → guion → voz → reparto →
+storyboard → sonido → render → puntaje → lecciones (`blocky-studio/lab/lessons.md`).
+- Instalar en otro PC: `cd blocky-studio; npm install; npm rebuild esbuild; python -m venv .venv; .venv\Scripts\python -m pip install -r requirements.txt`.
+- Voz en español: edge-tts y alinear con `ALIGN_LANG=es` (`scripts/align.py` acepta el idioma por esa variable).
+- Sticky elegante está en `projects/sticky10/cast.json`: torso `varsity` negro con camisa blanca, `bald` y `extras`
+  (`scarf` azul, `bowtie`, `glasses` de media luna), que agregamos al motor en `src/engine/avatar/build.ts` y `src/schema/cast.ts`.
+- Ejemplo completo de 10 s: `blocky-studio/projects/sticky10/` (`make_story.py` genera `story.json`).
+
 ## Instalación en un dispositivo nuevo (Windows)
 
 ```powershell

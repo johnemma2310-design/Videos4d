@@ -17,3 +17,6 @@ Thumbs.db
 
 # configuración local de Claude Code
 .claude/settings.local.json
+
+# paquetes descargados por el dueño (zips grandes)
+Skills/

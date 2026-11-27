@@ -1,0 +1,80 @@
+[
+ {
+  "name": "pop",
+  "query": "pop cartoon",
+  "kind": "oneshot",
+  "min": 0.05,
+  "max": 4,
+  "keep": 0.5
+ },
+ {
+  "name": "drip",
+  "query": "water drip single",
+  "kind": "oneshot",
+  "min": 0.05,
+  "max": 4,
+  "keep": 0.7
+ },
+ {
+  "name": "thunder",
+  "query": "thunder clap",
+  "kind": "oneshot",
+  "min": 1,
+  "max": 30,
+  "keep": 4.0,
+  "avoid": [
+   "rain"
+  ]
+ },
+ {
+  "name": "splash",
+  "query": "water splash bucket",
+  "kind": "oneshot",
+  "min": 0.3,
+  "max": 8,
+  "keep": 2.0
+ },
+ {
+  "name": "hiss",
+  "query": "steam hiss",
+  "kind": "oneshot",
+  "min": 0.3,
+  "max": 15,
+  "keep": 3.0
+ },
+ {
+  "name": "rain_light",
+  "query": "light rain",
+  "kind": "loop",
+  "min": 15,
+  "max": 240
+ },
+ {
+  "name": "rain_heavy",
+  "query": "heavy rain downpour",
+  "kind": "loop",
+  "min": 15,
+  "max": 240
+ },
+ {
+  "name": "fire",
+  "query": "fire crackling",
+  "kind": "loop",
+  "min": 15,
+  "max": 400
+ },
+ {
+  "name": "crowd_panic",
+  "query": "crowd panic screaming",
+  "kind": "loop",
+  "min": 4,
+  "max": 120
+ },
+ {
+  "name": "crowd_cheer",
+  "query": "crowd cheering",
+  "kind": "loop",
+  "min": 4,
+  "max": 120
+ }
+]

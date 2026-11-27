@@ -1,0 +1,82 @@
+[
+ {
+  "n": 1,
+  "id": "1_pueblo",
+  "t": 0,
+  "dur": 1.13,
+  "line": "En este pueblo,",
+  "look": "DAY_SUN",
+  "set": "fireStreet",
+  "camera": "wide, push-in 25 %"
+ },
+ {
+  "n": 2,
+  "id": "2_regla",
+  "t": 1.13,
+  "dur": 1.6,
+  "line": "si no das las buenas noches,",
+  "look": "DAY_SUN",
+  "set": "fireStreet",
+  "camera": "close-up, whip-in, push-in 13 %"
+ },
+ {
+  "n": 3,
+  "id": "3_vigilante",
+  "t": 2.73,
+  "dur": 2,
+  "line": "el Vigilante se lleva tu voz.",
+  "look": "NIGHT_EMBER",
+  "set": "nightField",
+  "camera": "close-up, push-in 22 %, shake"
+ },
+ {
+  "n": 4,
+  "id": "4_nadie",
+  "t": 4.73,
+  "dur": 1.2,
+  "line": "Nadie me avisó.",
+  "look": "DUSK_MAGENTA",
+  "set": "fireStreet",
+  "camera": "medium, push-in 15 %"
+ },
+ {
+  "n": 5,
+  "id": "5_luz",
+  "t": 5.93,
+  "dur": 1.03,
+  "line": "Esa noche apagué la luz",
+  "look": "INTERIOR_NEUTRAL",
+  "set": "kitchen",
+  "camera": "close-up, push-in 8 %"
+ },
+ {
+  "n": 6,
+  "id": "6_nada",
+  "t": 6.97,
+  "dur": 1.3,
+  "line": "sin decir nada.",
+  "look": "INTERIOR_NEUTRAL",
+  "set": "kitchen",
+  "camera": "medium, whip-in, pull-back x1.3"
+ },
+ {
+  "n": 7,
+  "id": "7_entonces",
+  "t": 8.27,
+  "dur": 0.93,
+  "line": "Y entonces,",
+  "look": "INTERIOR_NEUTRAL",
+  "set": "kitchen",
+  "camera": "close-up, push-in 8 %, shake"
+ },
+ {
+  "n": 8,
+  "id": "8_puerta",
+  "t": 9.2,
+  "dur": 1.93,
+  "line": "alguien tocó la puerta.",
+  "look": "INTERIOR_NEUTRAL",
+  "set": "kitchen",
+  "camera": "medium, push-in 22 %, shake"
+ }
+]

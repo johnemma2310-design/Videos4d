@@ -1,0 +1,15 @@
+{
+  "sticky": { "skin": "#f4f4f2", "hair": { "style": "bald", "color": "#f4f4f2" },
+              "outfit": { "torso": { "kind": "varsity", "color": "#17171f", "strip": "#fbfbfb", "trim": "#17171f" },
+                          "sleeves": { "color": "#17171f" }, "legs": { "color": "#15151b", "shoes": "#08080a" } },
+              "extras": { "scarf": "#2a7af2", "bowtie": "#101014", "glasses": "#2a2420" } },
+  "mama":   { "skin": "#e8b892", "hair": { "style": "long", "color": "#5a3420" },
+              "outfit": { "torso": { "kind": "plain", "color": "#f07a5a" },
+                          "sleeves": { "color": "#f07a5a", "length": 0.4 }, "legs": { "color": "#3a4a7a", "shoes": "#7a2a2a" } } },
+  "bigotes":{ "skin": "#e0a882", "hair": { "style": "sidePart", "color": "#2a1e18" },
+              "outfit": { "torso": { "kind": "coat", "color": "#5a6a3a", "trim": "#d8b040" },
+                          "legs": { "color": "#3a3530", "shoes": "#1a1412" } } },
+  "vigilante":{ "skin": "#4a4658", "hair": { "style": "rainHat", "color": "#141218" },
+              "outfit": { "torso": { "kind": "coat", "color": "#221e2c", "trim": "#6a6070" },
+                          "legs": { "color": "#16141c", "shoes": "#08080a" } } }
+}

@@ -1,0 +1,8 @@
+node_modules/
+out/
+.venv/
+public/audio/
+projects/*/final.json
+projects/*/sheet.json
+projects/*/storyboard.json
+lab/target/target_sheet.jpg

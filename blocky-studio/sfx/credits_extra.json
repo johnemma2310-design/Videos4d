@@ -1,0 +1,112 @@
+{
+ "pop": {
+  "title": "cartoon poppyup appearances -0003.aiff",
+  "creator": "martian",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/martian/sounds/19286",
+  "source": "freesound",
+  "query": "pop cartoon",
+  "kind": "oneshot",
+  "seconds": 0.5,
+  "check": "event stands 108 dB above the quiet parts, at 0.40 s"
+ },
+ "drip": {
+  "title": "Water_drop_9.wav",
+  "creator": "deleted_user_2104797",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/deleted_user_2104797/sounds/166325",
+  "source": "freesound",
+  "query": "water drip single",
+  "kind": "oneshot",
+  "seconds": 0.47,
+  "check": "event stands 78 dB above the quiet parts, at 0.22 s"
+ },
+ "thunder": {
+  "title": "Thunder Clap",
+  "creator": "DaniloSFX",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/DaniloSFX/sounds/672776",
+  "source": "freesound",
+  "query": "thunder clap",
+  "kind": "oneshot",
+  "seconds": 4.0,
+  "check": "event stands 47 dB above the quiet parts, at 0.15 s"
+ },
+ "splash": {
+  "title": "Water splash, emptying a bucket 1",
+  "creator": "wormer2",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/wormer2/sounds/415668",
+  "source": "freesound",
+  "query": "water splash bucket",
+  "kind": "oneshot",
+  "seconds": 2.0,
+  "check": "event stands 57 dB above the quiet parts, at 0.55 s"
+ },
+ "rain_light": {
+  "title": "Light rain falling at night in Hawaii",
+  "creator": "Sassaby",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/Sassaby/sounds/400178",
+  "source": "freesound",
+  "query": "light rain",
+  "kind": "loop",
+  "seconds": 30.0,
+  "check": "loudness spread 1.2 dB"
+ },
+ "rain_heavy": {
+  "title": "Heavy rain_clear recording",
+  "creator": "dersinnsspace",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/dersinnsspace/sounds/435221",
+  "source": "freesound",
+  "query": "heavy rain downpour",
+  "kind": "loop",
+  "seconds": 30.0,
+  "check": "loudness spread 0.7 dB"
+ },
+ "fire": {
+  "title": "fire crackles",
+  "creator": "florianreichelt",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/florianreichelt/sounds/563766",
+  "source": "freesound",
+  "query": "fire crackling",
+  "kind": "loop",
+  "seconds": 30.0,
+  "check": "loudness spread 1.7 dB"
+ },
+ "crowd_panic": {
+  "title": "Crowd Screaming",
+  "creator": "DigestContent",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/DigestContent/sounds/459101",
+  "source": "freesound",
+  "query": "crowd panic screaming",
+  "kind": "loop",
+  "seconds": 11.73,
+  "check": "loudness spread 1.1 dB"
+ },
+ "crowd_cheer": {
+  "title": "Short Crowd Cheer 2.flac",
+  "creator": "qubodup",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/qubodup/sounds/182572",
+  "source": "freesound",
+  "query": "crowd cheering",
+  "kind": "loop",
+  "seconds": 5.13,
+  "check": "loudness spread 1.9 dB"
+ },
+ "hiss": {
+  "title": "Steam.wav",
+  "creator": "SukritSen",
+  "licence": "CC0 1.0 (public domain)",
+  "page": "https://freesound.org/people/SukritSen/sounds/398077",
+  "source": "freesound",
+  "query": "steam hiss",
+  "kind": "oneshot",
+  "seconds": 3.0,
+  "check": "event stands 48 dB above the quiet parts, at 0.53 s"
+ }
+}

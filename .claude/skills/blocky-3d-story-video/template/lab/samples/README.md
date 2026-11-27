@@ -1,0 +1,1 @@
+Optional. The style of the 10 sample videos is already in the skill (references/title-script-style.md) and their wording fingerprints are in lab/samples_ngrams.json. Put full sample texts here only if the user adds new ones: title on line 1, views: N on line 2, script from line 4. Then rebuild the fingerprints with scripts/script_check.py --build-ngrams.
