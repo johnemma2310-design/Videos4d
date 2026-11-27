@@ -7,7 +7,7 @@
   "line": "En este pueblo, si no",
   "look": "DAY_SUN",
   "set": "fireStreet",
-  "camera": "wide, push-in 22 %"
+  "camera": "wide, push-in 29 %, pan/whip"
  },
  {
   "n": 2,
@@ -17,7 +17,7 @@
   "line": "das las buenas noches,",
   "look": "DAY_SUN",
   "set": "fireStreet",
-  "camera": "medium, whip-in, push-in 32 %"
+  "camera": "medium, whip-in, push-in 20 %"
  },
  {
   "n": 3,
@@ -25,9 +25,9 @@
   "t": 2.57,
   "dur": 0.77,
   "line": "el Vigilante se",
-  "look": "NIGHT_EMBER",
+  "look": "NIGHT_GLOW",
   "set": "nightField",
-  "camera": "medium, whip-in, push-in 27 %, shake"
+  "camera": "medium, whip-in, push-in 22 %, shake"
  },
  {
   "n": 4,
@@ -35,9 +35,9 @@
   "t": 3.33,
   "dur": 1.03,
   "line": "lleva tu voz.",
-  "look": "NIGHT_EMBER",
+  "look": "NIGHT_GLOW",
   "set": "nightField",
-  "camera": "medium, whip-in, push-in 25 %"
+  "camera": "wide, whip-in"
  },
  {
   "n": 5,
@@ -47,7 +47,7 @@
   "line": "Aquí todos se despiden antes",
   "look": "DAY_SUN",
   "set": "fireStreet",
-  "camera": "medium, whip-in, push-in 37 %"
+  "camera": "medium, whip-in, push-in 42 %"
  },
  {
   "n": 6,
@@ -57,7 +57,7 @@
   "line": "de dormir.",
   "look": "DAY_SUN",
   "set": "fireStreet",
-  "camera": "medium, whip-in, push-in 23 %"
+  "camera": "medium, whip-in"
  },
  {
   "n": 7,
@@ -67,7 +67,7 @@
   "line": "Todos.",
   "look": "DAY_SUN",
   "set": "fireStreet",
-  "camera": "medium, whip-in, push-in 27 %"
+  "camera": "medium, whip-in, push-in 18 %"
  },
  {
   "n": 8,
@@ -75,9 +75,9 @@
   "t": 7.87,
   "dur": 1.67,
   "line": "Hasta los bebés dicen buenas noches",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_DAY",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 34 %"
+  "camera": "close-up, whip-in, push-in 49 %"
  },
  {
   "n": 9,
@@ -85,9 +85,9 @@
   "t": 9.53,
   "dur": 0.87,
   "line": "antes de aprender a",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_DAY",
   "set": "kitchen",
-  "camera": "close-up, whip-in, push-in 25 %"
+  "camera": "medium, whip-in, pull-back x1.5"
  },
  {
   "n": 10,
@@ -95,9 +95,9 @@
   "t": 10.4,
   "dur": 0.93,
   "line": "decir mamá.",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_DAY",
   "set": "kitchen",
-  "camera": "close-up, whip-in, push-in 25 %"
+  "camera": "medium, whip-in, pull-back x1.4"
  },
  {
   "n": 11,
@@ -105,9 +105,9 @@
   "t": 11.33,
   "dur": 1.2,
   "line": "Porque dicen que el Vigilante",
-  "look": "NIGHT_EMBER",
+  "look": "NIGHT_GLOW",
   "set": "nightField",
-  "camera": "medium, whip-in, push-in 32 %, shake"
+  "camera": "medium, whip-in, push-in 26 %, shake"
  },
  {
   "n": 12,
@@ -115,9 +115,9 @@
   "t": 12.53,
   "dur": 1.3,
   "line": "mide tres metros...",
-  "look": "NIGHT_EMBER",
+  "look": "NIGHT_GLOW",
   "set": "nightField",
-  "camera": "medium, whip-in, push-in 25 %"
+  "camera": "medium, whip-in, push-in 30 %"
  },
  {
   "n": 13,
@@ -125,9 +125,9 @@
   "t": 13.83,
   "dur": 1.13,
   "line": "y que sus ojos brillan",
-  "look": "NIGHT_EMBER",
+  "look": "NIGHT_GLOW",
   "set": "nightField",
-  "camera": "medium, whip-in, push-in 17 %"
+  "camera": "medium, whip-in, push-in 15 %"
  },
  {
   "n": 14,
@@ -135,7 +135,7 @@
   "t": 14.97,
   "dur": 1.03,
   "line": "en la oscuridad.",
-  "look": "NIGHT_EMBER",
+  "look": "NIGHT_GLOW",
   "set": "nightField",
   "camera": "medium, whip-in, push-in 15 %"
  },
@@ -147,7 +147,7 @@
   "line": "Nos mudamos un lunes,",
   "look": "DAY_SUN",
   "set": "fireStreet",
-  "camera": "medium, push-in 30 %"
+  "camera": "medium, push-in 44 %, pan/whip"
  },
  {
   "n": 16,
@@ -157,7 +157,7 @@
   "line": "y nadie nos avisó.",
   "look": "DAY_SUN",
   "set": "fireStreet",
-  "camera": "medium, whip-in, push-in 27 %"
+  "camera": "medium, whip-in, push-in 17 %"
  },
  {
   "n": 17,
@@ -165,9 +165,9 @@
   "t": 18.57,
   "dur": 1.33,
   "line": "Esa noche, mi mamá se",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 36 %"
+  "camera": "close-up, whip-in, push-in 71 %"
  },
  {
   "n": 18,
@@ -175,9 +175,9 @@
   "t": 19.9,
   "dur": 1.47,
   "line": "durmió sin despedirse.",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 33 %"
+  "camera": "medium, whip-in, push-in 13 %"
  },
  {
   "n": 19,
@@ -185,9 +185,9 @@
   "t": 21.37,
   "dur": 1.3,
   "line": "A la mañana siguiente...",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_DAY",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 23 %"
+  "camera": "medium, whip-in, pull-back x1.2"
  },
  {
   "n": 20,
@@ -195,9 +195,9 @@
   "t": 22.67,
   "dur": 0.97,
   "line": "no podía decir ni",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_DAY",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 34 %, shake"
+  "camera": "close-up, whip-in, push-in 58 %, shake"
  },
  {
   "n": 21,
@@ -205,9 +205,9 @@
   "t": 23.63,
   "dur": 1,
   "line": "una palabra.",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_DAY",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 23 %"
+  "camera": "medium, whip-in, push-in 15 %"
  },
  {
   "n": 22,
@@ -215,7 +215,7 @@
   "t": 24.63,
   "dur": 1.63,
   "line": "¡Mamá! ¿Qué te pasa?",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_DAY",
   "set": "kitchen",
   "camera": "medium, whip-in, push-in 23 %, shake"
  },
@@ -227,7 +227,7 @@
   "line": "Corrí a la plaza a pedir ayuda.",
   "look": "DAY_SUN",
   "set": "fireStreet",
-  "camera": "medium, pan/whip"
+  "camera": "medium, pull-back x1.4, pan/whip"
  },
  {
   "n": 24,
@@ -237,7 +237,7 @@
   "line": "Don Bigotes,",
   "look": "DAY_COOL",
   "set": "tabletPlaza",
-  "camera": "medium, whip-in, push-in 37 %"
+  "camera": "medium, whip-in, push-in 17 %"
  },
  {
   "n": 25,
@@ -257,7 +257,7 @@
   "line": "me miró muy serio.",
   "look": "DAY_COOL",
   "set": "tabletPlaza",
-  "camera": "medium, push-in 12 %"
+  "camera": "medium, pull-back x1.2, pan/whip"
  },
  {
   "n": 27,
@@ -267,7 +267,7 @@
   "line": "Es la regla,",
   "look": "DAY_COOL",
   "set": "tabletPlaza",
-  "camera": "medium, whip-in, push-in 27 %"
+  "camera": "medium, whip-in, push-in 20 %"
  },
  {
   "n": 28,
@@ -277,7 +277,7 @@
   "line": "muchacho.",
   "look": "DAY_COOL",
   "set": "tabletPlaza",
-  "camera": "medium, whip-in, push-in 32 %"
+  "camera": "medium, whip-in, push-in 5 %"
  },
  {
   "n": 29,
@@ -295,9 +295,9 @@
   "t": 35.33,
   "dur": 0.9,
   "line": "Pero yo quería saber",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, push-in 8 %"
+  "camera": "medium"
  },
  {
   "n": 31,
@@ -305,9 +305,9 @@
   "t": 36.23,
   "dur": 0.87,
   "line": "la verdad.",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 32 %"
+  "camera": "medium, whip-in"
  },
  {
   "n": 32,
@@ -315,9 +315,9 @@
   "t": 37.1,
   "dur": 1.23,
   "line": "Así que esa noche,",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 34 %"
+  "camera": "close-up, whip-in, push-in 67 %"
  },
  {
   "n": 33,
@@ -325,9 +325,9 @@
   "t": 38.33,
   "dur": 0.9,
   "line": "apagué la luz...",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 23 %"
+  "camera": "medium, whip-in, push-in 19 %"
  },
  {
   "n": 34,
@@ -335,7 +335,7 @@
   "t": 39.23,
   "dur": 1.63,
   "line": "sin decir buenas noches.",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
   "camera": "medium, whip-in, push-in 24 %"
  },
@@ -345,9 +345,9 @@
   "t": 40.87,
   "dur": 1.1,
   "line": "Y entonces, la",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, push-in 22 %, shake"
+  "camera": "medium, push-in 46 %, pan/whip, shake"
  },
  {
   "n": 36,
@@ -355,9 +355,9 @@
   "t": 41.97,
   "dur": 1.03,
   "line": "puerta se abrió.",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 26 %"
+  "camera": "medium, whip-in, push-in 42 %"
  },
  {
   "n": 37,
@@ -365,9 +365,9 @@
   "t": 43,
   "dur": 0.97,
   "line": "Era enorme.",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 36 %, shake"
+  "camera": "medium, whip-in, push-in 27 %, shake"
  },
  {
   "n": 38,
@@ -375,7 +375,7 @@
   "t": 43.97,
   "dur": 0.73,
   "line": "Me miró,",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
   "camera": "medium, whip-in, push-in 23 %"
  },
@@ -385,7 +385,7 @@
   "t": 44.7,
   "dur": 1.83,
   "line": "y con una voz muy grave me dijo...",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
   "camera": "medium, push-in 9 %"
  },
@@ -395,9 +395,9 @@
   "t": 46.53,
   "dur": 1.17,
   "line": "¿Por qué nadie me dice buenas",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, push-in 8 %"
+  "camera": "medium, push-in 3 %, pan/whip"
  },
  {
   "n": 41,
@@ -405,7 +405,7 @@
   "t": 47.7,
   "dur": 1.03,
   "line": "noches a mí?",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
   "camera": "medium, whip-in, push-in 16 %"
  },
@@ -417,7 +417,7 @@
   "line": "Hace muchos años, él cuidaba el pueblo cada noche.",
   "look": "PEACH_HIGHKEY",
   "set": "waterStreet",
-  "camera": "wide, push-in 25 %"
+  "camera": "wide, push-in 8 %, pan/whip"
  },
  {
   "n": 43,
@@ -427,7 +427,7 @@
   "line": "Pero los niños se burlaban",
   "look": "PEACH_HIGHKEY",
   "set": "waterStreet",
-  "camera": "medium, whip-in, push-in 31 %"
+  "camera": "medium, whip-in, push-in 21 %"
  },
  {
   "n": 44,
@@ -437,7 +437,7 @@
   "line": "de lo alto que era.",
   "look": "PEACH_HIGHKEY",
   "set": "waterStreet",
-  "camera": "medium, whip-in, push-in 24 %"
+  "camera": "medium, whip-in, push-in 12 %"
  },
  {
   "n": 45,
@@ -447,7 +447,7 @@
   "line": "Y nadie, nunca, le dio las buenas noches.",
   "look": "DUSK_MAGENTA",
   "set": "waterStreet",
-  "camera": "medium, whip-in, push-in 18 %"
+  "camera": "medium, whip-in, push-in 17 %"
  },
  {
   "n": 46,
@@ -455,9 +455,9 @@
   "t": 57.13,
   "dur": 1.8,
   "line": "Él no robaba voces.",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 30 %"
+  "camera": "wide, whip-in"
  },
  {
   "n": 47,
@@ -465,9 +465,9 @@
   "t": 58.93,
   "dur": 1.23,
   "line": "Las guardaba, para",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 16 %"
+  "camera": "medium, whip-in, push-in 15 %"
  },
  {
   "n": 48,
@@ -475,9 +475,9 @@
   "t": 60.17,
   "dur": 1.1,
   "line": "no estar solo.",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 16 %"
+  "camera": "medium, whip-in, push-in 11 %"
  },
  {
   "n": 49,
@@ -487,7 +487,7 @@
   "line": "¿Y la regla?",
   "look": "DAY_COOL",
   "set": "tabletPlaza",
-  "camera": "medium, whip-in, push-in 37 %"
+  "camera": "medium, whip-in, push-in 21 %"
  },
  {
   "n": 50,
@@ -497,7 +497,7 @@
   "line": "La inventó Don Bigotes,",
   "look": "DAY_COOL",
   "set": "tabletPlaza",
-  "camera": "medium, whip-in, push-in 23 %"
+  "camera": "medium, whip-in"
  },
  {
   "n": 51,
@@ -507,7 +507,7 @@
   "line": "para que todos le",
   "look": "DAY_COOL",
   "set": "tabletPlaza",
-  "camera": "close-up, whip-in, push-in 39 %"
+  "camera": "medium, whip-in, push-in 18 %"
  },
  {
   "n": 52,
@@ -517,7 +517,7 @@
   "line": "tuvieran miedo.",
   "look": "DAY_COOL",
   "set": "tabletPlaza",
-  "camera": "medium, whip-in, push-in 23 %"
+  "camera": "medium, whip-in, push-in 19 %"
  },
  {
   "n": 53,
@@ -525,9 +525,9 @@
   "t": 65.87,
   "dur": 1.1,
   "line": "Así que hice algo que",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 27 %"
+  "camera": "medium, whip-in, push-in 11 %"
  },
  {
   "n": 54,
@@ -535,9 +535,9 @@
   "t": 66.97,
   "dur": 1.27,
   "line": "nadie había hecho.",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 32 %"
+  "camera": "close-up, whip-in, push-in 48 %"
  },
  {
   "n": 55,
@@ -545,9 +545,9 @@
   "t": 68.23,
   "dur": 1,
   "line": "Buenas noches,",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 30 %"
+  "camera": "medium, whip-in, push-in 47 %"
  },
  {
   "n": 56,
@@ -555,9 +555,9 @@
   "t": 69.23,
   "dur": 0.9,
   "line": "Vigilante.",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 29 %"
+  "camera": "wide, whip-in"
  },
  {
   "n": 57,
@@ -565,9 +565,9 @@
   "t": 70.13,
   "dur": 1,
   "line": "Por primera vez en cien",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 20 %"
+  "camera": "medium, whip-in, push-in 3 %"
  },
  {
   "n": 58,
@@ -575,9 +575,9 @@
   "t": 71.13,
   "dur": 1.4,
   "line": "años, sonrió.",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_NIGHT",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 16 %"
+  "camera": "medium, whip-in, push-in 35 %"
  },
  {
   "n": 59,
@@ -585,7 +585,7 @@
   "t": 72.53,
   "dur": 1.33,
   "line": "A la mañana siguiente,",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_DAY",
   "set": "kitchen",
   "camera": "medium, whip-in, push-in 34 %"
  },
@@ -595,9 +595,9 @@
   "t": 73.87,
   "dur": 1.4,
   "line": "mi mamá volvió a hablar.",
-  "look": "INTERIOR_NEUTRAL",
+  "look": "INTERIOR_DAY",
   "set": "kitchen",
-  "camera": "medium, whip-in, push-in 23 %"
+  "camera": "medium, whip-in"
  },
  {
   "n": 61,
@@ -605,7 +605,7 @@
   "t": 75.27,
   "dur": 1.3,
   "line": "Y ahora, todo el pueblo",
-  "look": "NIGHT_EMBER",
+  "look": "NIGHT_GLOW",
   "set": "fireStreet",
   "camera": "medium, whip-in, push-in 29 %"
  },
@@ -615,9 +615,9 @@
   "t": 76.57,
   "dur": 2.17,
   "line": "le da las buenas noches al Vigilante.",
-  "look": "NIGHT_EMBER",
+  "look": "NIGHT_GLOW",
   "set": "fireStreet",
-  "camera": "medium, pull-back x3.5, pan/whip, rising"
+  "camera": "medium, pull-back x3.6, pan/whip, rising"
  },
  {
   "n": 63,
@@ -625,9 +625,9 @@
   "t": 78.73,
   "dur": 0.97,
   "line": "Bueno... a los que",
-  "look": "NIGHT_EMBER",
+  "look": "NIGHT_GLOW",
   "set": "nightField",
-  "camera": "medium, whip-in, push-in 19 %"
+  "camera": "medium, whip-in, push-in 20 %"
  },
  {
   "n": 64,
@@ -635,7 +635,7 @@
   "t": 79.7,
   "dur": 1.03,
   "line": "no le dan like,",
-  "look": "NIGHT_EMBER",
+  "look": "NIGHT_GLOW",
   "set": "nightField",
   "camera": "medium, whip-in, push-in 15 %"
  },
@@ -645,9 +645,9 @@
   "t": 80.73,
   "dur": 1,
   "line": "todavía los visita.",
-  "look": "NIGHT_EMBER",
+  "look": "NIGHT_GLOW",
   "set": "nightField",
-  "camera": "medium, push-in 30 %, shake"
+  "camera": "medium, push-in 24 %, pan/whip, shake"
  },
  {
   "n": 66,
@@ -655,9 +655,9 @@
   "t": 81.73,
   "dur": 1.23,
   "line": "¡Suscríbete y no",
-  "look": "NIGHT_EMBER",
+  "look": "NIGHT_GLOW",
   "set": "fireStreet",
-  "camera": "medium, whip-in, push-in 27 %"
+  "camera": "medium, whip-in, push-in 15 %"
  },
  {
   "n": 67,
@@ -665,7 +665,7 @@
   "t": 82.97,
   "dur": 2.47,
   "line": "olvides decir buenas noches!",
-  "look": "NIGHT_EMBER",
+  "look": "NIGHT_GLOW",
   "set": "fireStreet",
   "camera": "medium, whip-in, push-in 32 %"
  }

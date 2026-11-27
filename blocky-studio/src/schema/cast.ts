@@ -10,6 +10,7 @@ const torso = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("stripes"), color: hex, color2: hex, bands: z.number().int().min(2).max(12).optional() }).strict(),
   z.object({ kind: z.literal("plaid"), color: hex, color2: hex }).strict(),
   z.object({ kind: z.literal("coat"), color: hex, trim: hex }).strict(),
+  z.object({ kind: z.literal("tuxedo"), color: hex, shirt: hex, lapel: hex, square: hex.optional() }).strict(), // stick3DD
 ]);
 
 export const characterDef = z.object({

@@ -97,18 +97,18 @@ CALLE_PROPS = {"type": "props", "items": [
 ESC = {
     "calle_dia": dict(set="fireStreet", look="DAY_SUN", lookOverrides=HAZE,
                       shadow={"focus": [-3, 0, -8], "extent": 40}, setParams={"houses": {"lit": 0.1}}, props=CALLE_PROPS),
-    "calle_noche": dict(set="fireStreet", look="NIGHT_EMBER", shadow={"focus": [-3, 0, -8], "extent": 40},
+    "calle_noche": dict(set="fireStreet", look="NIGHT_GLOW", shadow={"focus": [-3, 0, -8], "extent": 40},
                         setParams={"houses": {"lit": 0.7}}, props=CALLE_PROPS),
     "plaza": dict(set="tabletPlaza", look="DAY_COOL", shadow={"focus": [0, 0, -4], "extent": 30}),
-    "campo_noche": dict(set="nightField", look="NIGHT_EMBER", shadow={"focus": [0, 0, -6], "extent": 40},
+    "campo_noche": dict(set="nightField", look="NIGHT_GLOW", shadow={"focus": [0, 0, -6], "extent": 40},
                         setParams={"houses": {"z": -70, "count": 34, "spanX": 200, "lit": 0.6}},
                         props={"type": "props", "items": [{"shape": "box", "pos": [x, 0.9, -16], "size": [0.3, 1.8, 0.3],
                                                             "color": "#5a3a24"} for x in range(-20, 22, 2)]
                                + [{"shape": "box", "pos": [0, 1.3, -16], "size": [40, 0.2, 0.12], "color": "#6a4a2a"},
                                   {"shape": "box", "pos": [0, 0.6, -16], "size": [40, 0.2, 0.12], "color": "#6a4a2a"}]}),
-    "cocina": dict(set="kitchen", look="INTERIOR_NEUTRAL", lookOverrides=INTERIOR,
+    "cocina": dict(set="kitchen", look="INTERIOR_DAY",
                    shadow={"focus": [-4, 3, -3], "extent": 26}, setParams={"chairs": []}, props=COCINA_PROPS),
-    "cuarto": dict(set="kitchen", look="INTERIOR_NEUTRAL", lookOverrides=NOCHE_DENTRO,
+    "cuarto": dict(set="kitchen", look="INTERIOR_NIGHT",
                    shadow={"focus": [-4, 3, -3], "extent": 26}, setParams={"chairs": [], "table": None},
                    props=CUARTO_PROPS),
     "recuerdo": dict(set="waterStreet", look="PEACH_HIGHKEY", shadow={"focus": [-3, 0, -8], "extent": 40}),
@@ -534,6 +534,25 @@ def partir(shots):
 
 
 shots = partir(shots)
+
+
+def whip_out(shots):
+    """v4: si la toma siguiente entra con whip-in, esta termina con un barrido rápido hacia el mismo lado"""
+    for i, s in enumerate(shots[:-1]):
+        nk = shots[i + 1]["camera"]["keys"]
+        ks = s["camera"]["keys"]
+        if nk[0].get("f") != -1 or ks[-1].get("u") != 1:
+            continue
+        last = ks[-1]
+        sw = nk[0]["target"][0] - nk[1]["target"][0]
+        hold = dict(last); hold["u"] = 0.93
+        end = {"u": 1.07, "pos": last["pos"], "ease": "easeInQuart",
+               "target": [last["target"][0] - (sw if abs(sw) > 1 else 8), last["target"][1], last["target"][2]]}
+        ks[-1:] = [hold, end]
+    return shots
+
+
+shots = whip_out(shots)
 story = {"audio": "audio/vigilante.wav", "names": ["Vigilante", "Don", "Bigotes"], "sfx": [], "endHoldFrames": 30,
          "shots": shots}
 (HERE / "story.json").write_text(json.dumps(story, ensure_ascii=False, indent=1), encoding="utf-8")

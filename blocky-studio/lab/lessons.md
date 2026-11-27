@@ -7,6 +7,15 @@ Remove a lesson that turned out to be wrong, and say so in the report.
 
 ## Open
 
+From "vigilante_v4" (2026-11-27, measured 78.6, visual 65): engine work.
+- **Built in:** looks `NIGHT_GLOW`, `INTERIOR_DAY`, `INTERIOR_NIGHT` (`src/engine/looks/index.ts`), brighter than the
+  calibrated ones (mean luma 92 vs 83); torso kind `tuxedo` with lapels, shirt V, buttons, pocket square and a fabric
+  weave (`outfits.ts`); whip-outs before every whip-in (`whip_out()` in `projects/vigilante/make_story.py`).
+- **Trade-off seen in the storyboard:** INTERIOR_NIGHT at full brightness scored colour 81 but read as daytime; the
+  cooler grade read as night but scored 77. Kept a middle grade (gain 1.06/1.06/1.16, vignette 0.25). Night mood wins.
+- **Still weak:** detail 57 and camera 67. Remaining ideas: relief textures on kitchen walls and the plaza gravel,
+  and faster camera moves inside shots (short dolly-ins on punch words, not only between shots).
+
 From "vigilante_v3" (2026-11-27, measured 77.6, visual 62; v2 77.3 / 60): a plateau.
 - **Props, crowd bands and a bookshelf did not raise detail** (58 -> 54). The measure is dominated by big flat areas:
   Sticky's black tuxedo in close-ups, plain plaster walls, the gravel plaza. The next gain is engine work

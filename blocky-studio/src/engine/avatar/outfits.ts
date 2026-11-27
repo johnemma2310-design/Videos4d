@@ -7,7 +7,8 @@ export type TorsoPrint =
   | { kind: "varsity"; color: string; strip: string; trim?: string } // open jacket over a tee: strip = tee colour
   | { kind: "stripes"; color: string; color2: string; bands?: number }
   | { kind: "plaid"; color: string; color2: string }
-  | { kind: "coat"; color: string; trim: string }; // buttoned, belted coat with a collar and pockets: trim = buttons, belt, seams
+  | { kind: "coat"; color: string; trim: string } // buttoned, belted coat with a collar and pockets: trim = buttons, belt, seams
+  | { kind: "tuxedo"; color: string; shirt: string; lapel: string; square?: string }; // stick3DD: esmoquin de Sticky
 
 export type Outfit = {
   torso: TorsoPrint;
@@ -38,6 +39,12 @@ const hem = (g: CanvasRenderingContext2D, S: number, trim: string, u0 = 0, u1 = 
 
 const body = (g: CanvasRenderingContext2D, S: number, p: TorsoPrint) => {
   g.fillStyle = p.color; g.fillRect(0, 0, S, S);
+  if (p.kind === "tuxedo" || p.kind === "coat") {   // stick3DD: tejido sutil (trama diagonal) para que la tela no sea un plano liso
+    g.strokeStyle = "rgba(255,255,255,0.07)"; g.lineWidth = S * 0.004;
+    for (let i = -S; i < S * 2; i += S * 0.028) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i + S, S); g.stroke(); }
+    g.strokeStyle = "rgba(0,0,0,0.18)";
+    for (let i = -S; i < S * 2; i += S * 0.028) { g.beginPath(); g.moveTo(i + S * 0.012, 0); g.lineTo(i + S * 1.012, S); g.stroke(); }
+  }
   if (p.kind === "stripes") {
     const n = p.bands ?? 7; g.fillStyle = p.color2;
     for (let i = 0; i < n; i++) g.fillRect(0, ((i * 2 + 1) / (n * 2)) * S, S, S / (n * 2));
@@ -63,6 +70,24 @@ export const torsoFront = (p: TorsoPrint) =>
         g.save(); g.translate(u * S, 0.72 * S); g.rotate((lean * 6 * Math.PI) / 180); g.fillRect(-0.01 * S, -0.15 * S, 0.02 * S, 0.3 * S); g.restore();
       }
       hem(g, S, trim, 0, 0.33); hem(g, S, trim, 0.64, 1);
+    }
+    if (p.kind === "tuxedo") {   // stick3DD: camisa en V, solapas de satín, botones, bolsillos y pañuelo
+      g.fillStyle = p.shirt; g.beginPath(); g.moveTo(0.33 * S, 0); g.lineTo(0.5 * S, 0.62 * S); g.lineTo(0.67 * S, 0); g.closePath(); g.fill();
+      g.strokeStyle = "rgba(0,0,0,0.25)"; g.lineWidth = 0.006 * S;
+      for (const v of [0.2, 0.32, 0.44]) { g.beginPath(); g.arc(0.5 * S, v * S, 0.01 * S, 0, Math.PI * 2); g.stroke(); }   // botones de la camisa
+      g.fillStyle = p.lapel;
+      for (const sx of [-1, 1]) {
+        g.beginPath(); g.moveTo((0.5 + sx * 0.17) * S, 0); g.lineTo((0.5 + sx * 0.03) * S, 0.62 * S);
+        g.lineTo((0.5 + sx * 0.1) * S, 0.5 * S); g.lineTo((0.5 + sx * 0.26) * S, 0.18 * S); g.lineTo((0.5 + sx * 0.24) * S, 0); g.closePath(); g.fill();
+      }
+      g.strokeStyle = "rgba(255,255,255,0.22)"; g.lineWidth = 0.006 * S;
+      for (const sx of [-1, 1]) { g.beginPath(); g.moveTo((0.5 + sx * 0.24) * S, 0); g.lineTo((0.5 + sx * 0.26) * S, 0.18 * S); g.lineTo((0.5 + sx * 0.1) * S, 0.5 * S); g.stroke(); }
+      g.fillStyle = p.lapel; for (const v of [0.7, 0.82]) { g.beginPath(); g.arc(0.53 * S, v * S, 0.022 * S, 0, Math.PI * 2); g.fill(); }  // botones del saco
+      g.strokeStyle = "rgba(0,0,0,0.5)"; g.lineWidth = 0.01 * S; g.beginPath(); g.moveTo(0.5 * S, 0.62 * S); g.lineTo(0.5 * S, S); g.stroke();
+      g.strokeStyle = "rgba(255,255,255,0.18)"; g.lineWidth = 0.008 * S;
+      for (const u of [0.08, 0.68]) { g.beginPath(); g.moveTo(u * S, 0.78 * S); g.lineTo((u + 0.22) * S, 0.78 * S); g.stroke(); }   // bolsillos
+      g.beginPath(); g.moveTo(0.7 * S, 0.3 * S); g.lineTo(0.88 * S, 0.3 * S); g.stroke();
+      if (p.square) { g.fillStyle = p.square; g.beginPath(); g.moveTo(0.72 * S, 0.3 * S); g.lineTo(0.76 * S, 0.24 * S); g.lineTo(0.8 * S, 0.29 * S); g.lineTo(0.84 * S, 0.23 * S); g.lineTo(0.86 * S, 0.3 * S); g.closePath(); g.fill(); }
     }
     if (p.kind === "coat") {
       const dark = "rgba(0,0,0,0.28)", light = "rgba(255,255,255,0.16)";

@@ -7,10 +7,11 @@
   },
   "outfit": {
    "torso": {
-    "kind": "varsity",
-    "color": "#17171f",
-    "strip": "#fbfbfb",
-    "trim": "#4a4a5c"
+    "kind": "tuxedo",
+    "color": "#1c1c26",
+    "shirt": "#fbfbfb",
+    "lapel": "#3c3c4e",
+    "square": "#ffffff"
    },
    "sleeves": {
     "color": "#17171f"

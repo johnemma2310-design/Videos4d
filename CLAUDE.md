@@ -71,6 +71,10 @@ storyboard → sonido → render → puntaje → lecciones (`blocky-studio/lab/l
 - Sticky elegante está en `projects/sticky10/cast.json`: torso `varsity` negro con camisa blanca, `bald` y `extras`
   (`scarf` azul, `bowtie`, `glasses` de media luna), que agregamos al motor en `src/engine/avatar/build.ts` y `src/schema/cast.ts`.
 - Ejemplo completo de 10 s: `blocky-studio/projects/sticky10/` (`make_story.py` genera `story.json`).
+- Episodio completo de referencia: `blocky-studio/projects/vigilante/` (`make_story.py` con escenas, recetas de cámara,
+  cortes automáticos `partir()`, whip-outs y música por actos). Copia sus helpers para el próximo video.
+- Extensiones nuestras al motor: `scale` en actores, torso `tuxedo`, `extras` (bufanda, corbatín, gafas) y looks
+  `NIGHT_GLOW`, `INTERIOR_DAY`, `INTERIOR_NIGHT`. Puntajes de cada video en `blocky-studio/lab/scores.csv`.
 
 ## Instalación en un dispositivo nuevo (Windows)
 

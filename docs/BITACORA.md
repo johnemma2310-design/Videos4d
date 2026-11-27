@@ -5,6 +5,13 @@ Historial compartido entre dispositivos y sesiones de Claude. **Agrega una entra
 
 ---
 
+## 2026-11-27: mejoras al motor blocky-studio y "El Vigilante" v4
+- Looks nuevos `NIGHT_GLOW`, `INTERIOR_DAY`, `INTERIOR_NIGHT` (más luminosos; luma media 92 vs 83).
+- Torso `tuxedo` (solapas de satín, camisa en V, botones, bolsillos, pañuelo y trama de tela) para Sticky elegante.
+- Whip-out automático antes de cada whip-in. Puntajes: medido 78.6 (v3 77.6), final ~74.5. Historial: 63.6 → 72.1 → 72.9 → v4.
+- Pendiente: texturas en relieve (paredes, grava de la plaza) y movimientos de cámara dentro de la toma para subir detalle y cámara.
+
+
 ## 2026-11-27: "El Vigilante" v3
 - Más gente (dos bandas en exteriores), librero con libros y cuadros, casas y cerca en el campo, whip en 2 de 3 tomas,
   más giro de cámara, primeros planos un poco más abiertos y solapas grises en el esmoquin de Sticky.
