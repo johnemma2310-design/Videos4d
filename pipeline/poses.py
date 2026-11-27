@@ -14,8 +14,8 @@ from bl_util import D, key
 
 def rest(p, f):
     for s, sx in (("d", -1), ("i", 1)):
-        key(p["arm_" + s], "rotation_euler", f, (0, D(-12) * sx, 0))
-        key(p["leg_" + s], "rotation_euler", f, (0, D(-5) * sx, 0))
+        key(p["arm_" + s], "rotation_euler", f, (0, D(-2 if p.get("bloque") else -12) * sx, 0))
+        key(p["leg_" + s], "rotation_euler", f, (0, D(0 if p.get("bloque") else -5) * sx, 0))
     key(p["body"], "location", f, (0, 0, 0))
     key(p["body"], "rotation_euler", f, (0, 0, 0))
     key(p["neck"], "rotation_euler", f, (0, 0, 0))
@@ -24,11 +24,15 @@ def rest(p, f):
 def arm(p, side, f, out_deg, fwd_deg=0):
     """out_deg: hacia afuera (0 = colgando, 180 = arriba). fwd_deg: hacia el frente."""
     sx = -1 if side == "d" else 1
+    if p.get("bloque") and out_deg < 40:   # en bloques el brazo cae pegado al torso
+        out_deg = max(1.5, out_deg - 10)
     key(p["arm_" + side], "rotation_euler", f, (D(-fwd_deg), D(-out_deg) * sx, 0))
 
 
 def leg(p, side, f, out_deg, fwd_deg=0):
     sx = -1 if side == "d" else 1
+    if p.get("bloque"):
+        out_deg = max(0.0, out_deg - 5)
     key(p["leg_" + side], "rotation_euler", f, (D(-fwd_deg), D(-out_deg) * sx, 0))
 
 

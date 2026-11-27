@@ -9,6 +9,18 @@ INK = (0.03, 0.03, 0.05)
 
 _MATS = {}
 
+# Estilo global de la toma: "toon" (Sticky clásico: contornos negros, 2 tonos) o
+# "bloques" (muñecos de bloques: sin contornos, sombreado suave, bordes redondeados, texturas).
+STYLE = {"name": "toon"}
+
+
+def set_style(name):
+    STYLE["name"] = name or "toon"
+
+
+def suave():
+    return STYLE["name"] == "bloques"
+
 
 def reset_caches():
     _MATS.clear()
@@ -43,6 +55,15 @@ def toon_material(name, color, shadow=0.78, flat=False):
     if flat:
         emit.inputs["Color"].default_value = c
         return m, nt, emit
+    if suave():   # sombreado suave tipo juego de bloques
+        nt.nodes.remove(emit)
+        bsdf = nt.nodes.new("ShaderNodeBsdfPrincipled")
+        rgb = nt.nodes.new("ShaderNodeRGB")
+        rgb.outputs[0].default_value = c
+        nt.links.new(rgb.outputs[0], bsdf.inputs["Base Color"])
+        bsdf.inputs["Roughness"].default_value = 0.62
+        nt.links.new(bsdf.outputs[0], out.inputs["Surface"])
+        return m, nt, bsdf
     diff = nt.nodes.new("ShaderNodeBsdfDiffuse")
     s2r = nt.nodes.new("ShaderNodeShaderToRGB")
     ramp = nt.nodes.new("ShaderNodeValToRGB")
@@ -59,7 +80,7 @@ def toon_material(name, color, shadow=0.78, flat=False):
 
 def mat(color, shadow=0.8, flat=False):
     """Material cartoon compartido (cacheado por color): menos shaders = render más rápido."""
-    k = (tuple(round(c, 3) for c in color[:3]), round(shadow, 2), flat)
+    k = (tuple(round(c, 3) for c in color[:3]), round(shadow, 2), flat, STYLE["name"])
     if k not in _MATS:
         m, _, _ = toon_material(f"m{len(_MATS)}", color, shadow, flat)
         if flat == "outline":
@@ -77,9 +98,50 @@ def outline_mat(color=INK):
     return _MATS[k]
 
 
+def mat_textura(kind, c1, c2, scale=1.0):
+    """Material con textura procedural (solo estilo bloques): adoquin, ladrillo, pasto, madera, piedra."""
+    k = ("tex", kind, tuple(c1), tuple(c2), scale, STYLE["name"])
+    if k in _MATS:
+        return _MATS[k]
+    m, nt, bsdf = toon_material(f"tex_{kind}{len(_MATS)}", c1)
+    if not suave():
+        _MATS[k] = m
+        return m
+    rgb = bsdf.inputs["Base Color"].links[0].from_node
+    nt.nodes.remove(rgb)
+    tc = nt.nodes.new("ShaderNodeTexCoord")
+    if kind in ("adoquin", "ladrillo"):
+        t = nt.nodes.new("ShaderNodeTexBrick")
+        t.inputs["Color1"].default_value = (*c1, 1)
+        t.inputs["Color2"].default_value = (*c2, 1)
+        t.inputs["Mortar"].default_value = (*[v * 0.72 for v in c1], 1)
+        t.inputs["Scale"].default_value = (1.2 if kind == "adoquin" else 2.5) * scale
+        t.inputs["Mortar Size"].default_value = 0.015
+        nt.links.new(tc.outputs["Object" if kind == "ladrillo" else "Generated"], t.inputs["Vector"])
+        if kind == "adoquin":
+            mp = nt.nodes.new("ShaderNodeMapping")
+            mp.inputs["Scale"].default_value = (20 * scale, 20 * scale, 1)
+            nt.links.new(tc.outputs["Generated"], mp.inputs["Vector"])
+            nt.links.new(mp.outputs[0], t.inputs["Vector"])
+        nt.links.new(t.outputs["Color"], bsdf.inputs["Base Color"])
+    else:
+        n = nt.nodes.new("ShaderNodeTexNoise" if kind != "piedra" else "ShaderNodeTexVoronoi")
+        n.inputs["Scale"].default_value = {"pasto": 18, "madera": 6, "piedra": 9}.get(kind, 10) * scale
+        mx = mix_node(nt)
+        nt.links.new(n.outputs[0] if kind != "piedra" else n.outputs["Distance"], socket(mx.inputs, "Factor", "VALUE"))
+        socket(mx.inputs, "A", "RGBA").default_value = (*c1, 1)
+        socket(mx.inputs, "B", "RGBA").default_value = (*c2, 1)
+        nt.links.new(tc.outputs["Object"], n.inputs["Vector"])
+        nt.links.new(socket(mx.outputs, "Result", "RGBA"), bsdf.inputs["Base Color"])
+    _MATS[k] = m
+    return m
+
+
 def finish(obj, material, outline=0.025, outline_color=INK, smooth=True):
     obj.data.materials.clear()
     obj.data.materials.append(material)
+    if suave():
+        outline = 0          # en estilo bloques no hay contornos negros
     if smooth and hasattr(obj.data, "polygons"):
         for p in obj.data.polygons:
             p.use_smooth = True
@@ -125,14 +187,34 @@ def apply_scale(o):
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
 
 
-def box(name, center, size, color, parent=None, outline=0.03, shadow=0.8, rot=(0, 0, 0)):
+def bevel(o, width=0.04, segments=3):
+    """Bordes redondeados (look de juguete/bloques)."""
+    mod = o.modifiers.new("bisel", "BEVEL")
+    mod.width = width
+    mod.segments = segments
+    mod.limit_method = "ANGLE"
+    o.data.shade_smooth() if hasattr(o.data, "shade_smooth") else None
+    try:
+        mod.harden_normals = True
+    except AttributeError:
+        pass
+    return o
+
+
+def box(name, center, size, color, parent=None, outline=0.03, shadow=0.8, rot=(0, 0, 0), material=None,
+        round_=None):
     o = prim("cube", name, None, size=1, location=center)
     o.scale = size
     apply_scale(o)
     o.rotation_euler = rot
     if parent:
         o.parent = parent
-    return finish(o, mat(color, shadow), outline, smooth=False)
+    finish(o, material or mat(color, shadow), outline, smooth=False)
+    if suave():
+        r = round_ if round_ is not None else min(0.06, min(size) * 0.18)
+        if r > 0.004:
+            bevel(o, r)
+    return o
 
 
 def cyl(name, center, radius, depth, color, parent=None, outline=0.025, vertices=16, rot=(0, 0, 0),
@@ -188,6 +270,20 @@ def world(color, light_strength=0.35, light_color=(1, 1, 1)):
     nt = w.node_tree
     nt.nodes.clear()
     out = nt.nodes.new("ShaderNodeOutputWorld")
+    if suave():   # la cámara ve el cielo con su color real; la luz ambiental es más tenue
+        cam_bg = nt.nodes.new("ShaderNodeBackground")
+        cam_bg.inputs["Color"].default_value = (*color[:3], 1)
+        cam_bg.inputs["Strength"].default_value = 1.15
+        amb = nt.nodes.new("ShaderNodeBackground")
+        amb.inputs["Color"].default_value = (*color[:3], 1)
+        amb.inputs["Strength"].default_value = 0.7 if light_strength >= 0.3 else 0.3
+        lp = nt.nodes.new("ShaderNodeLightPath")
+        mix = nt.nodes.new("ShaderNodeMixShader")
+        nt.links.new(lp.outputs["Is Camera Ray"], mix.inputs[0])
+        nt.links.new(amb.outputs[0], mix.inputs[1])
+        nt.links.new(cam_bg.outputs[0], mix.inputs[2])
+        nt.links.new(mix.outputs[0], out.inputs["Surface"])
+        return
     bg_cam = nt.nodes.new("ShaderNodeBackground")
     bg_cam.inputs["Color"].default_value = (*color[:3], 1)
     bg_light = nt.nodes.new("ShaderNodeBackground")
@@ -203,9 +299,9 @@ def world(color, light_strength=0.35, light_color=(1, 1, 1)):
 
 def sun(energy=4.0, color=(1, 1, 1), rot=(48, 0, -28)):
     data = bpy.data.lights.new("sol", "SUN")
-    data.energy = energy
+    data.energy = energy * (0.75 if suave() else 1.0)
     data.color = color
-    data.angle = D(3)
+    data.angle = D(6 if suave() else 3)   # sombras más suaves en estilo bloques
     o = bpy.data.objects.new("sol", data)
     o.rotation_euler = tuple(D(a) for a in rot)
     return link(o)

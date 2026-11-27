@@ -18,7 +18,8 @@ R_HUMAN = 0.62
 
 def head_material(face_png, radius, base=WHITE):
     m, nt, emit = toon_material("cabeza", base, shadow=0.86)
-    ramp_out = emit.inputs["Color"].links[0].from_socket
+    col_in = emit.inputs.get("Color") or emit.inputs["Base Color"]   # toon: Emission / bloques: Principled
+    ramp_out = col_in.links[0].from_socket
     tc = nt.nodes.new("ShaderNodeTexCoord")
     sep = nt.nodes.new("ShaderNodeSeparateXYZ")
     nt.links.new(tc.outputs["Object"], sep.inputs[0])
@@ -50,7 +51,7 @@ def head_material(face_png, radius, base=WHITE):
     nt.links.new(fac, socket(mix.inputs, "Factor", "VALUE"))
     nt.links.new(ramp_out, socket(mix.inputs, "A", "RGBA"))
     nt.links.new(tex.outputs["Color"], socket(mix.inputs, "B", "RGBA"))
-    nt.links.new(socket(mix.outputs, "Result", "RGBA"), emit.inputs["Color"])
+    nt.links.new(socket(mix.outputs, "Result", "RGBA"), col_in)
     return m
 
 
@@ -328,6 +329,9 @@ def build_pajaro(d, face_png):
 
 def build(d, face_png):
     kind = d.get("tipo", "humano")
+    if kind in ("bloque", "bloque_animal"):
+        import bloques_bl  # import tardío: bloques_bl usa head_material de este módulo
+        return (bloques_bl.build_bloque if kind == "bloque" else bloques_bl.build_animal_bloque)(d, face_png)
     if kind == "humano":
         return build_humano(d, face_png)
     if kind == "pajaro":

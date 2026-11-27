@@ -7,7 +7,7 @@ cfg["noche"] = true oscurece cualquier escenario (luna y estrellas en los exteri
 import math
 import random
 
-from bl_util import D, ball, box, cone, cyl, mat, prim, finish, sun, world
+from bl_util import D, ball, box, cone, cyl, mat, mat_textura, prim, finish, sun, world
 
 DAY_SKY = (0.52, 0.8, 1.0)
 NIGHT_SKY = (0.06, 0.08, 0.22)
@@ -60,8 +60,8 @@ def nubes(rnd, n=5, y=25):
 def habitacion(cfg):
     ambiente(cfg, (0.55, 0.78, 0.95), exterior=False)
     box("piso", (0, 0, -0.05), (16, 16, 0.1), (0.86, 0.66, 0.46), outline=0)
-    box("pared", (0, 3.2, 3), (16, 0.2, 6), (0.62, 0.82, 0.97))
-    box("pared_izq", (-5.5, 0, 3), (0.2, 16, 6), (0.55, 0.76, 0.93))
+    box("pared", (0, 3.2, 6), (16, 0.2, 12), (0.62, 0.82, 0.97))
+    box("pared_izq", (-5.5, 0, 6), (0.2, 16, 12), (0.55, 0.76, 0.93))
     box("zocalo", (0, 3.05, 0.15), (16, 0.12, 0.3), (0.95, 0.95, 0.95), outline=0.02)
     cielo_ventana = NIGHT_SKY if cfg.get("noche") else (0.45, 0.75, 1.0)
     box("ventana_marco", (2.6, 3.05, 3.4), (2.2, 0.1, 1.8), (0.97, 0.97, 0.97))
@@ -95,8 +95,8 @@ def cocina(cfg):
     for i in range(-6, 6):
         for j in range(-11, 4):
             box(f"loseta{i}_{j}", (i + 0.5, j + 0.5, -0.05), (1, 1, 0.1), a if (i + j) % 2 else b, outline=0)
-    box("pared", (0, 3.6, 3), (12, 0.2, 6), (0.98, 0.92, 0.75))
-    box("pared_izq", (-5, 0, 3), (0.2, 12, 6), (0.95, 0.88, 0.7))
+    box("pared", (0, 3.6, 6), (12, 0.2, 12), (0.98, 0.92, 0.75))
+    box("pared_izq", (-5, 0, 6), (0.2, 12, 12), (0.95, 0.88, 0.7))
     # mueble bajo + cubierta
     box("muebles", (0.5, 3.05, 0.45), (7, 0.9, 0.9), (0.4, 0.65, 0.55))
     box("cubierta", (0.5, 3.0, 0.95), (7.1, 1.0, 0.1), (0.92, 0.92, 0.95), outline=0.02)
@@ -136,8 +136,8 @@ def cocina(cfg):
 def escuela(cfg):
     ambiente(cfg, (0.9, 0.95, 0.85), exterior=False)
     box("piso", (0, 0, -0.05), (16, 16, 0.1), (0.78, 0.62, 0.45), outline=0)
-    box("pared", (0, 3.4, 3), (16, 0.2, 6), (0.85, 0.93, 0.8))
-    box("pared_izq", (-6, 0, 3), (0.2, 16, 6), (0.8, 0.9, 0.75))
+    box("pared", (0, 3.4, 6), (16, 0.2, 12), (0.85, 0.93, 0.8))
+    box("pared_izq", (-6, 0, 6), (0.2, 16, 12), (0.8, 0.9, 0.75))
     box("pizarron_marco", (0, 3.25, 2.6), (5.4, 0.1, 2.4), (0.6, 0.4, 0.22))
     box("pizarron", (0, 3.18, 2.6), (5.0, 0.06, 2.0), (0.15, 0.38, 0.28), outline=0.01)
     rnd = random.Random(5)
@@ -348,6 +348,126 @@ def bosque(cfg):
     return {"standing": (0, 0, 0)}
 
 
+def arbol_bloque(name, x, y, s=1.0, top=(0.3, 0.68, 0.3)):
+    box(f"{name}_tronco", (x, y, 1.0 * s), (0.4 * s, 0.4 * s, 2.0 * s), (0.5, 0.33, 0.2), outline=0.03)
+    box(f"{name}_copa", (x, y, 2.6 * s), (2.0 * s, 2.0 * s, 1.6 * s), top, outline=0.04)
+    box(f"{name}_copa2", (x, y, 3.6 * s), (1.3 * s, 1.3 * s, 0.8 * s), tuple(v * 1.1 for v in top), outline=0.03)
+
+
+def casa(name, x, y, w, h, color, techo, puerta=(0.55, 0.35, 0.22)):
+    box(f"{name}", (x, y, h / 2), (w, 3.0, h), color, outline=0.04)
+    box(f"{name}_techo", (x, y, h + 0.35), (w + 0.5, 3.5, 0.7), techo, outline=0.04)
+    box(f"{name}_puerta", (x, y - 1.52, 1.0), (0.9, 0.06, 2.0), puerta, outline=0.02)
+    noche = False
+    for k, wx in enumerate((-w / 2 + 0.9, w / 2 - 0.9)):
+        box(f"{name}_ven{k}", (x + wx, y - 1.52, h * 0.6), (0.9, 0.06, 0.9), (0.6, 0.85, 1.0), outline=0.02)
+        box(f"{name}_venm{k}", (x + wx, y - 1.5, h * 0.6), (1.05, 0.04, 1.05), (1, 1, 1), outline=0)
+    return noche
+
+
+def farol(name, x, y, noche):
+    cyl(f"{name}", (x, y, 1.6), 0.07, 3.2, (0.2, 0.2, 0.24), outline=0.015, vertices=8)
+    luz = box(f"{name}_luz", (x, y, 3.3), (0.35, 0.35, 0.45), (1, 0.95, 0.65), outline=0.015)
+    if noche:
+        flat(luz, (1, 0.95, 0.65))
+
+
+def banca(name, x, y, rz=0):
+    import math as _m
+    c, s = _m.cos(_m.radians(rz)), _m.sin(_m.radians(rz))
+
+    def at(dx, dy):
+        return (x + dx * c - dy * s, y + dx * s + dy * c)
+    box(f"{name}_asiento", (*at(0, 0), 0.55), (2.0, 0.6, 0.1), (0.62, 0.4, 0.22), rot=(0, 0, D(rz)))
+    box(f"{name}_resp", (*at(0, 0.28), 0.95), (2.0, 0.08, 0.6), (0.62, 0.4, 0.22), rot=(0, 0, D(rz)))
+    for sx in (-1, 1):
+        box(f"{name}_pata{sx}", (*at(sx * 0.85, 0), 0.27), (0.1, 0.55, 0.55), (0.25, 0.25, 0.28),
+            rot=(0, 0, D(rz)))
+
+
+def pueblo(cfg):
+    """Plaza de pueblo: adoquín, estatua en pedestal, torre con reloj, casas de colores, bancas y faroles."""
+    ambiente(cfg, (0.55, 0.78, 1.0))
+    noche = cfg.get("noche")
+    box("plaza", (0, 2, -0.05), (40, 40, 0.1), (0.72, 0.68, 0.64), outline=0,
+        material=mat_textura("adoquin", (0.74, 0.7, 0.66), (0.62, 0.58, 0.55)))
+    box("pasto", (0, 30, -0.06), (90, 30, 0.1), (0.42, 0.72, 0.35), outline=0,
+        material=mat_textura("pasto", (0.42, 0.72, 0.35), (0.35, 0.62, 0.3)))
+    box("pasto_fondo", (0, -30, -0.06), (90, 24, 0.1), (0.42, 0.72, 0.35), outline=0,
+        material=mat_textura("pasto", (0.42, 0.72, 0.35), (0.35, 0.62, 0.3)))
+    # estatua central en pedestal
+    box("pedestal", (3.2, 4.5, 0.6), (2.6, 2.6, 1.2), (0.85, 0.84, 0.82), outline=0.03)
+    box("pedestal_base", (3.2, 4.5, 0.12), (3.2, 3.2, 0.24), (0.78, 0.77, 0.75), outline=0.03)
+    box("placa", (3.2, 3.18, 0.65), (1.3, 0.05, 0.55), (0.6, 0.42, 0.25), outline=0.015)
+    m_piedra = mat_textura("piedra", (0.62, 0.62, 0.64), (0.48, 0.48, 0.5))
+    box("estatua_piernas", (3.2, 4.5, 1.8), (1.0, 0.5, 1.2), (0.6, 0.6, 0.62), material=m_piedra)
+    box("estatua_torso", (3.2, 4.5, 2.9), (1.0, 0.5, 1.0), (0.6, 0.6, 0.62), material=m_piedra)
+    box("estatua_cabeza", (3.2, 4.5, 3.75), (0.7, 0.7, 0.7), (0.6, 0.6, 0.62), material=m_piedra, round_=0.12)
+    for sx in (-1, 1):
+        box(f"estatua_brazo{sx}", (3.2 + sx * 0.75, 4.5, 2.85), (0.45, 0.45, 1.05), (0.6, 0.6, 0.62),
+            material=m_piedra)
+    # torre con reloj al fondo
+    tx, ty = -1.0, 15.0
+    box("torre", (tx, ty, 5.0), (3.4, 3.4, 10.0), (0.96, 0.94, 0.9), outline=0.05)
+    cone("torre_techo", (tx, ty, 11.0), 2.8, 0, 2.2, (0.75, 0.25, 0.2), outline=0.05, vertices=4, rot=(0, 0, D(45)))
+    cyl("reloj", (tx, ty - 1.72, 7.6), 1.1, 0.12, (1, 1, 1), outline=0.05, vertices=40, rot=(D(90), 0, 0))
+    cyl("reloj_aro", (tx, ty - 1.69, 7.6), 1.25, 0.06, (0.2, 0.2, 0.22), outline=0, vertices=40, rot=(D(90), 0, 0))
+    box("aguja_h", (tx, ty - 1.8, 7.85), (0.08, 0.04, 0.55), (0.1, 0.1, 0.1), outline=0)
+    box("aguja_m", (tx + 0.3, ty - 1.8, 7.6), (0.65, 0.04, 0.06), (0.1, 0.1, 0.1), outline=0)
+    box("torre_puerta", (tx, ty - 1.72, 1.3), (1.4, 0.06, 2.6), (0.45, 0.3, 0.2), outline=0.02)
+    # casas a los lados
+    colores = [((0.95, 0.75, 0.75), (0.55, 0.2, 0.2)), ((0.72, 0.82, 0.95), (0.25, 0.3, 0.55)),
+               ((0.98, 0.9, 0.65), (0.6, 0.35, 0.2)), ((0.75, 0.9, 0.75), (0.3, 0.45, 0.3)),
+               ((0.95, 0.85, 0.95), (0.45, 0.3, 0.5))]
+    for k, x in enumerate((-15, -9.5, 7.5, 13, 18.5)):
+        c, t = colores[k % len(colores)]
+        casa(f"casa{k}", x, 13.5, 5.0, 4.2 + (k % 2) * 1.2, c, t)
+    # árboles, bancas, faroles, macetas
+    for k, (x, y) in enumerate([(-6.5, 9), (5.5, 10), (-11, 5), (10, 6), (-4.5, -6), (6, -7)]):
+        arbol_bloque(f"arbol{k}", x, y, 0.9 + 0.15 * (k % 3))
+    banca("banca0", -3.0, 2.2, 0)
+    banca("banca1", 7.5, 2.5, -20)
+    for k, (x, y) in enumerate([(-5.5, 1), (5.5, -0.5), (-1.5, 8)]):
+        farol(f"farol{k}", x, y, noche)
+    for k, (x, y) in enumerate([(-2, 5.5), (0.6, 6.2)]):
+        box(f"maceta{k}", (x, y, 0.35), (0.8, 0.8, 0.7), (0.7, 0.4, 0.28))
+        box(f"planta{k}", (x, y, 0.95), (0.7, 0.7, 0.5), (0.3, 0.65, 0.3))
+    if not noche:
+        nubes(random.Random(2), 5, 40)
+    return {"standing": (0, 0, 0)}
+
+
+def sala(cfg):
+    """Sala de casa: sofá, tele, alfombra, cuadros, ventana."""
+    ambiente(cfg, (0.97, 0.94, 0.88), exterior=False)
+    box("piso", (0, 0, -0.05), (16, 16, 0.1), (0.75, 0.55, 0.38), outline=0,
+        material=mat_textura("madera", (0.75, 0.55, 0.38), (0.65, 0.46, 0.3)))
+    box("pared", (0, 3.6, 6), (16, 0.2, 12), (0.95, 0.9, 0.82))
+    box("pared_izq", (-6, 0, 6), (0.2, 16, 12), (0.92, 0.86, 0.78))
+    box("zocalo", (0, 3.45, 0.15), (16, 0.12, 0.3), (1, 1, 1), outline=0.02)
+    # sofá
+    box("sofa", (-1.8, 2.6, 0.45), (3.6, 1.3, 0.9), (0.35, 0.55, 0.85))
+    box("sofa_resp", (-1.8, 3.15, 1.15), (3.6, 0.4, 1.1), (0.32, 0.5, 0.8))
+    for sx in (-1, 1):
+        box(f"sofa_brazo{sx}", (-1.8 + sx * 1.75, 2.6, 0.75), (0.35, 1.3, 0.9), (0.32, 0.5, 0.8))
+    for k in range(2):
+        box(f"cojin{k}", (-2.6 + k * 1.6, 2.85, 1.05), (0.6, 0.25, 0.55), (0.98, 0.8, 0.35))
+    # mueble y tele
+    box("mueble_tv", (3.0, 2.9, 0.4), (2.6, 0.9, 0.8), (0.55, 0.38, 0.25))
+    box("tele", (3.0, 3.0, 1.55), (2.2, 0.15, 1.3), (0.08, 0.08, 0.1))
+    box("tele_pantalla", (3.0, 2.92, 1.55), (2.0, 0.02, 1.1), (0.2, 0.35, 0.6), outline=0)
+    # ventana y cuadros
+    cielo = NIGHT_SKY if cfg.get("noche") else (0.55, 0.82, 1.0)
+    box("ventana_marco", (-1.8, 3.5, 3.4), (2.4, 0.1, 1.6), (1, 1, 1))
+    flat(box("ventana_cielo", (-1.8, 3.43, 3.4), (2.1, 0.05, 1.3), cielo, outline=0.01), cielo)
+    box("cuadro", (3.0, 3.5, 3.6), (1.2, 0.08, 0.9), (0.95, 0.75, 0.3))
+    box("alfombra", (0.5, 0.3, 0.01), (4.0, 2.6, 0.03), (0.85, 0.3, 0.3), outline=0, round_=0.01)
+    box("mesita", (0.4, 1.4, 0.3), (1.4, 0.8, 0.12), (0.6, 0.4, 0.25))
+    cyl("lampara_pie", (-4.5, 2.8, 1.0), 0.05, 2.0, (0.25, 0.25, 0.28), outline=0.015, vertices=8)
+    cone("lampara", (-4.5, 2.8, 2.15), 0.45, 0.28, 0.5, (1, 0.92, 0.6), outline=0.02, vertices=16)
+    return {"standing": (0.5, -0.6, 0)}
+
+
 def vacio(cfg):
     col = tuple(cfg.get("color_fondo") or (0.98, 0.8, 0.25))
     world(col)
@@ -357,5 +477,5 @@ def vacio(cfg):
     return {"standing": (0, 0, 0)}
 
 
-SETS = {f.__name__: f for f in (habitacion, cocina, escuela, exterior, parque, ciudad, playa, espacio,
+SETS = {f.__name__: f for f in (habitacion, cocina, escuela, exterior, parque, ciudad, playa, espacio, pueblo, sala,
                                 bosque, vacio)}

@@ -5,6 +5,26 @@ Historial compartido entre dispositivos y sesiones de Claude. **Agrega una entra
 
 ---
 
+## 2026-11-26: estilo "bloques" y formato "Reglas del pueblo"
+- Análisis de un canal de referencia de Shorts con muñecos de bloques (1–21 M de vistas): historias de 100–130 s
+  con una regla rara ("Si…", "En este pueblo…"), narración en primera persona, giro final, cámara muy cercana,
+  cortes cada 2–3 s y la palabra clave del subtítulo en color. Solo se usó como referencia de formato: personajes, historias y escenarios son nuestros.
+- Se evaluó generar con IA de video (vidIQ): ~780 créditos por video y la cuenta tiene 0 (plan de 150/mes). Por eso se usa Blender.
+- Nuevo estilo `"estilo": "bloques"`: materiales suaves (Principled), sin contornos, bordes biselados, sombras suaves,
+  raytracing de EEVEE y texturas procedurales (`bl_util.mat_textura`: adoquín, ladrillo, pasto, madera, piedra).
+- `pipeline/bloques_bl.py`: humanos de bloques (ropa por partes, pelo de bloques, 22 accesorios) y animales de bloques,
+  además de los efectos `piedra` y `vidrio`. Reparto en `assets/personajes_bloques.json` (19 personajes, mismos ids + `vecino` y `amiga`).
+- Escenarios nuevos: `pueblo` (plaza, torre con reloj, estatua, casas) y `sala`. Las paredes interiores ahora miden 12 de alto.
+- Planos nuevos: `hombro`, `pies` y `espalda`. Subtítulos: `*palabra*` sale en amarillo.
+- Episodio demo: `episodios/pueblo_vidrio/` ("EN ESTE PUEBLO, SI NADIE TE SALUDA, TE VUELVES DE VIDRIO!!!"), 22 escenas, 80 s.
+
+**Pendientes**
+- Render lento para 80–120 s (estimado: más de 1 h a calidad 50). Ideas: menos muestras, 24 fps, renderizar tomas en paralelo.
+- `espalda` mira hacia -Y: en interiores no hay pared atrás.
+- Faltan escenarios de bloques: casa por fuera con jardín, tienda, hospital, salón de clases blanco.
+- Falta animar la boca al hablar y hacer que los efectos aparezcan poco a poco (ahora la toma entera ya es de vidrio o de piedra).
+
+
 ## 2026-11-25: regla de sincronización con GitHub
 - `CLAUDE.md` ahora exige `git pull` al empezar y commit + push al terminar cada cambio, para que todos los dispositivos estén al día.
 - Repo remoto: https://github.com/johnemma2510-design/Videos4d (rama `main`).

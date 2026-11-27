@@ -65,6 +65,28 @@ def camera(plano, focus, actors, f0, f1, follow_root):
             spread = max((h - tgt).length for h in heads) if len(heads) > 1 else 1.0
             dist = max(5.0, spread * 3.2 + 2.5)
             return tgt + Vector((0, -dist, 0.6)), tgt, 35
+        if name == "hombro":     # por encima del hombro de otro personaje, mirando al foco
+            others = [a for a in actors if a is not focus]
+            if others:
+                oh, oc, _, _ = actor_frame(others[0])
+                f = Vector((fwd.x, fwd.y, 0)).normalized()
+                lat = Vector((-f.y, f.x, 0))
+                rel = oh - head
+                ahead = max(rel.dot(f), 0.6)       # qué tan adelante está el otro
+                side = rel.dot(lat)                # y hacia qué lado
+                # la cámara mira de frente al foco (se ve la cara) y queda justo detrás del otro,
+                # un poco hacia afuera: su hombro enmarca el borde del cuadro
+                pos = head + f * (ahead + 1.7) + lat * (side * 1.35) + Vector((0, 0, 0.35))
+                return pos, head.lerp(center, 0.2), 40
+            name = "espalda"
+        if name == "espalda":    # detrás del personaje, viendo lo que él ve (mejor en exteriores)
+            side = Vector((-fwd.y, fwd.x, 0)) * 0.9
+            return (head - fwd * 3.0 * max(s, 0.6) + side + Vector((0, 0, 0.5)),
+                    head + fwd * 2.5 - Vector((0, 0, 0.6)), 35)
+        if name == "pies":       # detalle de los pies, cámara casi al ras del suelo
+            feet = focus["root"].matrix_world.translation.copy() + Vector((0, 0, 0.5 * s))
+            side = Vector((-fwd.y, fwd.x, 0)) * 0.6
+            return feet + fwd * 3.0 * max(s, 0.6) + side + Vector((0, 0, 0.15)), feet, 35
         dist, h, lens, aim = PLANOS[name]
         k = max(s, 0.55)          # personajes chicos: cámara más cerca
         dist *= k
@@ -117,7 +139,8 @@ def camera(plano, focus, actors, f0, f1, follow_root):
         put(f0 + max(2, int((f1 - f0) * 0.4)), *b)
         put(f1, *b)
     else:
-        pos, target, lens = place(plano if plano in PLANOS or plano == "grupo" else "medio")
+        known = set(PLANOS) | {"grupo", "hombro", "espalda", "pies"}
+        pos, target, lens = place(plano if plano in known else "medio")
         put(f0, pos, target, lens)
         put(f1, pos + (target - pos) * 0.07, target, lens)   # acercamiento lento
 
@@ -140,8 +163,21 @@ def setup_render(tl, f0, f1):
     sc.render.resolution_x, sc.render.resolution_y = tl["res"]
     sc.render.resolution_percentage = tl.get("calidad", 100)
     sc.render.fps = tl["fps"]
-    sc.view_settings.view_transform = "Standard"
-    sc.view_settings.look = "None"
+    if bl_util.suave():
+        try:
+            sc.eevee.use_raytracing = True          # oclusión y reflejos suaves (EEVEE Next)
+        except AttributeError:
+            pass
+        try:
+            sc.eevee.shadow_ray_count = 2
+        except AttributeError:
+            pass
+        sc.view_settings.view_transform = "Standard"
+        sc.view_settings.look = "None"
+        sc.view_settings.exposure = -0.15
+    else:
+        sc.view_settings.view_transform = "Standard"
+        sc.view_settings.look = "None"
     sc.render.image_settings.file_format = "PNG"
     sc.render.image_settings.color_mode = "RGB"
     sc.render.filepath = str(Path(tl["frames_dir"]) / "######")
@@ -169,6 +205,7 @@ def place_actor(p, actor, main_pos, is_main):
 def render_shot(tl, shot):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     bl_util.reset_caches()
+    bl_util.set_style(tl.get("estilo", "toon"))
     f0, f1 = shot["f0"], shot["f1"]
     setup_render(tl, f0, f1)
     main_pose = shot["actores"][0]["pose"]
@@ -176,6 +213,9 @@ def render_shot(tl, shot):
     parts, moving = [], False
     for i, actor in enumerate(shot["actores"]):
         p = build(actor["def"], Path(actor["face"]))
+        if actor.get("efecto"):
+            from bloques_bl import aplicar_efecto
+            aplicar_efecto(p, actor["efecto"], Path(actor["face"]))
         place_actor(p, actor, info["standing"], i == 0)
         mv = animar(p, actor["pose"], f0, f1, tl["fps"])
         parts.append(p)

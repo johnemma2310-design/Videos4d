@@ -28,6 +28,30 @@ y elige escenario, planos, poses, caras, personajes secundarios y sonidos. El pi
 **Sticky** = muñeco de palitos 3D, cabeza redonda blanca con contorno negro, caras 2D expresivas y **bufanda azul**.
 Es el protagonista por defecto. Estilo visual: low-poly, colores planos, contornos negros y sombreado de 2 tonos (cartoon).
 
+## Dos estilos de video (`"estilo"` en el guion)
+
+| | `toon` (Sticky clásico) | `bloques` (formato principal desde 2026-11-26) |
+|---|---|---|
+| Look | muñecos de palitos, contornos negros, 2 tonos | muñecos de bloques de juguete, sin contornos, sombras suaves, bordes redondeados, texturas (adoquín, pasto, madera) |
+| Reparto | `assets/personajes.json` | `assets/personajes_bloques.json` (mismos ids) |
+| Formato | "¿Qué pasaría si…?" 20–60 s | **"Reglas del pueblo"**, 70–120 s (ver abajo) |
+
+Referencia de formato: canales de historias en mundo de bloques con millones de vistas en Shorts.
+**Nunca** copies sus personajes, títulos ni historias, y no uses logos, nombres ni assets de Roblox o Minecraft:
+el estilo es "muñecos de bloques" genérico y los personajes son nuestros.
+
+### Formato "Reglas del pueblo" (estilo bloques)
+- **Título**: MAYÚSCULAS + "!!!" con una regla rara: `SI [algo], [consecuencia]!!!` o `EN ESTE PUEBLO, [regla]!!!`.
+- **Escena 1**: la regla dicha completa ("En este pueblo, si…, te vuelves de *vidrio*") + `texto_pantalla` + `zoom_in`.
+- **Escena 2**: la amenaza (qué pasa si se rompe la regla).
+- **Narración en primera persona** (Sticky cuenta lo que le pasó): mudanza o llegada, nadie le avisó, rompe la regla sin querer,
+  empiezan los síntomas (detalle de pies o manos con `efecto`), pide ayuda, todos se alejan, momento más oscuro (`noche`),
+  ayuda inesperada (un perrito, una abuelita…), giro final ("lo que nadie te cuenta es que…"), moraleja y cierre con suscripción.
+- 18–30 escenas de 1 frase (2–4 s cada una). Cambia de plano siempre; usa mucho `primer_plano`, `hombro`, `pies` y `grupo`.
+- Marca 1 palabra clave por escena con `*asteriscos*`: sale **amarilla** en el subtítulo (la voz no lee los asteriscos).
+- Apto para niños: misterio y tensión sí, violencia o sustos fuertes no. Moraleja positiva (amistad, saludar, decir la verdad…).
+- Ejemplo completo: `episodios/pueblo_vidrio/guion.json`.
+
 ## Instalación en un dispositivo nuevo (Windows)
 
 ```powershell
@@ -62,13 +86,13 @@ Ejemplos completos: `episodios/prueba_cama/guion.json` (solo Sticky) y `episodio
 
 ```json
 {
-  "titulo": "...", "formato": "vertical", "voz": "es-MX-JorgeNeural", "velocidad": "+8%",
+  "titulo": "...", "estilo": "bloques", "formato": "vertical", "voz": "es-MX-JorgeNeural", "velocidad": "+8%",
   "musica": "opcional.mp3", "volumen_musica": 0.12,
   "escenas": [
     {
-      "texto": "lo que narra la voz",
+      "texto": "lo que narra la voz, con la *palabra* clave resaltada",
       "escenario": "cocina", "noche": false, "plano": "medio", "foco": 0,
-      "personaje": "sticky", "pose": "de_pie", "cara": "feliz",
+      "personaje": "sticky", "pose": "de_pie", "cara": "feliz", "efecto": "vidrio",
       "extras": [
         {"personaje": "mama", "lugar": "derecha", "pose": "senalar", "cara": "enojado"},
         {"personaje": "perro", "lugar": "frente_izquierda", "pose": "saltar", "cara": "feliz"}
@@ -84,18 +108,26 @@ Ejemplos completos: `episodios/prueba_cama/guion.json` (solo Sticky) y `episodio
   `"mirar": false` para que no giren hacia el protagonista. `"escala"` cambia el tamaño.
 - `foco`: índice del personaje al que apunta la cámara (0 = protagonista, 1 = primer extra…).
 - `color_fondo` solo aplica al escenario `vacio`.
+- `efecto` (protagonista o extras): `piedra` (estatua gris) o `vidrio` (transparente celeste). La cara se mantiene.
+- `*palabra*` en `texto`: palabra clave en amarillo en el subtítulo.
 
 ## Catálogo actual
 
-Hay imágenes de todo en `docs/catalogo_personajes.png` y `docs/catalogo_escenarios.png` (se regeneran con `python tools/catalogo.py`).
+Hay imágenes de todo en `docs/catalogo_personajes.png`, `docs/catalogo_escenarios.png` y sus versiones `_bloques`
+(se regeneran con `python tools/catalogo.py` y `python tools/catalogo.py --bloques`).
 
-- **escenario**: `habitacion` (cama, ventana, lámpara), `cocina` (estufa, refri, mesa), `escuela` (pizarrón, pupitres),
+- **escenario**: `pueblo` (plaza de adoquín, torre con reloj, estatua, casas, bancas: el principal del estilo bloques), `sala` (sofá, tele), `habitacion` (cama, ventana, lámpara), `cocina` (estufa, refri, mesa), `escuela` (pizarrón, pupitres),
   `exterior` (pasto, árboles), `parque` (banca, flores, farol), `ciudad` (edificios, calle, coche), `playa` (palmera, mar, sombrilla),
   `espacio` (luna, cohete, planeta), `bosque` (pinos, hongos, rocas), `vacio` (fondo de color). Todos aceptan `noche: true`.
-- **plano**: `general`, `medio`, `primer_plano`, `arriba`, `contrapicado`, `lateral`, `zoom_in`, `zoom_out`, `grupo` (encuadra a todos)
+- **plano**: `general`, `medio`, `primer_plano`, `arriba`, `contrapicado`, `lateral`, `zoom_in`, `zoom_out`, `grupo` (encuadra a todos),
+  `hombro` (de frente al foco con el hombro de otro personaje en el borde; necesita un extra), `pies` (detalle de pies, ideal con `efecto`),
+  `espalda` (detrás del personaje; solo en exteriores, en interiores no hay pared atrás)
 - **lugar** (extras): `izquierda`, `derecha`, `atras`, `atras_izquierda`, `atras_derecha`, `frente_izquierda`, `frente_derecha`, `lejos_izquierda`, `lejos_derecha`
 - **personajes** (`assets/personajes.json`): `sticky`, `nino`, `nina`, `senora` (Doña Rosa), `mama`, `senor_bigote` (Don Bigotes),
-  `abuelo`, `chef`, `doctor` (Doctora), `profe`, `policia`, `rockero`, `vaquero`, `perro` (Firulais), `gato` (Michi), `pajaro` (Pío), `cerdo` (Chancho)
+  `abuelo`, `chef`, `doctor` (Doctora), `profe`, `policia`, `rockero`, `vaquero`, `perro` (Firulais), `gato` (Michi), `pajaro` (Pío), `cerdo` (Chancho).
+  En bloques existen además `vecino` y `amiga` (`assets/personajes_bloques.json`, con colores `piel`, `camisa`, `pantalon`, `zapatos` y `manga_larga`).
+- **accesorios bloques** (`pipeline/bloques_bl.py`): `pelo_corto`, `pelo_largo`, `chongo`, `coletas`, `calvo`, `pelo_punta`, `gorra`, `gorra_policia`,
+  `sombrero`, `gorro_chef`, `lazo`, `bufanda`, `panuelo`, `corbata`, `chaleco`, `mochila`, `falda`, `vestido`, `bata`, `delantal`, `collar`, `baston`
 - **pose humanos**: `de_pie`, `saludar`, `pensar`, `caminar`, `correr`, `saltar`, `celebrar`, `temblar`, `mareado`, `triste`, `senalar`, `acostado` (solo en `habitacion`, queda en la cama)
 - **pose animales**: `de_pie`, `caminar`, `correr`, `saltar`, `celebrar`, `temblar`, `triste`, `volar` (pájaro). Cualquier otra pose se convierte en `de_pie`.
 - **cara** (`assets/faces/`): `neutral`, `feliz`, `sonrisa`, `shock`, `triste`, `enojado`, `malvado`, `aburrido`, `miedo`, `mareado`, `pensando`, `dormido`

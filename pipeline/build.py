@@ -82,6 +82,15 @@ def ass_escape(s):
     return s.replace("{", "(").replace("}", ")").replace("\n", " ")
 
 
+# color de la palabra clave en los subtítulos (ASS usa &HBBGGRR&): amarillo intenso
+HL = r"{\c&H00D7FF&}"
+
+
+def limpio(texto):
+    """Texto para la voz: sin los * de las palabras resaltadas."""
+    return texto.replace("*", "")
+
+
 def build_ass(scenes, W, H, path):
     fs_sub = int(H * 0.048)
     fs_big = int(H * 0.068)
@@ -105,7 +114,8 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
         toks = sc["texto"].split()
         if len(toks) == len(words):          # recupera la puntuación del texto original
             for w, tok in zip(words, toks):
-                w["w"] = tok
+                w["hl"] = "*" in tok           # *palabra* = palabra clave resaltada
+                w["w"] = tok.replace("*", "")
         # grupos de 1-3 palabras; corta en puntuación
         groups, cur = [], []
         for w in words:
@@ -117,7 +127,8 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
         for gi, g in enumerate(groups):
             start = t0 + g[0]["t"]
             end = t0 + (groups[gi + 1][0]["t"] if gi + 1 < len(groups) else sc["dur"] - 0.05)
-            txt = ass_escape(" ".join(x["w"] for x in g))
+            txt = " ".join((HL + ass_escape(x["w"]) + r"{\c&HFFFFFF&}") if x.get("hl") else ass_escape(x["w"])
+                           for x in g)
             pop = r"{\fscx70\fscy70\t(0,90,\fscx108\fscy108)\t(90,160,\fscx100\fscy100)}"
             lines.append(f"Dialogue: 1,{ass_time(start)},{ass_time(end)},Sub,,0,0,0,,{pop}{txt}")
         if sc.get("texto_pantalla"):
@@ -129,8 +140,11 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
 # ------------------------------------------------------- personajes y caras
 
-def cargar_reparto():
-    data = json.loads((ROOT / "assets" / "personajes.json").read_text(encoding="utf-8"))
+ESTILOS = {"toon": "personajes.json", "bloques": "personajes_bloques.json"}
+
+
+def cargar_reparto(estilo="toon"):
+    data = json.loads((ROOT / "assets" / ESTILOS.get(estilo, "personajes.json")).read_text(encoding="utf-8"))
     return {k: {**v, "id": k} for k, v in data.items() if not k.startswith("_")}
 
 
@@ -165,7 +179,7 @@ def componer_cara(pid, cara, extras, out):
 def actores(sc, reparto, out):
     """Protagonista (campos personaje/pose/cara de la escena) + secundarios (lista "extras")."""
     lista = [{"personaje": sc.get("personaje", "sticky"), "pose": sc.get("pose", "de_pie"),
-              "cara": sc.get("cara", "neutral")}] + list(sc.get("extras", []))
+              "cara": sc.get("cara", "neutral"), "efecto": sc.get("efecto")}] + list(sc.get("extras", []))
     res = []
     for a in lista:
         pid = a.get("personaje", "sticky")
@@ -210,15 +224,16 @@ def main():
         if meta.exists() and json.loads(meta.read_text("utf-8")).get("key") == cache_key:
             words = json.loads(meta.read_text("utf-8"))["words"]
         else:
-            print(f"[voz] {i}: {sc['texto']}")
-            words = asyncio.run(tts(sc["texto"], voice, rate, mp3))
+            print(f"[voz] {i}: {limpio(sc['texto'])}")
+            words = asyncio.run(tts(limpio(sc["texto"]), voice, rate, mp3))
             meta.write_text(json.dumps({"key": cache_key, "words": words}, ensure_ascii=False), "utf-8")
         audio = decode(mp3)
         scenes.append({**sc, "i": i, "words": words, "audio": audio,
                        "dur": len(audio) / SR + sc.get("pausa", PAD_END)})
 
     # 2. línea de tiempo ----------------------------------------------------
-    reparto = cargar_reparto()
+    estilo = g.get("estilo", "toon")
+    reparto = cargar_reparto(estilo)
     t, f = 0.0, 1
     shots = []
     for sc in scenes:
@@ -234,7 +249,8 @@ def main():
     total_frames = f - 1
     frames_dir = out / "frames"
     timeline = {"fps": fps, "res": [W, H], "calidad": calidad, "frames_dir": str(frames_dir),
-                "shots": shots, "solo_preview": args.preview}
+                "shots": shots, "solo_preview": args.preview, "estilo": estilo,
+                "muestras": 24 if estilo == "bloques" else 16}
     (out / "timeline.json").write_text(json.dumps(timeline, indent=1, ensure_ascii=False), "utf-8")
     print(f"[tiempo] {len(shots)} tomas, {t:.1f} s, {total_frames} cuadros")
 
