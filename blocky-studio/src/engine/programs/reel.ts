@@ -40,6 +40,7 @@ const buildShot = (e: Engine, spec: ShotSpec, start: number, index: number, CAST
     const av = new Avatar(def, a.faces?.[0]?.v ?? "neutralTalk");
     av.root.position.set(a.pos[0], 0, a.pos[1]);
     av.root.rotation.y = THREE.MathUtils.degToRad(a.yaw ?? 0);
+    if (a.scale) av.root.scale.setScalar(a.scale);   // stick3DD: personajes gigantes o chicos
     scene.add(av.root);
     if (a.prop === "spear") {
       // a pole standing on the ground beside the hand, with a small square flag (the arm stays down in the reference)

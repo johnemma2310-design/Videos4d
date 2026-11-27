@@ -1,0 +1,193 @@
+{
+ "sticky": {
+  "skin": "#f4f4f2",
+  "hair": {
+   "style": "bald",
+   "color": "#f4f4f2"
+  },
+  "outfit": {
+   "torso": {
+    "kind": "varsity",
+    "color": "#17171f",
+    "strip": "#fbfbfb",
+    "trim": "#17171f"
+   },
+   "sleeves": {
+    "color": "#17171f"
+   },
+   "legs": {
+    "color": "#15151b",
+    "shoes": "#08080a"
+   }
+  },
+  "extras": {
+   "scarf": "#2a7af2",
+   "bowtie": "#101014",
+   "glasses": "#2a2420"
+  }
+ },
+ "mama": {
+  "skin": "#e8b892",
+  "hair": {
+   "style": "long",
+   "color": "#5a3420"
+  },
+  "outfit": {
+   "torso": {
+    "kind": "plain",
+    "color": "#f07a5a"
+   },
+   "sleeves": {
+    "color": "#f07a5a",
+    "length": 0.4
+   },
+   "legs": {
+    "color": "#3a4a7a",
+    "shoes": "#7a2a2a"
+   }
+  }
+ },
+ "bigotes": {
+  "skin": "#e0a882",
+  "hair": {
+   "style": "sidePart",
+   "color": "#2a1e18"
+  },
+  "outfit": {
+   "torso": {
+    "kind": "coat",
+    "color": "#5a6a3a",
+    "trim": "#d8b040"
+   },
+   "legs": {
+    "color": "#3a3530",
+    "shoes": "#1a1412"
+   }
+  }
+ },
+ "vigilante": {
+  "skin": "#a29cb6",
+  "hair": {
+   "style": "rainHat",
+   "color": "#141218"
+  },
+  "outfit": {
+   "torso": {
+    "kind": "coat",
+    "color": "#2e2a3c",
+    "trim": "#8a80a0"
+   },
+   "legs": {
+    "color": "#16141c",
+    "shoes": "#08080a"
+   }
+  }
+ },
+ "senora": {
+  "skin": "#eec0a0",
+  "hair": {
+   "style": "bun",
+   "color": "#b8b8c0"
+  },
+  "outfit": {
+   "torso": {
+    "kind": "stripes",
+    "color": "#8a4aa8",
+    "color2": "#e8d8f0",
+    "bands": 6
+   },
+   "sleeves": {
+    "color": "#8a4aa8"
+   },
+   "legs": {
+    "color": "#4a3a50",
+    "shoes": "#2a1a2a"
+   }
+  }
+ },
+ "vecino": {
+  "skin": "#a87050",
+  "hair": {
+   "style": "curly",
+   "color": "#1a1210"
+  },
+  "outfit": {
+   "torso": {
+    "kind": "plaid",
+    "color": "#e07030",
+    "color2": "#8a3a18"
+   },
+   "sleeves": {
+    "color": "#e07030",
+    "length": 0.4
+   },
+   "legs": {
+    "color": "#2a3a7a",
+    "shoes": "#1a1a1a"
+   }
+  }
+ },
+ "bebe": {
+  "skin": "#f2c8a8",
+  "hair": {
+   "style": "beanie",
+   "color": "#f2a0c0"
+  },
+  "outfit": {
+   "torso": {
+    "kind": "plain",
+    "color": "#a8d8f8"
+   },
+   "sleeves": {
+    "color": "#a8d8f8"
+   },
+   "legs": {
+    "color": "#f8f8f8",
+    "shoes": "#f8f8f8"
+   }
+  }
+ },
+ "nino": {
+  "skin": "#f0c8a0",
+  "hair": {
+   "style": "spikyTop",
+   "color": "#e0a030"
+  },
+  "outfit": {
+   "torso": {
+    "kind": "plain",
+    "color": "#e03a3a"
+   },
+   "sleeves": {
+    "color": "#e03a3a",
+    "length": 0.4
+   },
+   "legs": {
+    "color": "#3a5ab0",
+    "length": 0.6,
+    "shoes": "#1a1a1a"
+   }
+  }
+ },
+ "amiga": {
+  "skin": "#c89070",
+  "hair": {
+   "style": "ponytail",
+   "color": "#3a2010"
+  },
+  "outfit": {
+   "torso": {
+    "kind": "plain",
+    "color": "#40c080"
+   },
+   "sleeves": {
+    "color": "#40c080",
+    "length": 0.4
+   },
+   "legs": {
+    "color": "#f0f0f0",
+    "shoes": "#e04080"
+   }
+  }
+ }
+}

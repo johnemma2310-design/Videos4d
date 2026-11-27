@@ -7,6 +7,15 @@ Remove a lesson that turned out to be wrong, and say so in the report.
 
 ## Open
 
+From "vigilante" (2026-11-27, measured 67.3, visual 55, Spanish, edge-tts voices per line):
+- **Camera is the weakest category (21):** 24 % nearly still frames. Close-ups with push 5-8 % and long two-shots read as still.
+  Give every shot at least 15 % push or a sideways drift, and add a slow orbit on dialogue shots over 2 s.
+- **Cut more (pacing 66):** mean shot 2.03 s vs 1.46. Split every line longer than ~1.6 s at a clause start.
+- **Dark characters vanish at night indoors:** the Vigilante with skin #4a4658 had no readable face; skin #a29cb6 and a
+  brighter night interior (hemi 1.35) fixed it. Keep faces of night characters light.
+- **Over-the-shoulder with a giant (scale 1.6):** aim the target at y ~6.6 and raise the camera to ~6 or the head is cut.
+- **Arc:** the story ends in day light (CTA), which flattens the arc score; end the CTA at dusk or night.
+
 From the user's sound pack (2026-11-21):
 - **Use the user's 18 labelled sounds in every video**, as `sfx/usage.md` says: pops and clicks on appearances and changes,
   whooshes on whips, risers ending on reveals (`lead` = the riser's length), `transition` on changes of place or time,

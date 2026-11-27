@@ -5,6 +5,15 @@ Historial compartido entre dispositivos y sesiones de Claude. **Agrega una entra
 
 ---
 
+## 2026-11-27: primer video completo con blocky-studio ("El Vigilante")
+- `blocky-studio/projects/vigilante/`: guion de `episodios/vigilante_noches`, voz por línea con edge-tts (Don Bigotes y el
+  Vigilante con su propia voz), 84 s, 181 palabras/min. `make_story.py` arma 44 tomas, 7 lugares (calle día/noche, plaza,
+  campo, cocina, cuarto con cama hecha de props, recuerdo cálido) y la música por actos (`audio/music.wav`).
+- Motor: `scale` en los actores (`src/schema/shots.ts`, `programs/reel.ts`) para el Vigilante gigante (1.6).
+- Render de 85 s en ~12 min. Puntaje de la skill: 63.6/100 (medido 67.3, visual 55). Lo peor: cámara (21, demasiados
+  cuadros quietos) y ritmo (tomas de 2 s vs 1.46). Lecciones anotadas en `blocky-studio/lab/lessons.md`.
+
+
 ## 2026-11-27: motor blocky-studio (skill del tutorial), prueba de 10 s
 - El dueño dejó la carpeta `Skills/` y pidió seguir el paso a paso del video "How to Create a Roblox Style Animation Full Workflow".
 - Revisé el zip antes de instalar (solo descarga sonidos CC0 de Openverse si se le pide). Instalé la skill en

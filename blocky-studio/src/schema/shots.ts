@@ -29,6 +29,8 @@ export const actorSpec = z.object({
   /** false = never blink (default: blinks every 2.5 to 4 seconds) */
   blink: z.boolean().optional(),
   contactShadow: z.number().min(0).max(1).optional(),
+  /** stick3DD: tamaño del personaje (1 = normal; 1.6 = gigante como el Vigilante, 0.6 = niño) */
+  scale: z.number().min(0.3).max(4).optional(),
   /** item carried in the right hand */
   prop: z.enum(["spear"]).optional(),
   propColor: z.string().optional(),
