@@ -43,9 +43,22 @@ def find_blender():
 
 # ------------------------------------------------------------------- 1. voz
 
-async def tts(text, voice, rate, mp3_path):
+def recortar(audio, words, umbral=0.012, margen=0.03):
+    """Quita el silencio del inicio y del final de una frase (voz ágil, sin pausas muertas).
+
+    Corre los tiempos de las palabras para que sigan sincronizados."""
+    idx = np.flatnonzero(np.abs(audio) > umbral)
+    if not len(idx):
+        return audio, words
+    a = max(0, idx[0] - int(margen * SR))
+    b = min(len(audio), idx[-1] + int(margen * 2 * SR))
+    dt = a / SR
+    return audio[a:b], [{**w, "t": max(0.0, w["t"] - dt)} for w in words]
+
+
+async def tts(text, voice, rate, mp3_path, pitch="+0Hz"):
     import edge_tts
-    com = edge_tts.Communicate(text, voice, rate=rate, boundary="WordBoundary")
+    com = edge_tts.Communicate(text, voice, rate=rate, pitch=pitch, boundary="WordBoundary")
     words = []
     with open(mp3_path, "wb") as f:
         async for ch in com.stream():
@@ -156,6 +169,17 @@ def cargar_reparto(estilo="toon"):
     return {k: {**v, "id": k} for k, v in data.items() if not k.startswith("_")}
 
 
+def caras_animadas(pid, cara, extras, out, estilo="toon"):
+    """Cara normal + variantes para parpadeo y lip-sync (solo existen en faces_simple).
+
+    Devuelve {"face": png, "face_parpadeo": png|None, "face_habla": png|None}."""
+    res = {"face": str(componer_cara(pid, cara, extras, out, estilo))}
+    for v in ("parpadeo", "habla"):
+        ok = estilo == "bloques" and (ROOT / "assets" / "faces_simple" / f"{cara}__{v}.png").exists()
+        res[f"face_{v}"] = str(componer_cara(pid, f"{cara}__{v}", extras, out, estilo)) if ok else None
+    return res
+
+
 def componer_cara(pid, cara, extras, out, estilo="toon"):
     """Expresión + capas del personaje (bigote, lentes...) -> un PNG por (personaje, cara)."""
     from PIL import Image
@@ -203,8 +227,142 @@ def actores(sc, reparto, out, estilo="toon"):
         cara = a.get("cara", "neutral")
         res.append({**a, "personaje": pid, "def": d, "cara": cara, "pose": a.get("pose", "de_pie"),
                     "escala": a.get("escala", d.get("escala", 1.0)),
-                    "face": str(componer_cara(pid, cara, d.get("cara_extra", []), out, estilo))})
+                    "brillo_ojos": a.get("brillo_ojos", cara == "brillante"),
+                    **caras_animadas(pid, cara, d.get("cara_extra", []), out, estilo)})
     return res
+
+
+# ------------------------------------------------- vida: parpadeo y lip-sync
+
+def parpadeos(f0, f1, fps, semilla):
+    """Cuadros donde el personaje parpadea (cada 2-4.5 s, 4 cuadros cerrado)."""
+    import random
+    rnd = random.Random(semilla)
+    out, f = [], f0 + int(rnd.uniform(0.4, 2.0) * fps)
+    while f + 4 < f1:
+        out.append([f, f + 3])
+        f += int(rnd.uniform(2.0, 4.5) * fps)
+    return out
+
+
+def boca(words, f0, fps):
+    """Intervalos [a, b] de cuadros con la boca abierta: abre y cierra ~cada 3 cuadros por sílaba."""
+    out = []
+    for w in words:
+        a = f0 + round(w["t"] * fps)
+        b = f0 + round((w["t"] + max(w["d"], 0.12)) * fps)
+        f = a
+        while f < b:
+            out.append([f, min(f + 2, b)])
+            f += 4
+    return out
+
+
+# cada plano y su contraplano para los cortes internos (cambiar de ángulo cada ~2 s)
+CONTRA = {"medio": "primer_plano", "primer_plano": "medio", "general": "medio", "grupo": "primer_plano",
+          "hombro": "primer_plano", "pies": "primer_plano", "contrapicado": "primer_plano",
+          "lateral": "primer_plano", "arriba": "medio", "espalda": "primer_plano"}
+
+
+def cortes(sc, f0, nframes, fps, max_seg=2.6):
+    """Divide la toma en sub-planos de <= max_seg s, cortando al inicio de una palabra.
+
+    Devuelve [(cuadro_inicio, plano), ...]. Respeta "planos" del guion si viene la lista."""
+    plano = sc.get("plano", "medio")
+    if plano in ("zoom_in", "zoom_out") or sc.get("sin_cortes"):
+        return [(f0, plano)]
+    lista = sc.get("planos") or [plano, CONTRA.get(plano, "primer_plano")]
+    dur = nframes / fps
+    n = max(1, round(dur / max_seg + 0.25)) if not sc.get("planos") else len(lista)
+    if n == 1:
+        return [(f0, lista[0])]
+    inicios = [w["t"] for w in sc["words"]] or [0]
+    res = [(f0, lista[0])]
+    for k in range(1, n):
+        ideal = dur * k / n
+        t = min(inicios, key=lambda x: abs(x - ideal))
+        f = f0 + round(t * fps)
+        if f - res[-1][0] >= fps * 0.9 and f0 + nframes - f >= fps * 0.9:
+            res.append((f, lista[k % len(lista)]))
+    return res
+
+
+# ------------------------------------------------------------------ audio
+
+def sonido(nombre):
+    wav = ROOT / "assets" / "sfx" / f"{nombre}.wav"
+    if not wav.exists():
+        subprocess.run([sys.executable, str(ROOT / "tools" / "make_sfx.py")], check=True)
+    return decode(wav) if wav.exists() else None
+
+
+def pegar(mix, s, at):
+    j = int(max(at, 0) * SR)
+    seg = s[: max(0, len(mix) - j)]
+    mix[j:j + len(seg)] += seg
+
+
+def mezclar_audio(g, scenes, t, out, agil):
+    """Voz + efectos + música por actos (con cruces y 'ducking' bajo la voz) -> out/audio.wav.
+
+    Música: "musica" en cada escena cambia el acto (misterio, tension, triste, calido, comico o
+    "silencio" para un corte seco antes del susto); se mantiene hasta que otra escena lo cambie.
+    "musica" global = acto inicial (o un .mp3/.wav propio en assets/musica/)."""
+    n = int((t + 0.5) * SR)
+    voz = np.zeros(n, np.float32)
+    fx_mix = np.zeros(n, np.float32)
+    for k, sc in enumerate(scenes):
+        pegar(voz, sc["audio"], sc["t0"])
+        if agil and k > 0 and not sc.get("sin_transicion"):
+            s = sonido("transicion")
+            if s is not None:
+                pegar(fx_mix, s * 0.22, sc["t0"] - 0.1)
+        for fx in sc.get("sfx", []):
+            s = sonido(fx["sonido"])
+            if s is None:
+                print(f"[aviso] sonido {fx['sonido']} no existe"); continue
+            w_idx = fx.get("palabra", 0)
+            at = sc["t0"] + (sc["words"][min(w_idx, len(sc["words"]) - 1)]["t"] if sc["words"] else 0)
+            pegar(fx_mix, s * fx.get("volumen", 0.55), at + fx.get("retraso", 0))
+
+    # música por actos
+    music_dir = ROOT / "assets" / "musica"
+    if agil and not any((music_dir / f"{a}.wav").exists() for a in ("misterio", "tension")):
+        subprocess.run([sys.executable, str(ROOT / "tools" / "make_music.py")], check=True)
+    acto = g.get("musica", "misterio" if agil else None)
+    tramos = []                                  # (acto, t_inicio, t_fin)
+    for sc in scenes:
+        acto = sc.get("musica", acto)
+        if tramos and tramos[-1][0] == acto:
+            tramos[-1][2] = sc["t0"] + sc["dur"]
+        else:
+            tramos.append([acto, sc["t0"], sc["t0"] + sc["dur"]])
+    musica = np.zeros(n, np.float32)
+    cache = {}
+    for acto, a, b in tramos:
+        if not acto or acto == "silencio":
+            continue
+        f = music_dir / (acto if Path(acto).suffix else f"{acto}.wav")
+        if not f.exists():
+            print(f"[aviso] música {f.name} no existe"); continue
+        m = cache.setdefault(acto, decode(f))
+        cola = 0.6                                # se cruza con el tramo siguiente
+        largo = int((b - a + cola) * SR)
+        seg = np.tile(m, largo // len(m) + 1)[:largo].copy()
+        fi, fo = int(0.25 * SR), int(cola * SR)
+        seg[:fi] *= np.linspace(0, 1, fi)
+        seg[-fo:] *= np.linspace(1, 0, fo)
+        pegar(musica, seg, a)
+    # ducking: la música baja cuando hay voz (envolvente suavizada)
+    env = np.abs(voz)
+    k = int(0.15 * SR)
+    env = np.convolve(env, np.ones(k) / k, mode="same")
+    env = np.clip(env / (np.percentile(env[env > 1e-4], 60) if np.any(env > 1e-4) else 1), 0, 1)
+    vol = g.get("volumen_musica", 0.2 if agil else 0.12)
+    mix = voz + fx_mix + musica * vol * (1 - 0.5 * env)
+    peak = np.max(np.abs(mix)) or 1
+    mix = mix / max(peak, 1.0) * 0.95
+    write_wav(out / "audio.wav", mix)
 
 
 # ------------------------------------------------------------------ main
@@ -240,33 +398,53 @@ def main():
 
     # 1. voz ---------------------------------------------------------------
     estado(out, "voz", preview=bool(args.preview))
-    voice, rate = g.get("voz", "es-MX-JorgeNeural"), g.get("velocidad", "+0%")
+    estilo = g.get("estilo", "toon")
+    reparto = cargar_reparto(estilo)
+    agil = estilo == "bloques"            # ritmo de Shorts: voz más rápida y sin silencios
+    voice = g.get("voz", "es-MX-JorgeNeural")
+    rate = g.get("velocidad", "+12%" if agil else "+0%")
+    pad = g.get("pausa", 0.12 if agil else PAD_END)
     scenes = []
     for i, sc in enumerate(g["escenas"]):
         mp3 = out / "voz" / f"{i:02d}.mp3"
         meta = out / "voz" / f"{i:02d}.json"
-        cache_key = {"texto": sc["texto"], "voz": voice, "vel": rate}
+        # ¿quién habla? (diálogo): usa la voz y el tono de ese personaje
+        v, pitch, r = voice, "+0Hz", rate
+        if "habla" in sc:
+            lista = [sc.get("personaje", "sticky")] + [e.get("personaje") for e in sc.get("extras", [])]
+            quien = reparto.get(lista[min(sc["habla"], len(lista) - 1)], {})
+            v, pitch, r = quien.get("voz", voice), quien.get("tono", "+0Hz"), quien.get("velocidad", rate)
+        v, pitch, r = sc.get("voz", v), sc.get("tono", pitch), sc.get("velocidad", r)
+        cache_key = {"texto": sc["texto"], "voz": v, "vel": r, "tono": pitch}
         if meta.exists() and json.loads(meta.read_text("utf-8")).get("key") == cache_key:
             words = json.loads(meta.read_text("utf-8"))["words"]
         else:
-            print(f"[voz] {i}: {limpio(sc['texto'])}")
-            words = asyncio.run(tts(limpio(sc["texto"]), voice, rate, mp3))
+            print(f"[voz] {i} ({v} {pitch}): {limpio(sc['texto'])}")
+            words = asyncio.run(tts(limpio(sc["texto"]), v, r, mp3, pitch))
             meta.write_text(json.dumps({"key": cache_key, "words": words}, ensure_ascii=False), "utf-8")
         audio = decode(mp3)
+        if agil:
+            audio, words = recortar(audio, words)
         scenes.append({**sc, "i": i, "words": words, "audio": audio,
-                       "dur": len(audio) / SR + sc.get("pausa", PAD_END)})
+                       "dur": len(audio) / SR + sc.get("pausa", pad)})
 
     # 2. línea de tiempo ----------------------------------------------------
-    estilo = g.get("estilo", "toon")
-    reparto = cargar_reparto(estilo)
     t, f = 0.0, 1
     shots = []
     for sc in scenes:
         sc["t0"] = t
         nframes = max(6, round(sc["dur"] * fps))
         sc["dur"] = nframes / fps
+        acts = actores(sc, reparto, out, estilo)
+        for k, a in enumerate(acts):
+            if a.get("face_parpadeo"):
+                a["parpadeos"] = parpadeos(f, f + nframes - 1, fps, sc["i"] * 31 + k)
+            if a.get("face_habla") and sc.get("habla") == k:
+                a["boca"] = boca(sc["words"], f, fps)
         shots.append({"i": sc["i"], "f0": f, "f1": f + nframes - 1, "escenario": sc.get("escenario", "vacio"),
-                      "plano": sc.get("plano", "medio"), "actores": actores(sc, reparto, out, estilo),
+                      "plano": sc.get("plano", "medio"), "actores": acts,
+                      "cortes": cortes(sc, f, nframes, fps) if agil else [(f, sc.get("plano", "medio"))],
+                      "temblor": sc.get("temblor", False),
                       "foco": sc.get("foco", 0), "noche": sc.get("noche", False),
                       "golpes": golpes(sc, f, fps),
                       "color_fondo": sc.get("color_fondo")})
@@ -292,46 +470,26 @@ def main():
             cmd.append(args.tomas)
         print("[blender]", " ".join(cmd))
         subprocess.run(cmd, check=True)
+    # 4. audio (también en preview, para escuchar el ritmo) ------------------
+    estado(out, "audio")
+    mezclar_audio(g, scenes, t, out, agil)
+    build_ass(scenes, W, H, out / "subs.ass")
     if args.preview:
         estado(out, "listo", preview=True)
-        print("[preview] listo:", out)
+        print("[preview] listo:", out, "(escucha out/audio.wav)")
         return
 
-    # 4. audio --------------------------------------------------------------
-    estado(out, "audio")
-    mix = np.zeros(int((t + 0.5) * SR), np.float32)
-    for sc in scenes:
-        i0 = int(sc["t0"] * SR)
-        mix[i0:i0 + len(sc["audio"])] += sc["audio"]
-        for fx in sc.get("sfx", []):
-            wav = ROOT / "assets" / "sfx" / f"{fx['sonido']}.wav"
-            if not wav.exists():
-                print(f"[aviso] sonido {wav.name} no existe"); continue
-            s = decode(wav) * fx.get("volumen", 0.55)
-            w_idx = fx.get("palabra", 0)
-            at = sc["t0"] + (sc["words"][min(w_idx, len(sc["words"]) - 1)]["t"] if sc["words"] else 0)
-            at += fx.get("retraso", 0)
-            j = int(at * SR)
-            seg = s[: max(0, len(mix) - j)]
-            mix[j:j + len(seg)] += seg
-    music_dir = ROOT / "assets" / "musica"
-    music = g.get("musica")
-    if music and (music_dir / music).exists():
-        m = decode(music_dir / music)
-        m = np.tile(m, int(np.ceil(len(mix) / len(m))))[: len(mix)]
-        mix += m * g.get("volumen_musica", 0.12)
-    peak = np.max(np.abs(mix)) or 1
-    mix = mix / max(peak, 1.0) * 0.95
-    write_wav(out / "audio.wav", mix)
-
-    # 5. subtítulos ---------------------------------------------------------
-    build_ass(scenes, W, H, out / "subs.ass")
-
-    # 6. video final --------------------------------------------------------
+    # 5. video final --------------------------------------------------------
     estado(out, "video")
     final = ep / f"{ep.name}.mp4"
     subs = str(out / "subs.ass").replace("\\", "/").replace(":", "\\:")
-    vf = f"scale={W}:{H}:flags=lanczos,ass='{subs}'"
+    vf = f"scale={W}:{H}:flags=lanczos"
+    flash = [(sc["t0"], sc["t0"] + sc["dur"]) for sc in scenes if sc.get("flashback")]
+    if flash:   # recuerdos: tono sepia cálido + viñeta
+        en = "+".join(f"between(t,{a:.3f},{b:.3f})" for a, b in flash)
+        vf += (f",colorchannelmixer=.45:.70:.18:0:.38:.64:.16:0:.28:.50:.13:0:enable='{en}'"
+               f",vignette=PI/4:enable='{en}'")
+    vf += f",ass='{subs}'"
     cmd = ["ffmpeg", "-y", "-v", "error", "-stats", "-framerate", str(fps), "-i", str(frames_dir / "%06d.png"),
            "-i", str(out / "audio.wav"), "-vf", vf, "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18",
            "-preset", "medium", "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(final)]

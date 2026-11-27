@@ -1,5 +1,5 @@
 {
- "_ayuda": "Reparto del estilo 'bloques' (muñecos cuadrados). Mismos ids que personajes.json para que un guion sirva en ambos estilos. tipo: bloque | bloque_animal (con tipo_animal: perro, gato, pajaro, cerdo). colores: piel, camisa, pantalon, zapatos, pelo y uno por accesorio. manga_larga: true/false. Accesorios: pelo_corto, pelo_largo, chongo, coletas, calvo, pelo_punta, gorra, gorra_policia, sombrero, gorro_chef, lazo, bufanda, panuelo, corbata, chaleco, mochila, falda, vestido, bata, delantal, collar, baston. Sticky elegante: esmoquin + corbatín + gafas de lectura + bufanda azul, calvo.",
+ "_ayuda": "Reparto del estilo 'bloques' (muñecos cuadrados). Mismos ids que personajes.json para que un guion sirva en ambos estilos. tipo: bloque | bloque_animal (con tipo_animal: perro, gato, pajaro, cerdo). colores: piel, camisa, pantalon, zapatos, pelo y uno por accesorio. manga_larga: true/false. Accesorios: pelo_corto, pelo_largo, chongo, coletas, calvo, pelo_punta, gorra, gorra_policia, sombrero, gorro_chef, lazo, bufanda, panuelo, corbata, chaleco, mochila, falda, vestido, bata, delantal, collar, baston. Sticky elegante: esmoquin + corbatín + gafas de lectura + bufanda azul, calvo. voz/tono/velocidad: voz edge-tts del personaje cuando habla (\"habla\": índice en la escena). 'sombra' = entidad alta y misteriosa (cara 'brillante' = ojos que brillan).",
  "sticky": {
   "nombre": "Sticky",
   "tipo": "bloque",
@@ -116,7 +116,9 @@
     0.3,
     0.75
    ]
-  }
+  },
+  "voz": "es-MX-JorgeNeural",
+  "tono": "+35Hz"
  },
  "nina": {
   "nombre": "Niña",
@@ -162,7 +164,9 @@
     0.35,
     0.5
    ]
-  }
+  },
+  "voz": "es-MX-DaliaNeural",
+  "tono": "+25Hz"
  },
  "senora": {
   "nombre": "Doña Rosa",
@@ -203,7 +207,9 @@
     0.2,
     0.3
    ]
-  }
+  },
+  "voz": "es-CO-SalomeNeural",
+  "tono": "-8Hz"
  },
  "mama": {
   "nombre": "Mamá",
@@ -248,7 +254,9 @@
     0.2,
     0.2
    ]
-  }
+  },
+  "voz": "es-MX-DaliaNeural",
+  "tono": "+0Hz"
  },
  "senor_bigote": {
   "nombre": "Don Bigotes",
@@ -287,7 +295,9 @@
     0.15,
     0.2
    ]
-  }
+  },
+  "voz": "es-CO-GonzaloNeural",
+  "tono": "-10Hz"
  },
  "abuelo": {
   "nombre": "Abuelo",
@@ -327,7 +337,10 @@
     0.33,
     0.25
    ]
-  }
+  },
+  "voz": "es-ES-AlvaroNeural",
+  "tono": "-15Hz",
+  "velocidad": "-5%"
  },
  "chef": {
   "nombre": "Chef",
@@ -356,7 +369,9 @@
     0.25,
     0.28
    ]
-  }
+  },
+  "voz": "es-ES-AlvaroNeural",
+  "tono": "+0Hz"
  },
  "doctor": {
   "nombre": "Doctora",
@@ -390,7 +405,9 @@
     0.75,
     0.75
    ]
-  }
+  },
+  "voz": "es-AR-ElenaNeural",
+  "tono": "+0Hz"
  },
  "profe": {
   "nombre": "Profe",
@@ -430,7 +447,9 @@
     0.35,
     0.8
    ]
-  }
+  },
+  "voz": "es-AR-TomasNeural",
+  "tono": "+0Hz"
  },
  "policia": {
   "nombre": "Policía",
@@ -463,7 +482,9 @@
     0.1,
     0.2
    ]
-  }
+  },
+  "voz": "es-US-AlonsoNeural",
+  "tono": "-5Hz"
  },
  "rockero": {
   "nombre": "Rockero",
@@ -495,7 +516,9 @@
     0.3,
     0.35
    ]
-  }
+  },
+  "voz": "es-AR-TomasNeural",
+  "tono": "+5Hz"
  },
  "vaquero": {
   "nombre": "Vaquero",
@@ -539,7 +562,9 @@
     0.4,
     0.6
    ]
-  }
+  },
+  "voz": "es-MX-JorgeNeural",
+  "tono": "-12Hz"
  },
  "vecino": {
   "nombre": "Vecino",
@@ -568,7 +593,9 @@
     0.3,
     0.75
    ]
-  }
+  },
+  "voz": "es-CO-GonzaloNeural",
+  "tono": "+0Hz"
  },
  "amiga": {
   "nombre": "Amiga",
@@ -606,7 +633,9 @@
     0.6,
     0.2
    ]
-  }
+  },
+  "voz": "es-US-PalomaNeural",
+  "tono": "+10Hz"
  },
  "perro": {
   "nombre": "Firulais",
@@ -681,6 +710,51 @@
     1.0,
     0.6,
     0.68
+   ]
+  }
+ },
+ "sombra": {
+  "nombre": "El Vigilante",
+  "tipo": "bloque",
+  "escala": 1.7,
+  "voz": "es-MX-JorgeNeural",
+  "tono": "-28Hz",
+  "velocidad": "-8%",
+  "accesorios": [
+   "sombrero",
+   "bata"
+  ],
+  "manga_larga": true,
+  "colores": {
+   "piel": [
+    0.32,
+    0.3,
+    0.4
+   ],
+   "camisa": [
+    0.12,
+    0.11,
+    0.16
+   ],
+   "pantalon": [
+    0.1,
+    0.09,
+    0.13
+   ],
+   "zapatos": [
+    0.05,
+    0.05,
+    0.06
+   ],
+   "sombrero": [
+    0.08,
+    0.07,
+    0.1
+   ],
+   "bata": [
+    0.16,
+    0.14,
+    0.22
    ]
   }
  }

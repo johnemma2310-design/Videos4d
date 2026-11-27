@@ -5,6 +5,21 @@ Historial compartido entre dispositivos y sesiones de Claude. **Agrega una entra
 
 ---
 
+## 2026-11-27: ritmo de Shorts, música por actos, voces por personaje, parpadeo y lip-sync
+- Revisión del demo `pueblo_vidrio` (render completo: 160 min a calidad 50, ~4 s/cuadro) y crítica del dueño (vía Gemini):
+  sin música, voz lenta, cámara quieta, caras pobres, guion sin giro.
+- `tools/make_music.py`: 5 pistas por acto (misterio, tension, triste, calido, comico). `build.py` las cruza por escena
+  (`"musica"`), con `silencio` para cortes secos y ducking bajo la voz.
+- 16 sfx nuevos más "de cine" en `tools/make_sfx.py` (tiza, lápiz, puerta, boom_grave, riser, latido, risa_eco…) y whoosh automático en cada corte.
+- Voz ágil en bloques: `+12%`, recorte de silencios al inicio/final y respiro de 0.12 s. Voces distintas por personaje (`voz`/`tono`).
+- Cortes internos de cámara cada ~2.5 s (plano/contraplano en el inicio de una palabra), `temblor`, `flashback` (sepia).
+- Caras: variantes `__parpadeo` y `__habla` → parpadeo aleatorio y lip-sync con `"habla"`. Caras nuevas: terror, llorando,
+  furioso, sospecha, brillante (emisiva), asombro. Personaje nuevo `sombra` (El Vigilante).
+- Episodio nuevo con la fórmula completa: `episodios/vigilante_noches` (30 escenas, ~80 s).
+- Pendiente: pelo 3D con mechones y más props por escenario (pupitres con cosas, tablas en ventanas), luces de farol con cono
+  a la noche, música/sfx reales CC0 (el dueño autorizó descargarlos), render más rápido.
+
+
 ## 2026-11-26: look más cercano a la referencia, Sticky elegante y monitor de render
 - Caras simples estilo juguete en `assets/faces_simple/` (`tools/make_faces_simple.py`), usadas automáticamente en el estilo bloques.
 - Cabeza de bloques más chica y redondeada (HEAD 0.76, bisel 24 %), brazos pegados al cuerpo y colores vivos (vista Standard).

@@ -46,13 +46,19 @@ el estilo es "muñecos de bloques" genérico y los personajes son nuestros.
 - **Título**: MAYÚSCULAS + "!!!" con una regla rara: `SI [algo], [consecuencia]!!!` o `EN ESTE PUEBLO, [regla]!!!`.
 - **Escena 1**: la regla dicha completa ("En este pueblo, si…, te vuelves de *vidrio*") + `texto_pantalla` + `zoom_in`.
 - **Escena 2**: la amenaza (qué pasa si se rompe la regla).
-- **Narración en primera persona** (Sticky cuenta lo que le pasó): mudanza o llegada, nadie le avisó, rompe la regla sin querer,
-  empiezan los síntomas (detalle de pies o manos con `efecto`), pide ayuda, todos se alejan, momento más oscuro (`noche`),
-  ayuda inesperada (un perrito, una abuelita…), giro final ("lo que nadie te cuenta es que…"), moraleja y cierre con suscripción.
-- 18–30 escenas de 1 frase (2–4 s cada una). Cambia de plano siempre; usa mucho `primer_plano`, `hombro`, `pies` y `grupo`.
+- **Narración en primera persona** (Sticky cuenta lo que le pasó). Fórmula recomendada (desde 2026-11-27):
+  1. Gancho: la regla absurda + consecuencia (`musica: "misterio"`).
+  2. Exageración del mundo: cómo vive el pueblo con la regla, con un detalle absurdo ("hasta los bebés…", `musica: "comico"`)
+     y la leyenda de la entidad (personaje `sombra`, cara `brillante`, plano `contrapicado`, `temblor`, `musica: "tension"`).
+  3. Llegada y detonante: "nos mudamos un lunes y nadie nos avisó" + alguien cercano sufre la regla.
+  4. Investigación: el protagonista rompe la regla **a propósito** para saber la verdad (`musica: "silencio"` justo antes del susto).
+  5. Giro emocional: la entidad era incomprendida (`flashback: true`, `musica: "triste"`) y el verdadero culpable era otro.
+  6. Resolución cálida (`musica: "calido"`) + broma de miedo en el CTA ("a los que no dan like, todavía los visita") y suscripción.
+  También sirve la versión "síntomas": rompe la regla sin querer, efecto progresivo, todos se alejan, ayuda inesperada, moraleja.
+- 25–35 escenas de 1 frase. El pipeline corta solo cada ~2.5 s (plano + contraplano); usa diálogos con `habla`.
 - Marca 1 palabra clave por escena con `*asteriscos*`: sale **amarilla** en el subtítulo (la voz no lee los asteriscos).
 - Apto para niños: misterio y tensión sí, violencia o sustos fuertes no. Moraleja positiva (amistad, saludar, decir la verdad…).
-- Ejemplo completo: `episodios/pueblo_vidrio/guion.json`.
+- Ejemplos completos: `episodios/vigilante_noches/guion.json` (fórmula nueva) y `episodios/pueblo_vidrio/guion.json`.
 
 ## Instalación en un dispositivo nuevo (Windows)
 
@@ -117,6 +123,17 @@ Ejemplos completos: `episodios/prueba_cama/guion.json` (solo Sticky) y `episodio
   con un borde brillante (rojo en piedra, celeste en vidrio): úsalo en la escena donde empieza la transformación.
 - `*palabra*` en `texto`: palabra clave en amarillo en el subtítulo, y además la cámara hace un "zoom golpe" en ese instante.
 - En estilo bloques la cámara tiene un temblor leve de cámara en mano (automático).
+- **Ritmo (solo bloques, automático)**: voz `+12%` sin silencios al inicio/final, respiro de 0.12 s, corte de cámara
+  cada ~2.5 s en el inicio de una palabra (plano → contraplano), whoosh suave en cada cambio de escena, parpadeo
+  aleatorio y música de fondo (acto `misterio` si no dices otra). `"planos": ["general","primer_plano","medio"]` fija los
+  sub-planos de una escena; `"sin_cortes": true` los desactiva; `"sin_transicion": true` quita el whoosh.
+- `"habla": n`: el personaje n (0 = protagonista, 1 = primer extra…) dice la frase con **su voz** (`voz`/`tono`/`velocidad`
+  en `personajes_bloques.json`) y **mueve la boca** (lip-sync). Sin `habla`, la frase es narración. `"voz"`/`"tono"` en la escena lo fuerzan.
+- `"musica"` en una escena cambia el acto desde ahí: `misterio`, `tension`, `triste`, `calido`, `comico` o `silencio` (corte seco).
+  Se cruzan solas y bajan cuando hay voz. Pistas en `assets/musica/` (`python tools/make_music.py`; puedes poner tus `.wav` con esos nombres).
+- `"flashback": true`: tono sepia + viñeta en esa escena. `"temblor": true`: sacudida fuerte de cámara al inicio de la toma.
+- `"brillo_ojos": true` en un actor (automático con cara `brillante`): la cara brilla en la oscuridad.
+- `--preview` ahora también genera `out/audio.wav` y `out/subs.ass`, para escuchar el ritmo antes del render.
 
 ## Catálogo actual
 
@@ -132,17 +149,19 @@ Hay imágenes de todo en `docs/catalogo_personajes.png`, `docs/catalogo_escenari
 - **lugar** (extras): `izquierda`, `derecha`, `atras`, `atras_izquierda`, `atras_derecha`, `frente_izquierda`, `frente_derecha`, `lejos_izquierda`, `lejos_derecha`
 - **personajes** (`assets/personajes.json`): `sticky`, `nino`, `nina`, `senora` (Doña Rosa), `mama`, `senor_bigote` (Don Bigotes),
   `abuelo`, `chef`, `doctor` (Doctora), `profe`, `policia`, `rockero`, `vaquero`, `perro` (Firulais), `gato` (Michi), `pajaro` (Pío), `cerdo` (Chancho).
-  En bloques existen además `vecino` y `amiga` (`assets/personajes_bloques.json`, con colores `piel`, `camisa`, `pantalon`, `zapatos` y `manga_larga`).
+  En bloques existen además `vecino`, `amiga` y `sombra` (El Vigilante: entidad alta y misteriosa, escala 1.7) (`assets/personajes_bloques.json`, con colores `piel`, `camisa`, `pantalon`, `zapatos` y `manga_larga`).
 - **accesorios bloques** (`pipeline/bloques_bl.py`): `pelo_corto`, `pelo_largo`, `chongo`, `coletas`, `calvo`, `pelo_punta`, `gorra`, `gorra_policia`,
   `sombrero`, `gorro_chef`, `lazo`, `bufanda`, `panuelo`, `corbata`, `corbatin`, `smoking`, `chaleco`, `mochila`, `falda`, `vestido`, `bata`,
   `delantal`, `collar`, `baston`
 - **pose humanos**: `de_pie`, `saludar`, `pensar`, `caminar`, `correr`, `saltar`, `celebrar`, `temblar`, `mareado`, `triste`, `senalar`, `acostado` (solo en `habitacion`, queda en la cama)
 - **pose animales**: `de_pie`, `caminar`, `correr`, `saltar`, `celebrar`, `temblar`, `triste`, `volar` (pájaro). Cualquier otra pose se convierte en `de_pie`.
-- **cara** (`assets/faces/`): `neutral`, `feliz`, `sonrisa`, `shock`, `triste`, `enojado`, `malvado`, `aburrido`, `miedo`, `mareado`, `pensando`, `dormido`
+- **cara** (`assets/faces/`): `neutral`, `feliz`, `sonrisa`, `shock`, `triste`, `enojado`, `malvado`, `aburrido`, `miedo`, `mareado`, `pensando`, `dormido`; en bloques además `terror` (pupilas diminutas), `llorando`, `furioso`, `sospecha`, `brillante` (ojos amarillos que brillan), `asombro`.
+  Cada cara de `faces_simple` tiene variantes `__parpadeo` y `__habla` (las usa el pipeline solo)
 - **cara_extra** (capas por personaje, `assets/faces/extras/`): `bigote`, `bigote_blanco`, `barba`, `barba_blanca`, `pestanas`, `labios`, `chapitas`, `pecas`, `lentes`, `lentes_lectura`, `lentes_sol`, `nariz_perro`, `nariz_gato`, `pico`, `nariz_cerdo`
 - **accesorios**: pelo `pelo_corto`, `pelo_largo`, `chongo`, `coletas`, `calvo`, `pelo_punta`; cabeza `gorra`, `gorra_policia`, `sombrero`, `gorro_chef`, `lazo`;
   cuerpo `bufanda`, `corbata`, `falda`, `vestido`, `bata`, `delantal`, `collar`, `baston`
-- **sfx** (`assets/sfx/`): `pop`, `whoosh`, `boom`, `ding`, `boing`, `golpe`, `sorpresa`, `tictac`, `ronquido`, `triste`
+- **sfx** (`assets/sfx/`): `pop`, `whoosh`, `boom`, `ding`, `boing`, `golpe`, `sorpresa`, `tictac`, `ronquido`, `triste`, `tiza`, `lapiz`, `papel`, `borrador`, `puerta`, `portazo`, `clic`,
+  `boom_grave`, `riser`, `latido`, `viento`, `pasos`, `campana`, `transicion`, `corte_seco`, `risa_eco` (`python tools/make_sfx.py`; un `.wav` tuyo con el mismo nombre los reemplaza)
 - **voces** edge-tts: `es-MX-JorgeNeural`, `es-MX-DaliaNeural`, `es-ES-AlvaroNeural`, `es-CO-GonzaloNeural`…
 
 ## Cómo extender (y luego actualiza el catálogo de arriba)

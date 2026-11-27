@@ -92,38 +92,108 @@ def espiral(d, cx):
     d.line(P(*pts), fill=INK, width=12 * S)
 
 
+def ojo_terror(d, cx):
+    """Ojo blanco grande con pupila diminuta (pupilas contraídas de miedo)."""
+    d.ellipse(P(cx - 52, EY - 70, cx + 52, EY + 70), fill=WHITE, outline=INK, width=LW * S)
+    d.ellipse(P(cx - 13, EY - 13, cx + 13, EY + 13), fill=INK)
+
+
+def ojo_brillante(d, cx):
+    """Ojos amarillos (en Blender brillan en la oscuridad con 'brillo_ojos')."""
+    d.ellipse(P(cx - 46, EY - 40, cx + 46, EY + 40), fill=(255, 225, 60, 255))
+    d.ellipse(P(cx - 10, EY - 30, cx + 10, EY + 30), fill=(255, 250, 200, 255))
+
+
+def lagrimas(d):
+    for cx in (EL, ER):
+        d.rounded_rectangle(P(cx - 16, EY + 20, cx + 16, EY + 240), radius=16 * S, fill=TEAR)
+
+
+def dientes(d, y=650, w=110, h=40):
+    d.rounded_rectangle(P(512 - w, y - h, 512 + w, y + h), radius=18 * S, fill=WHITE, outline=INK, width=LW * S)
+    for k in (-1, 0, 1):
+        x = 512 + k * w / 2
+        d.line(P(x, y - h, x, y + h), fill=INK, width=8 * S)
+    d.line(P(512 - w, y, 512 + w, y), fill=INK, width=8 * S)
+
+
+def gota_sudor(d):
+    d.ellipse(P(700, 300, 750, 370), fill=TEAR, outline=INK, width=6 * S)
+
+
+# Cada cara: ojos, cejas, boca y "habla" (boca abierta para el lip-sync). cerrados=True: sin parpadeo.
+O = lambda **kw: (lambda d: (ojo(d, EL, **kw), ojo(d, ER, **kw)))  # noqa: E731
+CEJAS = lambda a, dy: (lambda d: (ceja(d, EL, a, dy), ceja(d, ER, -a, dy)))  # noqa: E731
+NADA = lambda d: None  # noqa: E731
+HABLA = lambda d: boca_o(d, 48, 50, 640)  # noqa: E731
+HABLA_GRANDE = lambda d: boca_abierta(d, 105, 605, 95)  # noqa: E731
+
 FACES = {
-    "neutral":  lambda d: (ojo(d, EL), ojo(d, ER), sonrisa(d, 80, 610, 45)),
-    "feliz":    lambda d: (ojo(d, EL), ojo(d, ER), boca_abierta(d)),
-    "sonrisa":  lambda d: (ojo_cerrado(d, EL), ojo_cerrado(d, ER), sonrisa(d, 120, 590, 75)),
-    "shock":    lambda d: (ojo(d, EL, rx=44, ry=66), ojo(d, ER, rx=44, ry=66), ceja(d, EL, -8, -25),
-                           ceja(d, ER, 8, -25), boca_o(d)),
-    "triste":   lambda d: (ojo(d, EL, dy=10), ojo(d, ER, dy=10), ceja(d, EL, -22, 5), ceja(d, ER, 22, 5),
-                           triste_boca(d)),
-    "enojado":  lambda d: (ojo(d, EL, ry=46), ojo(d, ER, ry=46), ceja(d, EL, 25, 25), ceja(d, ER, -25, 25),
-                           triste_boca(d, 70, 675, 30)),
-    "malvado":  lambda d: (ojo(d, EL, ry=40, dy=8), ojo(d, ER, ry=40, dy=8), ceja(d, EL, 22, 25),
-                           ceja(d, ER, -22, 25), sonrisa_malvada(d)),
-    "aburrido": lambda d: (ojo_cerrado(d, EL, False), ojo_cerrado(d, ER, False), linea(d, 655, 55)),
-    "miedo":    lambda d: (ojo(d, EL, rx=40, ry=60, dy=6), ojo(d, ER, rx=40, ry=60, dy=6), ceja(d, EL, -20, -15),
-                           ceja(d, ER, 20, -15), ondulada(d),
-                           d.ellipse(P(700, 300, 750, 370), fill=TEAR, outline=INK, width=6 * S)),
-    "mareado":  lambda d: (espiral(d, EL), espiral(d, ER), ondulada(d, amp=12)),
-    "pensando": lambda d: (ojo(d, EL, dx=12, dy=-18), ojo(d, ER, dx=12, dy=-18), ceja(d, ER, -12, -10),
-                           linea(d, 655, 50, tilt=10)),
-    "dormido":  lambda d: (ojo_cerrado(d, EL, False), ojo_cerrado(d, ER, False), boca_o(d, 24, 30, 655)),
+    "neutral":  dict(ojos=O(), boca=lambda d: sonrisa(d, 80, 610, 45), habla=HABLA),
+    "feliz":    dict(ojos=O(), boca=boca_abierta, habla=lambda d: boca_abierta(d, 110, 600, 70)),
+    "sonrisa":  dict(ojos=lambda d: (ojo_cerrado(d, EL), ojo_cerrado(d, ER)), cerrados=True,
+                     boca=lambda d: sonrisa(d, 120, 590, 75), habla=HABLA_GRANDE),
+    "shock":    dict(ojos=O(rx=44, ry=66), cejas=CEJAS(-8, -25), boca=boca_o,
+                     habla=lambda d: boca_o(d, 55, 75, 650)),
+    "triste":   dict(ojos=O(dy=10), cejas=CEJAS(-22, 5), boca=triste_boca, habla=lambda d: boca_o(d, 38, 40, 665)),
+    "enojado":  dict(ojos=O(ry=46), cejas=CEJAS(25, 25), boca=lambda d: triste_boca(d, 70, 675, 30),
+                     habla=lambda d: dientes(d, 660, 90, 34)),
+    "malvado":  dict(ojos=O(ry=40, dy=8), cejas=CEJAS(22, 25), boca=sonrisa_malvada, habla=HABLA_GRANDE),
+    "aburrido": dict(ojos=lambda d: (ojo_cerrado(d, EL, False), ojo_cerrado(d, ER, False)), cerrados=True,
+                     boca=lambda d: linea(d, 655, 55), habla=lambda d: boca_o(d, 30, 30, 655)),
+    "miedo":    dict(ojos=O(rx=40, ry=60, dy=6), cejas=CEJAS(-20, -15), boca=ondulada, extra=gota_sudor,
+                     habla=lambda d: boca_o(d, 40, 55, 655)),
+    "mareado":  dict(ojos=lambda d: (espiral(d, EL), espiral(d, ER)), cerrados=True,
+                     boca=lambda d: ondulada(d, amp=12), habla=HABLA),
+    "pensando": dict(ojos=O(dx=12, dy=-18), cejas=lambda d: ceja(d, ER, -12, -10),
+                     boca=lambda d: linea(d, 655, 50, tilt=10), habla=lambda d: boca_o(d, 34, 36, 650)),
+    "dormido":  dict(ojos=lambda d: (ojo_cerrado(d, EL, False), ojo_cerrado(d, ER, False)), cerrados=True,
+                     boca=lambda d: boca_o(d, 24, 30, 655), habla=lambda d: boca_o(d, 30, 40, 655)),
+    # nuevas (formato de misterio)
+    "terror":   dict(ojos=lambda d: (ojo_terror(d, EL), ojo_terror(d, ER)), cejas=CEJAS(-25, -35),
+                     boca=lambda d: boca_abierta(d, 80, 640, 90), extra=gota_sudor,
+                     habla=lambda d: boca_abierta(d, 95, 630, 115)),
+    "llorando": dict(ojos=lambda d: (ojo_cerrado(d, EL, False), ojo_cerrado(d, ER, False)), cerrados=True,
+                     cejas=CEJAS(-25, 0), boca=lambda d: triste_boca(d, 95, 660, 55), extra=lagrimas,
+                     habla=lambda d: boca_o(d, 50, 45, 670)),
+    "furioso":  dict(ojos=O(rx=36, ry=36, dy=10), cejas=CEJAS(32, 35), boca=dientes,
+                     habla=lambda d: dientes(d, 655, 115, 55)),
+    "sospecha": dict(ojos=lambda d: (ojo(d, EL, ry=24, dy=14, dx=18), ojo(d, ER, ry=24, dy=14, dx=18)),
+                     cejas=lambda d: (ceja(d, EL, 10, 20), ceja(d, ER, -5, -5)),
+                     boca=lambda d: linea(d, 655, 50, tilt=-12), habla=lambda d: boca_o(d, 32, 34, 655)),
+    "brillante": dict(ojos=lambda d: (ojo_brillante(d, EL), ojo_brillante(d, ER)), cejas=CEJAS(18, 15),
+                      boca=NADA, habla=lambda d: boca_o(d, 40, 50, 650)),
+    "asombro":  dict(ojos=O(rx=46, ry=62), cejas=CEJAS(-10, -30), boca=lambda d: boca_abierta(d, 95, 610, 100),
+                     habla=lambda d: boca_abierta(d, 100, 610, 115)),
 }
+
+
+def dibujar(spec, variante):
+    """variante: '' (normal), 'parpadeo' (ojos cerrados) o 'habla' (boca abierta)."""
+    img = Image.new("RGBA", (N * S, N * S), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    if variante == "parpadeo" and not spec.get("cerrados"):
+        ojo_cerrado(d, EL, False)
+        ojo_cerrado(d, ER, False)
+    else:
+        spec["ojos"](d)
+    if spec.get("cejas"):
+        spec["cejas"](d)
+    (spec["habla"] if variante == "habla" else spec["boca"])(d)
+    if spec.get("extra"):
+        spec["extra"](d)
+    big = int(N * ZOOM)   # rasgos más grandes, centrados (se leen mejor en el celular)
+    img = img.resize((big, big), Image.LANCZOS)
+    off = (big - N) // 2
+    return img.crop((off, off + 30, off + N, off + N + 30))
 
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    for name, fn in FACES.items():
-        img = Image.new("RGBA", (N * S, N * S), (0, 0, 0, 0))
-        fn(ImageDraw.Draw(img))
-        big = int(N * ZOOM)   # rasgos más grandes, centrados (se leen mejor en el celular)
-        img = img.resize((big, big), Image.LANCZOS)
-        off = (big - N) // 2
-        img.crop((off, off + 30, off + N, off + N + 30)).save(OUT / f"{name}.png")
+    for name, spec in FACES.items():
+        dibujar(spec, "").save(OUT / f"{name}.png")
+        dibujar(spec, "parpadeo").save(OUT / f"{name}__parpadeo.png")
+        dibujar(spec, "habla").save(OUT / f"{name}__habla.png")
     cols, cell = 6, 200
     rows = math.ceil(len(FACES) / cols)
     sheet = Image.new("RGBA", (cols * cell, rows * cell), (210, 225, 240, 255))

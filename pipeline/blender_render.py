@@ -53,7 +53,7 @@ def actor_frame(p):
     return head, head - up * p["drop"] * s, fwd, s
 
 
-def camera(plano, focus, actors, f0, f1, follow_root, golpes=(), mano=False):
+def camera(plano, focus, actors, f0, f1, follow_root, golpes=(), mano=False, cortes=None, temblor=False):
     bpy.context.view_layer.update()
     head, center, fwd, s = actor_frame(focus)
 
@@ -88,6 +88,8 @@ def camera(plano, focus, actors, f0, f1, follow_root, golpes=(), mano=False):
             side = Vector((-fwd.y, fwd.x, 0)) * 0.6
             return feet + fwd * 3.0 * max(s, 0.6) + side + Vector((0, 0, 0.15)), feet, 35
         dist, h, lens, aim = PLANOS[name]
+        if name == "primer_plano" and s > 1.3:
+            h = -0.4              # gigantes: cámara un poco abajo (se ve la cara bajo el sombrero e impone)
         k = max(s, 0.55)          # personajes chicos: cámara más cerca
         dist *= k
         target = head.lerp(center, aim)
@@ -128,26 +130,37 @@ def camera(plano, focus, actors, f0, f1, follow_root, golpes=(), mano=False):
         cam_data.lens = lens
         cam_data.keyframe_insert("lens", frame=f)
 
-    if plano == "zoom_in":
-        a, b = place("medio"), place("primer_plano")
-        put(f0, *a)
-        put(f0 + max(2, int((f1 - f0) * 0.35)), *b)
-        put(f1, b[0] + (b[1] - b[0]) * 0.05, b[1], b[2])
-    elif plano == "zoom_out":
-        a, b = place("primer_plano"), place("general")
-        put(f0, *a)
-        put(f0 + max(2, int((f1 - f0) * 0.4)), *b)
-        put(f1, *b)
-    else:
-        known = set(PLANOS) | {"grupo", "hombro", "espalda", "pies"}
-        pos, target, lens = place(plano if plano in known else "medio")
-        put(f0, pos, target, lens)
-        put(f1, pos + (target - pos) * 0.07, target, lens)   # acercamiento lento
-        for g in golpes:            # "zoom golpe" en la palabra clave: el lente salta y se queda
-            if f0 + 2 <= g <= f1 - 4:
-                for f, l in ((g, lens), (g + 3, lens * 1.22), (f1, lens * 1.22)):
-                    cam_data.lens = l
-                    cam_data.keyframe_insert("lens", frame=f)
+    known = set(PLANOS) | {"grupo", "hombro", "espalda", "pies"}
+    segs = cortes or [(f0, plano)]
+    for si, (a0, pl) in enumerate(segs):           # cortes internos: un sub-plano por segmento
+        a1 = segs[si + 1][0] - 1 if si + 1 < len(segs) else f1
+        if pl == "zoom_in":
+            a, b = place("medio"), place("primer_plano")
+            put(a0, *a)
+            put(a0 + max(2, int((a1 - a0) * 0.35)), *b)
+            put(a1, b[0] + (b[1] - b[0]) * 0.05, b[1], b[2])
+        elif pl == "zoom_out":
+            a, b = place("primer_plano"), place("general")
+            put(a0, *a)
+            put(a0 + max(2, int((a1 - a0) * 0.4)), *b)
+            put(a1, *b)
+        else:
+            pos, target, lens = place(pl if pl in known else "medio")
+            put(a0, pos, target, lens)
+            put(a1, pos + (target - pos) * 0.07, target, lens)   # acercamiento lento
+            for g in golpes:        # "zoom golpe" en la palabra clave: el lente salta y se queda
+                if a0 + 2 <= g <= a1 - 4:
+                    for f, l in ((g, lens), (g + 3, lens * 1.22), (a1, lens * 1.22)):
+                        cam_data.lens = l
+                        cam_data.keyframe_insert("lens", frame=f)
+    if len(segs) > 1:               # los cortes son secos: sin interpolar entre sub-planos
+        for o in (cam, tgt):
+            for fc in fcurves_de(o):
+                for kp in fc.keyframe_points:
+                    kp.interpolation = "LINEAR"
+        for fc in fcurves_de(cam_data):
+            for kp in fc.keyframe_points:
+                kp.interpolation = "LINEAR"
     if mano:                         # cámara en mano: micro-temblor en el punto al que mira
         for fc in fcurves_de(tgt):
             if fc.data_path == "location":
@@ -155,10 +168,21 @@ def camera(plano, focus, actors, f0, f1, follow_root, golpes=(), mano=False):
                 mod.strength = 0.05
                 mod.scale = 28.0
                 mod.phase = (f0 * 7.31 + fc.array_index * 13.7) % 100
+    if temblor:                      # sacudida fuerte al inicio de la toma (golpe, aparición, grito)
+        for o in (cam, tgt):
+            for fc in fcurves_de(o):
+                if fc.data_path == "location":
+                    mod = fc.modifiers.new("NOISE")
+                    mod.strength = 0.35 if o is cam else 0.2
+                    mod.scale = 2.5
+                    mod.phase = (f0 * 3.1 + fc.array_index * 7.7) % 100
+                    mod.use_restricted_range = True
+                    mod.frame_start, mod.frame_end = f0, f0 + 20
+                    mod.blend_out = 12
 
 
 def fcurves_de(obj):
-    """F-curves de un objeto (compatible con las acciones por capas de Blender 4.4+/5)."""
+    """F-curves de un objeto o node tree (compatible con las acciones por capas de Blender 4.4+/5)."""
     ad = obj.animation_data
     if not ad or not ad.action:
         return []
@@ -230,6 +254,73 @@ def place_actor(p, actor, main_pos, is_main):
         root.rotation_euler = (0, 0, turn)
 
 
+def animar_cara(p, actor):
+    """Parpadeo y lip-sync: mezcla la cara normal con sus variantes (ojos cerrados / boca abierta)
+    usando nodos 'Parpadeo' y 'Habla' con keyframes de paso. También 'brillo_ojos' (emisivo)."""
+    head = p.get("head")
+    if head is None or head.type != "MESH":
+        return
+    from bl_util import mix_node, socket
+    capas = [(n, actor.get(f"face_{n.lower()}"), actor.get(k)) for n, k in
+             (("Habla", "boca"), ("Parpadeo", "parpadeos"))]
+    capas = [c for c in capas if c[1] and c[2]]
+    if not capas and not actor.get("brillo_ojos"):
+        return
+    for m in {m for m in head.data.materials if m}:
+        nt = m.node_tree
+        tex = next((n for n in nt.nodes if n.type == "TEX_IMAGE" and n.image
+                    and Path(n.image.filepath).name == Path(actor["face"]).name), None)
+        if tex is None:
+            continue
+        col_links = [l.to_socket for l in tex.outputs["Color"].links]
+        alp_links = [l.to_socket for l in tex.outputs["Alpha"].links]
+        vec = tex.inputs["Vector"].links[0].from_socket if tex.inputs["Vector"].links else None
+        col, alp = tex.outputs["Color"], tex.outputs["Alpha"]
+        for nombre, png, tramos in capas:
+            t2 = nt.nodes.new("ShaderNodeTexImage")
+            t2.image = bpy.data.images.load(png, check_existing=True)
+            t2.extension, t2.interpolation = tex.extension, tex.interpolation
+            if vec:
+                nt.links.new(vec, t2.inputs["Vector"])
+            val = nt.nodes.new("ShaderNodeValue")
+            val.name = val.label = nombre
+            sock = val.outputs[0]
+            sock.default_value = 0.0
+            sock.keyframe_insert("default_value", frame=1)
+            for a, b in tramos:
+                sock.default_value = 1.0
+                sock.keyframe_insert("default_value", frame=a)
+                sock.default_value = 0.0
+                sock.keyframe_insert("default_value", frame=b + 1)
+            mc = mix_node(nt)
+            nt.links.new(sock, socket(mc.inputs, "Factor", "VALUE"))
+            nt.links.new(col, socket(mc.inputs, "A", "RGBA"))
+            nt.links.new(t2.outputs["Color"], socket(mc.inputs, "B", "RGBA"))
+            ma = nt.nodes.new("ShaderNodeMix")
+            ma.data_type = "FLOAT"
+            nt.links.new(sock, ma.inputs[0])
+            nt.links.new(alp, socket(ma.inputs, "A", "VALUE"))
+            nt.links.new(t2.outputs["Alpha"], socket(ma.inputs, "B", "VALUE"))
+            col, alp = socket(mc.outputs, "Result", "RGBA"), socket(ma.outputs, "Result", "VALUE")
+        for s in col_links:
+            nt.links.new(col, s)
+        for s in alp_links:
+            nt.links.new(alp, s)
+        if actor.get("brillo_ojos"):
+            bsdf = next((n for n in nt.nodes if n.type == "BSDF_PRINCIPLED"), None)
+            if bsdf:
+                em = nt.nodes.new("ShaderNodeMath")
+                em.operation = "MULTIPLY"
+                nt.links.new(alp, em.inputs[0])
+                em.inputs[1].default_value = 6.0
+                nt.links.new(col, bsdf.inputs["Emission Color"])
+                nt.links.new(em.outputs[0], bsdf.inputs["Emission Strength"])
+        for fc in fcurves_de(nt):        # cambios instantáneos (no se "derrite" la cara)
+            if '"Habla"' in fc.data_path or '"Parpadeo"' in fc.data_path:
+                for kp in fc.keyframe_points:
+                    kp.interpolation = "CONSTANT"
+
+
 def render_shot(tl, shot):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     bl_util.reset_caches()
@@ -248,13 +339,14 @@ def render_shot(tl, shot):
             if actor.get("efecto_progresivo"):
                 prog = (f0 + int((f1 - f0) * 0.1), f0 + int((f1 - f0) * 0.85))
             aplicar_efecto(p, actor["efecto"], Path(actor["face"]), prog)
+        animar_cara(p, actor)
         mv = animar(p, actor["pose"], f0, f1, tl["fps"])
         parts.append(p)
         if i == shot.get("foco", 0):
             moving = mv
     focus = parts[min(shot.get("foco", 0), len(parts) - 1)]
     camera(shot["plano"], focus, parts, f0, f1, follow_root=moving, golpes=shot.get("golpes", []),
-           mano=bl_util.suave())
+           mano=bl_util.suave(), cortes=shot.get("cortes"), temblor=shot.get("temblor", False))
     if tl.get("guardar_blend"):
         bpy.ops.wm.save_as_mainfile(filepath=str(Path(tl["frames_dir"]).parent / f"toma_{shot['i']:02d}.blend"))
     sc = bpy.context.scene
