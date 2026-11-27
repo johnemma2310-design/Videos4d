@@ -63,7 +63,7 @@ def main():
         for i, pid in enumerate(reparto):
             sc = {"personaje": pid, "cara": CARAS_DEMO[i % len(CARAS_DEMO)], "pose": "de_pie"}
             shots.append({"i": i, "f0": 1, "f1": 30, "escenario": "vacio", "plano": "medio",
-                          "color_fondo": [0.62, 0.84, 0.98], "actores": actores(sc, reparto, work)})
+                          "color_fondo": [0.62, 0.84, 0.98], "actores": actores(sc, reparto, work, estilo)})
         render(shots, work, estilo)
         hoja(work, [f"{pid} ({d.get('nombre', '')})" for pid, d in reparto.items()],
              ROOT / "docs" / f"catalogo_personajes{suf}.png", 6)
@@ -75,7 +75,7 @@ def main():
             sc = {"personaje": "sticky", "cara": "feliz", "pose": "saludar",
                   "extras": [{"personaje": "perro", "lugar": "derecha", "cara": "feliz"}] if i % 2 else []}
             shots.append({"i": i, "f0": 1, "f1": 30, "escenario": esc, "plano": "general", "noche": noche,
-                          "actores": actores(sc, reparto, work)})
+                          "actores": actores(sc, reparto, work, estilo)})
         render(shots, work, estilo)
         hoja(work, ESCENARIOS, ROOT / "docs" / f"catalogo_escenarios{suf}{'_noche' if noche else ''}.png", 5)
 

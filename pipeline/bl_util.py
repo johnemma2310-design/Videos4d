@@ -60,7 +60,11 @@ def toon_material(name, color, shadow=0.78, flat=False):
         bsdf = nt.nodes.new("ShaderNodeBsdfPrincipled")
         rgb = nt.nodes.new("ShaderNodeRGB")
         rgb.outputs[0].default_value = c
-        nt.links.new(rgb.outputs[0], bsdf.inputs["Base Color"])
+        # oclusión ambiental en el material (esquinas suaves) en vez de raytracing global: mucho más rápido
+        ao = nt.nodes.new("ShaderNodeAmbientOcclusion")
+        ao.inputs["Distance"].default_value = 0.6
+        nt.links.new(rgb.outputs[0], ao.inputs["Color"])
+        nt.links.new(ao.outputs["Color"], bsdf.inputs["Base Color"])
         bsdf.inputs["Roughness"].default_value = 0.62
         nt.links.new(bsdf.outputs[0], out.inputs["Surface"])
         return m, nt, bsdf
@@ -107,8 +111,9 @@ def mat_textura(kind, c1, c2, scale=1.0):
     if not suave():
         _MATS[k] = m
         return m
-    rgb = bsdf.inputs["Base Color"].links[0].from_node
-    nt.nodes.remove(rgb)
+    ao = bsdf.inputs["Base Color"].links[0].from_node      # textura -> AO -> color base
+    nt.nodes.remove(ao.inputs["Color"].links[0].from_node)
+    color_in = ao.inputs["Color"]
     tc = nt.nodes.new("ShaderNodeTexCoord")
     if kind in ("adoquin", "ladrillo"):
         t = nt.nodes.new("ShaderNodeTexBrick")
@@ -123,7 +128,7 @@ def mat_textura(kind, c1, c2, scale=1.0):
             mp.inputs["Scale"].default_value = (20 * scale, 20 * scale, 1)
             nt.links.new(tc.outputs["Generated"], mp.inputs["Vector"])
             nt.links.new(mp.outputs[0], t.inputs["Vector"])
-        nt.links.new(t.outputs["Color"], bsdf.inputs["Base Color"])
+        nt.links.new(t.outputs["Color"], color_in)
     else:
         n = nt.nodes.new("ShaderNodeTexNoise" if kind != "piedra" else "ShaderNodeTexVoronoi")
         n.inputs["Scale"].default_value = {"pasto": 18, "madera": 6, "piedra": 9}.get(kind, 10) * scale
@@ -132,7 +137,7 @@ def mat_textura(kind, c1, c2, scale=1.0):
         socket(mx.inputs, "A", "RGBA").default_value = (*c1, 1)
         socket(mx.inputs, "B", "RGBA").default_value = (*c2, 1)
         nt.links.new(tc.outputs["Object"], n.inputs["Vector"])
-        nt.links.new(socket(mx.outputs, "Result", "RGBA"), bsdf.inputs["Base Color"])
+        nt.links.new(socket(mx.outputs, "Result", "RGBA"), color_in)
     _MATS[k] = m
     return m
 

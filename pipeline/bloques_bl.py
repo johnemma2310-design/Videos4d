@@ -17,7 +17,7 @@ PANTS = (0.2, 0.25, 0.4)
 SHOES = (0.15, 0.13, 0.12)
 HAIR = (0.3, 0.2, 0.12)
 
-HEAD = 0.86            # lado de la cabeza cúbica
+HEAD = 0.76            # lado de la cabeza (≈ 0.65 del ancho del torso, como un juguete de bloques)
 NECK_Z = 2.3
 H = HEAD / 2
 
@@ -26,7 +26,7 @@ def block_head(name, parent, loc, size, face_png, base):
     h = prim("cube", name, parent, size=size)
     h.location = loc
     finish(h, head_material(face_png, size / 2, base), 0, smooth=False)
-    bevel(h, size * 0.17, 4)
+    bevel(h, size * 0.24, 5)
     return h
 
 
@@ -201,6 +201,29 @@ def acc_baston(p, c):
     cyl("baston", (0, -0.25, -0.7), 0.05, 1.3, c, p["arm_d"], 0, vertices=10)
 
 
+def acc_smoking(p, c):
+    """Saco de esmoquin con solapas de satín y pañuelo en el bolsillo (camisa blanca al centro)."""
+    c = c or (0.06, 0.06, 0.08)
+    satin = (0.16, 0.16, 0.19)
+    _part("saco_atras", p["body"], (0, 0.26, 1.69), (1.22, 0.12, 1.26), c, 0.04)
+    for sx in (-1, 1):
+        _part(f"saco{sx}", p["body"], (sx * 0.385, -0.005, 1.69), (0.43, 0.64, 1.26), c, 0.04)
+        _part(f"solapa{sx}", p["body"], (sx * 0.205, -0.325, 1.98), (0.1, 0.03, 0.62), satin, 0.015).rotation_euler = (
+            0, D(11 * sx), 0)
+    _part("boton_saco", p["body"], (0.19, -0.33, 1.42), (0.06, 0.03, 0.06), satin, 0.02)
+    _part("panuelo_bolsillo", p["body"], (0.4, -0.33, 2.0), (0.15, 0.03, 0.08), (1, 1, 1), 0.015)
+    for side in ("d", "i"):
+        p["_manga_" + side].data.materials[0] = mat(c)
+
+
+def acc_corbatin(p, c):
+    c = c or (0.05, 0.05, 0.06)
+    for sx in (-1, 1):
+        cone(f"corbatin{sx}", (sx * 0.08, -0.32, 2.14), 0.08, 0.025, 0.14, c, p["body"], 0, vertices=4,
+             rot=(0, D(-90 * sx), D(45)))
+    _part("corbatin_nudo", p["body"], (0, -0.33, 2.14), (0.06, 0.05, 0.07), c, 0.02)
+
+
 def _darker(c, k=0.75):
     return tuple(v * k for v in c[:3])
 
@@ -310,17 +333,47 @@ def build_animal_bloque(d, face_png):
 
 # ------------------------------------------------------------------ efectos
 
-def aplicar_efecto(p, efecto, face_png):
-    """'piedra' = estatua (gris con grietas), 'vidrio' = transparente celeste. Mantiene la cara."""
-    from bl_util import mat_textura
+EFECTOS = {
+    #          color del efecto,      brillo del borde,     alpha
+    "piedra": ((0.6, 0.6, 0.62), (1.0, 0.18, 0.05), 1.0),
+    "vidrio": ((0.75, 0.92, 1.0), (0.55, 0.9, 1.0), 0.45),
+}
+
+
+def aplicar_efecto(p, efecto, face_png, progresivo=None):
+    """'piedra' = estatua (gris con grietas), 'vidrio' = transparente celeste. Mantiene la cara.
+
+    progresivo=(f0, f1): en estilo bloques el efecto sube de los pies a la cabeza entre esos cuadros,
+    con un borde brillante (rojo en piedra, celeste en vidrio). Sin progresivo, el personaje ya está
+    transformado desde el primer cuadro.
+    """
+    from bl_util import mat_textura, suave
+    if efecto not in EFECTOS:
+        return
+    if progresivo and suave():
+        bpy.context.view_layer.update()
+        s = p["root"].matrix_world.to_scale().z
+        z0 = p["root"].matrix_world.translation.z
+        z1 = p["head"].matrix_world.translation.z + p.get("head_r", 0.43) * s * 1.3
+        f0, f1 = progresivo
+        done = {}
+        for o in p["root"].children_recursive:
+            if o.type != "MESH":
+                continue
+            for i, m0 in enumerate(o.data.materials):
+                if m0 is None:
+                    continue
+                k = (m0.name, o == p["head"])
+                if k not in done:
+                    done[k] = _barrido(m0, efecto, z0, z1, f0, f1, cabeza=(o == p["head"]))
+                o.data.materials[i] = done[k]
+        return
     if efecto == "piedra":
         m_body = mat_textura("piedra", (0.62, 0.62, 0.64), (0.45, 0.45, 0.48))
         base = (0.6, 0.6, 0.62)
-    elif efecto == "vidrio":
+    else:
         m_body = _vidrio()
         base = (0.75, 0.9, 1.0)
-    else:
-        return
     for o in p["root"].children_recursive:
         if o.type != "MESH":
             continue
@@ -331,6 +384,88 @@ def aplicar_efecto(p, efecto, face_png):
         else:
             for i in range(len(o.data.materials)):
                 o.data.materials[i] = m_body
+
+
+def _barrido(m0, efecto, z0, z1, f0, f1, cabeza=False):
+    """Copia del material con un barrido vertical animado (nodo 'Progreso') hacia el efecto."""
+    from bl_util import mix_node, socket
+    color, glow, alpha = EFECTOS[efecto]
+    m = m0.copy()
+    nt = m.node_tree
+    bsdf = next((n for n in nt.nodes if n.type == "BSDF_PRINCIPLED"), None)
+    if bsdf is None:
+        return m0
+    base_in = bsdf.inputs["Base Color"]
+    src = base_in.links[0].from_socket if base_in.links else None
+
+    def math(op, a, b=None):
+        n = nt.nodes.new("ShaderNodeMath")
+        n.operation = op
+        for idx, v in enumerate((a, b)):
+            if v is None:
+                continue
+            if isinstance(v, (int, float)):
+                n.inputs[idx].default_value = v
+            else:
+                nt.links.new(v, n.inputs[idx])
+        return n.outputs[0]
+
+    def map_range(v, a, b, c, d):
+        n = nt.nodes.new("ShaderNodeMapRange")
+        n.clamp = True
+        n.inputs["From Min"].default_value, n.inputs["From Max"].default_value = a, b
+        n.inputs["To Min"].default_value, n.inputs["To Max"].default_value = c, d
+        nt.links.new(v, n.inputs["Value"])
+        return n.outputs["Result"]
+
+    geo = nt.nodes.new("ShaderNodeNewGeometry")
+    sep = nt.nodes.new("ShaderNodeSeparateXYZ")
+    nt.links.new(geo.outputs["Position"], sep.inputs[0])
+    noise = nt.nodes.new("ShaderNodeTexNoise")
+    noise.inputs["Scale"].default_value = 3.0
+    nt.links.new(geo.outputs["Position"], noise.inputs["Vector"])
+    z = math("ADD", sep.outputs["Z"], math("MULTIPLY", noise.outputs["Fac"], 0.3))
+    prog = nt.nodes.new("ShaderNodeValue")
+    prog.name = prog.label = "Progreso"
+    d = math("SUBTRACT", prog.outputs[0], z)          # > 0: ya transformado
+    mask = map_range(d, -0.04, 0.04, 0.0, 1.0)
+    band = map_range(math("ABSOLUTE", d), 0.0, 0.07, 1.0, 0.0)
+
+    target = mix_node(nt)
+    if cabeza:   # la cara se conserva: se tiñe el color en vez de reemplazarlo
+        target.blend_type = "MULTIPLY"
+        socket(target.inputs, "Factor", "VALUE").default_value = 1.0
+        if src:
+            nt.links.new(src, socket(target.inputs, "A", "RGBA"))
+        socket(target.inputs, "B", "RGBA").default_value = (*[min(1, c * 1.15) for c in color], 1)
+    else:
+        socket(target.inputs, "Factor", "VALUE").default_value = 1.0
+        socket(target.inputs, "B", "RGBA").default_value = (*color, 1)
+    mx = mix_node(nt)
+    nt.links.new(mask, socket(mx.inputs, "Factor", "VALUE"))
+    if src:
+        nt.links.new(src, socket(mx.inputs, "A", "RGBA"))
+    else:
+        socket(mx.inputs, "A", "RGBA").default_value = base_in.default_value
+    nt.links.new(socket(target.outputs, "Result", "RGBA"), socket(mx.inputs, "B", "RGBA"))
+    nt.links.new(socket(mx.outputs, "Result", "RGBA"), base_in)
+
+    bsdf.inputs["Emission Color"].default_value = (*glow, 1)
+    nt.links.new(math("MULTIPLY", band, 5.0), bsdf.inputs["Emission Strength"])
+    if alpha < 1:
+        nt.links.new(map_range(mask, 0.0, 1.0, 1.0, alpha), bsdf.inputs["Alpha"])
+        nt.links.new(map_range(mask, 0.0, 1.0, 0.62, 0.05), bsdf.inputs["Roughness"])
+        try:   # "dithered" respeta la profundidad: sin cabezas fantasma ni caras grises (BLENDED sí falla aquí)
+            m.surface_render_method = "DITHERED"
+        except AttributeError:
+            m.blend_method = "HASHED"
+
+    sock = prog.outputs[0]
+    sock.default_value = z0 - 0.4
+    sock.keyframe_insert("default_value", frame=f0)
+    sock.default_value = z1 + 0.4
+    sock.keyframe_insert("default_value", frame=f1)
+    return m
 
 
 def _vidrio():

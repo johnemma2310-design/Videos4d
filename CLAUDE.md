@@ -34,6 +34,8 @@ Es el protagonista por defecto. Estilo visual: low-poly, colores planos, contorn
 |---|---|---|
 | Look | muñecos de palitos, contornos negros, 2 tonos | muñecos de bloques de juguete, sin contornos, sombras suaves, bordes redondeados, texturas (adoquín, pasto, madera) |
 | Reparto | `assets/personajes.json` | `assets/personajes_bloques.json` (mismos ids) |
+| Caras | `assets/faces/` (ojos grandes) | `assets/faces_simple/` (ojitos negros y boca de línea, estilo juguete) |
+| Sticky | palitos + bufanda azul | **elegante**: esmoquin, corbatín, gafas de lectura, calvo y bufanda azul (`sticky_casual` = la versión con camisa) |
 | Formato | "¿Qué pasaría si…?" 20–60 s | **"Reglas del pueblo"**, 70–120 s (ver abajo) |
 
 Referencia de formato: canales de historias en mundo de bloques con millones de vistas en Shorts.
@@ -77,6 +79,8 @@ En Mac/Linux: instala Blender y FFmpeg con tu gestor de paquetes y luego `pip in
 2. Vista previa (1 cuadro por toma, ~1 min). **Mira** las imágenes `out/preview_XX.png` y corrige lo que se vea mal:
    `python pipeline/build.py episodios/<slug>/guion.json --preview --calidad 30`
 3. Render final: `python pipeline/build.py episodios/<slug>/guion.json --calidad 100` (para pruebas, `--calidad 50`).
+   Para ver el avance: `python tools/monitor.py` y abrir http://localhost:8765 (barra, cuadros, velocidad, hora de fin,
+   toma actual y último cuadro). En la app de Claude se abre con la configuración `monitor` de `.claude/launch.json`.
    Resultado: `episodios/<slug>/<slug>.mp4`. Para re-renderizar tomas sueltas usa `--tomas 2,5`, que vuelve a armar el video solo.
    Tarda aprox. 1–1.5 s por cuadro a calidad 50 (unos 15 min por cada 25 s de video): córrelo en segundo plano.
 
@@ -109,7 +113,10 @@ Ejemplos completos: `episodios/prueba_cama/guion.json` (solo Sticky) y `episodio
 - `foco`: índice del personaje al que apunta la cámara (0 = protagonista, 1 = primer extra…).
 - `color_fondo` solo aplica al escenario `vacio`.
 - `efecto` (protagonista o extras): `piedra` (estatua gris) o `vidrio` (transparente celeste). La cara se mantiene.
-- `*palabra*` en `texto`: palabra clave en amarillo en el subtítulo.
+  Con `"efecto_progresivo": true` (solo estilo bloques) el efecto sube de los pies a la cabeza durante la toma,
+  con un borde brillante (rojo en piedra, celeste en vidrio): úsalo en la escena donde empieza la transformación.
+- `*palabra*` en `texto`: palabra clave en amarillo en el subtítulo, y además la cámara hace un "zoom golpe" en ese instante.
+- En estilo bloques la cámara tiene un temblor leve de cámara en mano (automático).
 
 ## Catálogo actual
 
@@ -127,11 +134,12 @@ Hay imágenes de todo en `docs/catalogo_personajes.png`, `docs/catalogo_escenari
   `abuelo`, `chef`, `doctor` (Doctora), `profe`, `policia`, `rockero`, `vaquero`, `perro` (Firulais), `gato` (Michi), `pajaro` (Pío), `cerdo` (Chancho).
   En bloques existen además `vecino` y `amiga` (`assets/personajes_bloques.json`, con colores `piel`, `camisa`, `pantalon`, `zapatos` y `manga_larga`).
 - **accesorios bloques** (`pipeline/bloques_bl.py`): `pelo_corto`, `pelo_largo`, `chongo`, `coletas`, `calvo`, `pelo_punta`, `gorra`, `gorra_policia`,
-  `sombrero`, `gorro_chef`, `lazo`, `bufanda`, `panuelo`, `corbata`, `chaleco`, `mochila`, `falda`, `vestido`, `bata`, `delantal`, `collar`, `baston`
+  `sombrero`, `gorro_chef`, `lazo`, `bufanda`, `panuelo`, `corbata`, `corbatin`, `smoking`, `chaleco`, `mochila`, `falda`, `vestido`, `bata`,
+  `delantal`, `collar`, `baston`
 - **pose humanos**: `de_pie`, `saludar`, `pensar`, `caminar`, `correr`, `saltar`, `celebrar`, `temblar`, `mareado`, `triste`, `senalar`, `acostado` (solo en `habitacion`, queda en la cama)
 - **pose animales**: `de_pie`, `caminar`, `correr`, `saltar`, `celebrar`, `temblar`, `triste`, `volar` (pájaro). Cualquier otra pose se convierte en `de_pie`.
 - **cara** (`assets/faces/`): `neutral`, `feliz`, `sonrisa`, `shock`, `triste`, `enojado`, `malvado`, `aburrido`, `miedo`, `mareado`, `pensando`, `dormido`
-- **cara_extra** (capas por personaje, `assets/faces/extras/`): `bigote`, `bigote_blanco`, `barba`, `barba_blanca`, `pestanas`, `labios`, `chapitas`, `pecas`, `lentes`, `lentes_sol`, `nariz_perro`, `nariz_gato`, `pico`, `nariz_cerdo`
+- **cara_extra** (capas por personaje, `assets/faces/extras/`): `bigote`, `bigote_blanco`, `barba`, `barba_blanca`, `pestanas`, `labios`, `chapitas`, `pecas`, `lentes`, `lentes_lectura`, `lentes_sol`, `nariz_perro`, `nariz_gato`, `pico`, `nariz_cerdo`
 - **accesorios**: pelo `pelo_corto`, `pelo_largo`, `chongo`, `coletas`, `calvo`, `pelo_punta`; cabeza `gorra`, `gorra_policia`, `sombrero`, `gorro_chef`, `lazo`;
   cuerpo `bufanda`, `corbata`, `falda`, `vestido`, `bata`, `delantal`, `collar`, `baston`
 - **sfx** (`assets/sfx/`): `pop`, `whoosh`, `boom`, `ding`, `boing`, `golpe`, `sorpresa`, `tictac`, `ronquido`, `triste`

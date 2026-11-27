@@ -93,6 +93,17 @@ def lentes(d):
     d.line(P(EYE_R + r, EYE_Y - 20, 994, EYE_Y - 60), fill=BLACK, width=14 * S)
 
 
+def lentes_lectura(d):
+    """Gafas de lectura de media luna: borde recto arriba, curvo abajo, un poco bajas en la cara."""
+    gold = (40, 35, 30, 255)
+    for cx in (376, 648):
+        box = P(cx - 92, 330, cx + 92, 500)
+        d.chord(box, 0, 180, fill=(220, 235, 255, 70), outline=gold, width=13 * S)
+    d.arc(P(462, 395, 562, 455), 200, 340, fill=gold, width=12 * S)
+    d.line(P(284, 418, 40, 380), fill=gold, width=11 * S)
+    d.line(P(740, 418, 984, 380), fill=gold, width=11 * S)
+
+
 def lentes_sol(d):
     for cx in (EYE_L, EYE_R):
         d.rounded_rectangle(P(cx - 135, EYE_Y - 80, cx + 135, EYE_Y + 95), radius=60 * S,
@@ -131,6 +142,7 @@ def nariz_cerdo(d):
 
 EXTRAS = dict(bigote=bigote, bigote_blanco=bigote_blanco, barba=barba, barba_blanca=barba_blanca,
               pestanas=pestanas, labios=labios, chapitas=chapitas, pecas=pecas, lentes=lentes,
+              lentes_lectura=lentes_lectura,
               lentes_sol=lentes_sol, nariz_perro=nariz_perro, nariz_gato=nariz_gato, pico=pico,
               nariz_cerdo=nariz_cerdo)
 # capas que van DEBAJO de la expresión (para que ojos y boca queden encima)

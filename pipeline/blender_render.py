@@ -53,7 +53,7 @@ def actor_frame(p):
     return head, head - up * p["drop"] * s, fwd, s
 
 
-def camera(plano, focus, actors, f0, f1, follow_root):
+def camera(plano, focus, actors, f0, f1, follow_root, golpes=(), mano=False):
     bpy.context.view_layer.update()
     head, center, fwd, s = actor_frame(focus)
 
@@ -143,6 +143,34 @@ def camera(plano, focus, actors, f0, f1, follow_root):
         pos, target, lens = place(plano if plano in known else "medio")
         put(f0, pos, target, lens)
         put(f1, pos + (target - pos) * 0.07, target, lens)   # acercamiento lento
+        for g in golpes:            # "zoom golpe" en la palabra clave: el lente salta y se queda
+            if f0 + 2 <= g <= f1 - 4:
+                for f, l in ((g, lens), (g + 3, lens * 1.22), (f1, lens * 1.22)):
+                    cam_data.lens = l
+                    cam_data.keyframe_insert("lens", frame=f)
+    if mano:                         # cámara en mano: micro-temblor en el punto al que mira
+        for fc in fcurves_de(tgt):
+            if fc.data_path == "location":
+                mod = fc.modifiers.new("NOISE")
+                mod.strength = 0.05
+                mod.scale = 28.0
+                mod.phase = (f0 * 7.31 + fc.array_index * 13.7) % 100
+
+
+def fcurves_de(obj):
+    """F-curves de un objeto (compatible con las acciones por capas de Blender 4.4+/5)."""
+    ad = obj.animation_data
+    if not ad or not ad.action:
+        return []
+    act = ad.action
+    if hasattr(act, "fcurves") and len(act.fcurves):
+        return list(act.fcurves)
+    out = []
+    for layer in getattr(act, "layers", []):
+        for strip in layer.strips:
+            for cb in getattr(strip, "channelbags", []):
+                out.extend(cb.fcurves)
+    return out
 
 
 # ------------------------------------------------------------------- render
@@ -165,7 +193,7 @@ def setup_render(tl, f0, f1):
     sc.render.fps = tl["fps"]
     if bl_util.suave():
         try:
-            sc.eevee.use_raytracing = True          # oclusión y reflejos suaves (EEVEE Next)
+            sc.eevee.use_raytracing = False         # la AO va en los materiales: ~3x más rápido que raytracing
         except AttributeError:
             pass
         try:
@@ -213,16 +241,20 @@ def render_shot(tl, shot):
     parts, moving = [], False
     for i, actor in enumerate(shot["actores"]):
         p = build(actor["def"], Path(actor["face"]))
+        place_actor(p, actor, info["standing"], i == 0)
         if actor.get("efecto"):
             from bloques_bl import aplicar_efecto
-            aplicar_efecto(p, actor["efecto"], Path(actor["face"]))
-        place_actor(p, actor, info["standing"], i == 0)
+            prog = None
+            if actor.get("efecto_progresivo"):
+                prog = (f0 + int((f1 - f0) * 0.1), f0 + int((f1 - f0) * 0.85))
+            aplicar_efecto(p, actor["efecto"], Path(actor["face"]), prog)
         mv = animar(p, actor["pose"], f0, f1, tl["fps"])
         parts.append(p)
         if i == shot.get("foco", 0):
             moving = mv
     focus = parts[min(shot.get("foco", 0), len(parts) - 1)]
-    camera(shot["plano"], focus, parts, f0, f1, follow_root=moving)
+    camera(shot["plano"], focus, parts, f0, f1, follow_root=moving, golpes=shot.get("golpes", []),
+           mano=bl_util.suave())
     if tl.get("guardar_blend"):
         bpy.ops.wm.save_as_mainfile(filepath=str(Path(tl["frames_dir"]).parent / f"toma_{shot['i']:02d}.blend"))
     sc = bpy.context.scene

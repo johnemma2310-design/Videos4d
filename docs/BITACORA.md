@@ -5,6 +5,32 @@ Historial compartido entre dispositivos y sesiones de Claude. **Agrega una entra
 
 ---
 
+## 2026-11-26: look más cercano a la referencia, Sticky elegante y monitor de render
+- Caras simples estilo juguete en `assets/faces_simple/` (`tools/make_faces_simple.py`), usadas automáticamente en el estilo bloques.
+- Cabeza de bloques más chica y redondeada (HEAD 0.76, bisel 24 %), brazos pegados al cuerpo y colores vivos (vista Standard).
+- **Sticky elegante** (decisión del dueño): esmoquin negro con solapas de satín, camisa blanca, corbatín, pañuelo en el bolsillo,
+  gafas de lectura de media luna (`lentes_lectura`), calvo y bufanda azul. La versión anterior quedó como `sticky_casual`.
+- `tools/monitor.py`: página local (http://localhost:8765) con el progreso de cada render. `build.py` escribe `out/estado.json` por etapa.
+- Velocidad medida sin raytracing: ~1.7 s por cuadro a calidad 50 (antes ~4 s con raytracing).
+
+
+## 2026-11-26: mejoras sugeridas por Gemini (revisadas y aplicadas)
+- Se consultó a Gemini (en el navegador del usuario) cómo se hacen los videos de referencia. Coincide con nuestro enfoque:
+  Blender EEVEE, caras 2D sobre la cabeza, voces IA, cortes rápidos y palabra clave en color. Su sugerencia de importar
+  avatares de Roblox (Rbx2Blender) **se descartó** por derechos: seguimos con muñecos propios.
+- `efecto_progresivo`: barrido animado de vidrio o piedra de los pies a la cabeza, con borde brillante (nodo "Progreso" en `bloques_bl._barrido`).
+  Usa transparencia DITHERED (BLENDED producía cabezas fantasma).
+- Render más rápido: raytracing apagado y nodo Ambient Occlusion en cada material del estilo bloques.
+- Cámara en mano (modificador NOISE en el objetivo de la cámara) y "zoom golpe" automático en cada `*palabra clave*`.
+- Subtítulos subidos al 30 % desde abajo (zona segura de la interfaz de Shorts).
+
+**Pendientes sugeridos por Gemini que aún no se hacen**
+- Parpadeo automático y boca 2D sincronizada con el volumen de la voz (necesita variantes de cara con boca abierta).
+- Romper personajes en pedazos (bisect con bmesh + cuerpos rígidos) para escenas de "se rompe".
+- Quitar silencios de la voz con el filtro `silenceremove` de FFmpeg.
+- Voces distintas por personaje cuando hablan (no solo el narrador).
+
+
 ## 2026-11-26: estilo "bloques" y formato "Reglas del pueblo"
 - Análisis de un canal de referencia de Shorts con muñecos de bloques (1–21 M de vistas): historias de 100–130 s
   con una regla rara ("Si…", "En este pueblo…"), narración en primera persona, giro final, cámara muy cercana,

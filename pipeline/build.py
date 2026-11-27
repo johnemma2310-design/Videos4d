@@ -86,6 +86,14 @@ def ass_escape(s):
 HL = r"{\c&H00D7FF&}"
 
 
+def golpes(sc, f0, fps):
+    """Cuadros (absolutos) donde suena cada *palabra clave*: ahí la cámara hace zoom golpe."""
+    toks, words = sc["texto"].split(), sc["words"]
+    if len(toks) != len(words):
+        return []
+    return [f0 + round(w["t"] * fps) for w, tok in zip(words, toks) if "*" in tok]
+
+
 def limpio(texto):
     """Texto para la voz: sin los * de las palabras resaltadas."""
     return texto.replace("*", "")
@@ -102,7 +110,7 @@ WrapStyle: 0
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Sub,Arial Black,{fs_sub},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,-1,0,0,0,100,100,0,0,1,{int(fs_sub*0.14)},{int(fs_sub*0.06)},2,60,60,{int(H*0.19)},1
+Style: Sub,Arial Black,{fs_sub},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,-1,0,0,0,100,100,0,0,1,{int(fs_sub*0.14)},{int(fs_sub*0.06)},2,60,60,{int(H*0.30)},1
 Style: Big,Arial Black,{fs_big},&H0022DDFF,&H00FFFFFF,&H00000000,&H64000000,-1,0,0,0,100,100,0,-2,1,{int(fs_big*0.13)},{int(fs_big*0.07)},8,50,50,{int(H*0.09)},1
 
 [Events]
@@ -148,22 +156,26 @@ def cargar_reparto(estilo="toon"):
     return {k: {**v, "id": k} for k, v in data.items() if not k.startswith("_")}
 
 
-def componer_cara(pid, cara, extras, out):
+def componer_cara(pid, cara, extras, out, estilo="toon"):
     """Expresión + capas del personaje (bigote, lentes...) -> un PNG por (personaje, cara)."""
     from PIL import Image
     faces = ROOT / "assets" / "faces"
     ex_dir = faces / "extras"
+    if estilo == "bloques" and (ROOT / "assets" / "faces_simple").exists():
+        faces = ROOT / "assets" / "faces_simple"    # ojitos y boca de línea, estilo juguete
     base = faces / f"{cara}.png"
     if not base.exists():
         print(f"[aviso] cara '{cara}' no existe, uso neutral")
         cara, base = "neutral", faces / "neutral.png"
+    if not base.exists():
+        base = ROOT / "assets" / "faces" / f"{cara}.png"
     if not extras:
         return base
     if any(not (ex_dir / f"{e}.png").exists() for e in extras):
         subprocess.run([sys.executable, str(ROOT / "tools" / "make_face_extras.py")], check=True)
     sys.path.insert(0, str(ROOT / "tools"))
     from make_face_extras import DEBAJO
-    dst = out / "caras" / f"{pid}__{cara}.png"
+    dst = out / "caras" / f"{estilo}__{pid}__{cara}.png"
     dst.parent.mkdir(parents=True, exist_ok=True)
     img = Image.new("RGBA", (1024, 1024), (0, 0, 0, 0))
     for e in [e for e in extras if e in DEBAJO]:
@@ -176,10 +188,11 @@ def componer_cara(pid, cara, extras, out):
     return dst
 
 
-def actores(sc, reparto, out):
+def actores(sc, reparto, out, estilo="toon"):
     """Protagonista (campos personaje/pose/cara de la escena) + secundarios (lista "extras")."""
     lista = [{"personaje": sc.get("personaje", "sticky"), "pose": sc.get("pose", "de_pie"),
-              "cara": sc.get("cara", "neutral"), "efecto": sc.get("efecto")}] + list(sc.get("extras", []))
+              "cara": sc.get("cara", "neutral"), "efecto": sc.get("efecto"),
+              "efecto_progresivo": sc.get("efecto_progresivo", False)}] + list(sc.get("extras", []))
     res = []
     for a in lista:
         pid = a.get("personaje", "sticky")
@@ -190,11 +203,22 @@ def actores(sc, reparto, out):
         cara = a.get("cara", "neutral")
         res.append({**a, "personaje": pid, "def": d, "cara": cara, "pose": a.get("pose", "de_pie"),
                     "escala": a.get("escala", d.get("escala", 1.0)),
-                    "face": str(componer_cara(pid, cara, d.get("cara_extra", []), out))})
+                    "face": str(componer_cara(pid, cara, d.get("cara_extra", []), out, estilo))})
     return res
 
 
 # ------------------------------------------------------------------ main
+
+def estado(out, etapa, **extra):
+    """Deja la etapa actual en out/estado.json (lo lee tools/monitor.py)."""
+    import time
+    f = out / "estado.json"
+    data = json.loads(f.read_text("utf-8")) if f.exists() else {}
+    if etapa == "voz":
+        data = {"inicio": time.time()}
+    data.update(etapa=etapa, cambio=time.time(), **extra)
+    f.write_text(json.dumps(data, ensure_ascii=False), "utf-8")
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -215,6 +239,7 @@ def main():
     calidad = args.calidad or g.get("calidad", 100)
 
     # 1. voz ---------------------------------------------------------------
+    estado(out, "voz", preview=bool(args.preview))
     voice, rate = g.get("voz", "es-MX-JorgeNeural"), g.get("velocidad", "+0%")
     scenes = []
     for i, sc in enumerate(g["escenas"]):
@@ -241,8 +266,9 @@ def main():
         nframes = max(6, round(sc["dur"] * fps))
         sc["dur"] = nframes / fps
         shots.append({"i": sc["i"], "f0": f, "f1": f + nframes - 1, "escenario": sc.get("escenario", "vacio"),
-                      "plano": sc.get("plano", "medio"), "actores": actores(sc, reparto, out),
+                      "plano": sc.get("plano", "medio"), "actores": actores(sc, reparto, out, estilo),
                       "foco": sc.get("foco", 0), "noche": sc.get("noche", False),
+                      "golpes": golpes(sc, f, fps),
                       "color_fondo": sc.get("color_fondo")})
         f += nframes
         t += sc["dur"]
@@ -255,6 +281,7 @@ def main():
     print(f"[tiempo] {len(shots)} tomas, {t:.1f} s, {total_frames} cuadros")
 
     # 3. render -------------------------------------------------------------
+    estado(out, "render", total=total_frames, segundos=round(t, 1))
     if not args.sin_render:
         if not args.tomas and not args.preview and frames_dir.exists():
             shutil.rmtree(frames_dir)
@@ -266,10 +293,12 @@ def main():
         print("[blender]", " ".join(cmd))
         subprocess.run(cmd, check=True)
     if args.preview:
+        estado(out, "listo", preview=True)
         print("[preview] listo:", out)
         return
 
     # 4. audio --------------------------------------------------------------
+    estado(out, "audio")
     mix = np.zeros(int((t + 0.5) * SR), np.float32)
     for sc in scenes:
         i0 = int(sc["t0"] * SR)
@@ -299,6 +328,7 @@ def main():
     build_ass(scenes, W, H, out / "subs.ass")
 
     # 6. video final --------------------------------------------------------
+    estado(out, "video")
     final = ep / f"{ep.name}.mp4"
     subs = str(out / "subs.ass").replace("\\", "/").replace(":", "\\:")
     vf = f"scale={W}:{H}:flags=lanczos,ass='{subs}'"
@@ -306,6 +336,7 @@ def main():
            "-i", str(out / "audio.wav"), "-vf", vf, "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18",
            "-preset", "medium", "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(final)]
     subprocess.run(cmd, check=True)
+    estado(out, "listo", video=str(final))
     print("[listo]", final)
 
 

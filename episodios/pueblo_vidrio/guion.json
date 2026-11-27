@@ -5,80 +5,399 @@
   "voz": "es-MX-JorgeNeural",
   "velocidad": "+10%",
   "escenas": [
-    {"texto": "En este pueblo, si nadie te saluda en todo un día, te vuelves de *vidrio*.",
-     "escenario": "pueblo", "plano": "zoom_in", "pose": "pensar", "cara": "pensando",
-     "sfx": [{"sonido": "whoosh", "palabra": 0}], "texto_pantalla": "¿TE VUELVES DE VIDRIO?"},
-    {"texto": "Y si te rompes, *desapareces* para siempre.",
-     "escenario": "pueblo", "plano": "primer_plano", "pose": "temblar", "cara": "miedo", "efecto": "vidrio",
-     "sfx": [{"sonido": "sorpresa", "palabra": 3}]},
-    {"texto": "Nos mudamos un lunes, y nadie nos avisó de esa regla.",
-     "escenario": "sala", "plano": "grupo", "pose": "de_pie", "cara": "neutral",
-     "extras": [{"personaje": "mama", "lugar": "derecha", "pose": "de_pie", "cara": "sonrisa"}]},
-    {"texto": "Mi mamá me dijo: sal a hacer amigos, Sticky.",
-     "escenario": "sala", "plano": "medio", "foco": 1, "pose": "de_pie", "cara": "feliz",
-     "extras": [{"personaje": "mama", "lugar": "derecha", "pose": "senalar", "cara": "feliz"}]},
-    {"texto": "Salí a la plaza y saludé a todo el mundo.",
-     "escenario": "pueblo", "plano": "general", "pose": "saludar", "cara": "feliz",
-     "extras": [{"personaje": "vecino", "lugar": "atras_derecha", "pose": "de_pie", "cara": "aburrido", "mirar": false},
-                {"personaje": "senora", "lugar": "atras_izquierda", "pose": "de_pie", "cara": "aburrido", "mirar": false}],
-     "sfx": [{"sonido": "pop", "palabra": 1}]},
-    {"texto": "Pero nadie me contestó. Ni uno *solo*.",
-     "escenario": "pueblo", "plano": "hombro", "pose": "triste", "cara": "triste",
-     "extras": [{"personaje": "senora", "lugar": "frente_derecha", "pose": "de_pie", "cara": "aburrido"}]},
-    {"texto": "Doña Rosa ni siquiera me miró.",
-     "escenario": "pueblo", "plano": "primer_plano", "foco": 1, "pose": "triste", "cara": "triste",
-     "extras": [{"personaje": "senora", "lugar": "derecha", "pose": "de_pie", "cara": "aburrido", "mirar": false}]},
-    {"texto": "En la tarde, sentí algo raro en los *pies*.",
-     "escenario": "pueblo", "plano": "pies", "pose": "temblar", "cara": "miedo",
-     "sfx": [{"sonido": "tictac", "palabra": 0}]},
-    {"texto": "Se estaban volviendo transparentes, como de *vidrio*.",
-     "escenario": "pueblo", "plano": "pies", "pose": "temblar", "cara": "shock", "efecto": "vidrio",
-     "sfx": [{"sonido": "ding", "palabra": 6}]},
-    {"texto": "Corrí a la escuela a pedir ayuda.",
-     "escenario": "parque", "plano": "medio", "pose": "correr", "cara": "miedo", "efecto": "vidrio",
-     "sfx": [{"sonido": "whoosh", "palabra": 0}]},
-    {"texto": "El profe me vio y gritó: ¡nadie lo toque!",
-     "escenario": "escuela", "plano": "grupo", "foco": 1, "pose": "temblar", "cara": "shock", "efecto": "vidrio",
-     "extras": [{"personaje": "profe", "lugar": "izquierda", "pose": "senalar", "cara": "shock"},
-                {"personaje": "nino", "lugar": "derecha", "pose": "temblar", "cara": "miedo"}],
-     "sfx": [{"sonido": "sorpresa", "palabra": 5}]},
-    {"texto": "Todos se alejaron de mí.",
-     "escenario": "escuela", "plano": "general", "pose": "triste", "cara": "triste", "efecto": "vidrio",
-     "extras": [{"personaje": "nino", "lugar": "lejos_derecha", "pose": "de_pie", "cara": "miedo"},
-                {"personaje": "nina", "lugar": "lejos_izquierda", "pose": "de_pie", "cara": "miedo"}],
-     "sfx": [{"sonido": "triste", "palabra": 0, "volumen": 0.35}]},
-    {"texto": "Ya tenía los brazos de *vidrio*.",
-     "escenario": "escuela", "plano": "primer_plano", "pose": "pensar", "cara": "miedo", "efecto": "vidrio"},
-    {"texto": "Me senté solo en la plaza, a esperar lo *peor*.",
-     "escenario": "pueblo", "noche": true, "plano": "general", "pose": "triste", "cara": "triste", "efecto": "vidrio"},
-    {"texto": "Entonces escuché unos pasitos.",
-     "escenario": "pueblo", "noche": true, "plano": "pies", "foco": 1, "pose": "triste", "cara": "triste", "efecto": "vidrio",
-     "extras": [{"personaje": "perro", "lugar": "frente_derecha", "pose": "caminar", "cara": "neutral"}],
-     "sfx": [{"sonido": "tictac", "palabra": 2, "volumen": 0.4}]},
-    {"texto": "Era un perrito, y movía la *cola*.",
-     "escenario": "pueblo", "noche": true, "plano": "primer_plano", "foco": 1, "pose": "triste", "cara": "shock", "efecto": "vidrio",
-     "extras": [{"personaje": "perro", "lugar": "frente_derecha", "pose": "de_pie", "cara": "feliz"}]},
-    {"texto": "Me puso la patita en la mano, como *saludando*.",
-     "escenario": "pueblo", "noche": true, "plano": "grupo", "pose": "de_pie", "cara": "shock", "efecto": "vidrio",
-     "extras": [{"personaje": "perro", "lugar": "derecha", "pose": "saltar", "cara": "feliz"}],
-     "sfx": [{"sonido": "boing", "palabra": 3}]},
-    {"texto": "Y de repente, el vidrio empezó a *desaparecer*.",
-     "escenario": "pueblo", "noche": true, "plano": "zoom_in", "pose": "celebrar", "cara": "sonrisa",
-     "sfx": [{"sonido": "ding", "palabra": 0}]},
-    {"texto": "Esa noche aprendí lo que nadie te cuenta de este pueblo.",
-     "escenario": "pueblo", "noche": true, "plano": "zoom_out", "pose": "pensar", "cara": "pensando",
-     "extras": [{"personaje": "perro", "lugar": "derecha", "pose": "de_pie", "cara": "feliz"}]},
-    {"texto": "No importa si es una persona o un perrito: un *saludo* te salva.",
-     "escenario": "pueblo", "plano": "grupo", "pose": "celebrar", "cara": "feliz",
-     "extras": [{"personaje": "perro", "lugar": "derecha", "pose": "celebrar", "cara": "feliz"}],
-     "sfx": [{"sonido": "ding", "palabra": 10}]},
-    {"texto": "Por eso, nunca dejes a nadie sin *saludar*.",
-     "escenario": "pueblo", "plano": "general", "pose": "saludar", "cara": "feliz",
-     "extras": [{"personaje": "senora", "lugar": "izquierda", "pose": "saludar", "cara": "sonrisa"},
-                {"personaje": "vecino", "lugar": "atras_derecha", "pose": "saludar", "cara": "feliz"},
-                {"personaje": "perro", "lugar": "frente_derecha", "pose": "saltar", "cara": "feliz"}]},
-    {"texto": "Y si te gustó, suscríbete, o te vuelves de *vidrio*.",
-     "escenario": "pueblo", "plano": "primer_plano", "pose": "saludar", "cara": "malvado",
-     "sfx": [{"sonido": "boing", "palabra": 4}]}
+    {
+      "texto": "En este pueblo, si nadie te saluda en todo un día, te vuelves de *vidrio*.",
+      "escenario": "pueblo",
+      "plano": "zoom_in",
+      "pose": "pensar",
+      "cara": "pensando",
+      "sfx": [
+        {
+          "sonido": "whoosh",
+          "palabra": 0
+        }
+      ],
+      "texto_pantalla": "¿TE VUELVES DE VIDRIO?"
+    },
+    {
+      "texto": "Y si te rompes, *desapareces* para siempre.",
+      "escenario": "pueblo",
+      "plano": "primer_plano",
+      "pose": "temblar",
+      "cara": "miedo",
+      "efecto": "vidrio",
+      "sfx": [
+        {
+          "sonido": "sorpresa",
+          "palabra": 3
+        }
+      ]
+    },
+    {
+      "texto": "Nos mudamos un lunes, y nadie nos avisó de esa regla.",
+      "escenario": "sala",
+      "plano": "grupo",
+      "pose": "de_pie",
+      "cara": "neutral",
+      "extras": [
+        {
+          "personaje": "mama",
+          "lugar": "derecha",
+          "pose": "de_pie",
+          "cara": "sonrisa"
+        }
+      ]
+    },
+    {
+      "texto": "Mi mamá me dijo: sal a hacer amigos, Sticky.",
+      "escenario": "sala",
+      "plano": "medio",
+      "foco": 1,
+      "pose": "de_pie",
+      "cara": "feliz",
+      "extras": [
+        {
+          "personaje": "mama",
+          "lugar": "derecha",
+          "pose": "senalar",
+          "cara": "feliz"
+        }
+      ]
+    },
+    {
+      "texto": "Salí a la plaza y saludé a todo el mundo.",
+      "escenario": "pueblo",
+      "plano": "general",
+      "pose": "saludar",
+      "cara": "feliz",
+      "extras": [
+        {
+          "personaje": "vecino",
+          "lugar": "atras_derecha",
+          "pose": "de_pie",
+          "cara": "aburrido",
+          "mirar": false
+        },
+        {
+          "personaje": "senora",
+          "lugar": "atras_izquierda",
+          "pose": "de_pie",
+          "cara": "aburrido",
+          "mirar": false
+        }
+      ],
+      "sfx": [
+        {
+          "sonido": "pop",
+          "palabra": 1
+        }
+      ]
+    },
+    {
+      "texto": "Pero nadie me contestó. Ni uno *solo*.",
+      "escenario": "pueblo",
+      "plano": "hombro",
+      "pose": "triste",
+      "cara": "triste",
+      "extras": [
+        {
+          "personaje": "senora",
+          "lugar": "frente_derecha",
+          "pose": "de_pie",
+          "cara": "aburrido"
+        }
+      ]
+    },
+    {
+      "texto": "Doña Rosa ni siquiera me miró.",
+      "escenario": "pueblo",
+      "plano": "primer_plano",
+      "foco": 1,
+      "pose": "triste",
+      "cara": "triste",
+      "extras": [
+        {
+          "personaje": "senora",
+          "lugar": "derecha",
+          "pose": "de_pie",
+          "cara": "aburrido",
+          "mirar": false
+        }
+      ]
+    },
+    {
+      "texto": "En la tarde, sentí algo raro en los *pies*.",
+      "escenario": "pueblo",
+      "plano": "pies",
+      "pose": "temblar",
+      "cara": "miedo",
+      "sfx": [
+        {
+          "sonido": "tictac",
+          "palabra": 0
+        }
+      ]
+    },
+    {
+      "texto": "Se estaban volviendo transparentes, como de *vidrio*.",
+      "escenario": "pueblo",
+      "plano": "medio",
+      "pose": "temblar",
+      "cara": "shock",
+      "efecto": "vidrio",
+      "sfx": [
+        {
+          "sonido": "ding",
+          "palabra": 6
+        }
+      ],
+      "efecto_progresivo": true
+    },
+    {
+      "texto": "Corrí a la escuela a pedir ayuda.",
+      "escenario": "parque",
+      "plano": "medio",
+      "pose": "correr",
+      "cara": "miedo",
+      "efecto": "vidrio",
+      "sfx": [
+        {
+          "sonido": "whoosh",
+          "palabra": 0
+        }
+      ]
+    },
+    {
+      "texto": "El profe me vio y gritó: ¡nadie lo toque!",
+      "escenario": "escuela",
+      "plano": "grupo",
+      "foco": 1,
+      "pose": "temblar",
+      "cara": "shock",
+      "efecto": "vidrio",
+      "extras": [
+        {
+          "personaje": "profe",
+          "lugar": "izquierda",
+          "pose": "senalar",
+          "cara": "shock"
+        },
+        {
+          "personaje": "nino",
+          "lugar": "derecha",
+          "pose": "temblar",
+          "cara": "miedo"
+        }
+      ],
+      "sfx": [
+        {
+          "sonido": "sorpresa",
+          "palabra": 5
+        }
+      ]
+    },
+    {
+      "texto": "Todos se alejaron de mí.",
+      "escenario": "escuela",
+      "plano": "general",
+      "pose": "triste",
+      "cara": "triste",
+      "efecto": "vidrio",
+      "extras": [
+        {
+          "personaje": "nino",
+          "lugar": "lejos_derecha",
+          "pose": "de_pie",
+          "cara": "miedo"
+        },
+        {
+          "personaje": "nina",
+          "lugar": "lejos_izquierda",
+          "pose": "de_pie",
+          "cara": "miedo"
+        }
+      ],
+      "sfx": [
+        {
+          "sonido": "triste",
+          "palabra": 0,
+          "volumen": 0.35
+        }
+      ]
+    },
+    {
+      "texto": "Ya tenía los brazos de *vidrio*.",
+      "escenario": "escuela",
+      "plano": "primer_plano",
+      "pose": "pensar",
+      "cara": "miedo",
+      "efecto": "vidrio"
+    },
+    {
+      "texto": "Me senté solo en la plaza, a esperar lo *peor*.",
+      "escenario": "pueblo",
+      "noche": true,
+      "plano": "general",
+      "pose": "triste",
+      "cara": "triste",
+      "efecto": "vidrio"
+    },
+    {
+      "texto": "Entonces escuché unos pasitos.",
+      "escenario": "pueblo",
+      "noche": true,
+      "plano": "pies",
+      "foco": 1,
+      "pose": "triste",
+      "cara": "triste",
+      "efecto": "vidrio",
+      "extras": [
+        {
+          "personaje": "perro",
+          "lugar": "frente_derecha",
+          "pose": "caminar",
+          "cara": "neutral"
+        }
+      ],
+      "sfx": [
+        {
+          "sonido": "tictac",
+          "palabra": 2,
+          "volumen": 0.4
+        }
+      ]
+    },
+    {
+      "texto": "Era un perrito, y movía la *cola*.",
+      "escenario": "pueblo",
+      "noche": true,
+      "plano": "primer_plano",
+      "foco": 1,
+      "pose": "triste",
+      "cara": "shock",
+      "efecto": "vidrio",
+      "extras": [
+        {
+          "personaje": "perro",
+          "lugar": "frente_derecha",
+          "pose": "de_pie",
+          "cara": "feliz"
+        }
+      ]
+    },
+    {
+      "texto": "Me puso la patita en la mano, como *saludando*.",
+      "escenario": "pueblo",
+      "noche": true,
+      "plano": "grupo",
+      "pose": "de_pie",
+      "cara": "shock",
+      "efecto": "vidrio",
+      "extras": [
+        {
+          "personaje": "perro",
+          "lugar": "derecha",
+          "pose": "saltar",
+          "cara": "feliz"
+        }
+      ],
+      "sfx": [
+        {
+          "sonido": "boing",
+          "palabra": 3
+        }
+      ]
+    },
+    {
+      "texto": "Y de repente, el vidrio empezó a *desaparecer*.",
+      "escenario": "pueblo",
+      "noche": true,
+      "plano": "zoom_in",
+      "pose": "celebrar",
+      "cara": "sonrisa",
+      "sfx": [
+        {
+          "sonido": "ding",
+          "palabra": 0
+        }
+      ]
+    },
+    {
+      "texto": "Esa noche aprendí lo que nadie te cuenta de este pueblo.",
+      "escenario": "pueblo",
+      "noche": true,
+      "plano": "zoom_out",
+      "pose": "pensar",
+      "cara": "pensando",
+      "extras": [
+        {
+          "personaje": "perro",
+          "lugar": "derecha",
+          "pose": "de_pie",
+          "cara": "feliz"
+        }
+      ]
+    },
+    {
+      "texto": "No importa si es una persona o un perrito: un *saludo* te salva.",
+      "escenario": "pueblo",
+      "plano": "grupo",
+      "pose": "celebrar",
+      "cara": "feliz",
+      "extras": [
+        {
+          "personaje": "perro",
+          "lugar": "derecha",
+          "pose": "celebrar",
+          "cara": "feliz"
+        }
+      ],
+      "sfx": [
+        {
+          "sonido": "ding",
+          "palabra": 10
+        }
+      ]
+    },
+    {
+      "texto": "Por eso, nunca dejes a nadie sin *saludar*.",
+      "escenario": "pueblo",
+      "plano": "general",
+      "pose": "saludar",
+      "cara": "feliz",
+      "extras": [
+        {
+          "personaje": "senora",
+          "lugar": "izquierda",
+          "pose": "saludar",
+          "cara": "sonrisa"
+        },
+        {
+          "personaje": "vecino",
+          "lugar": "atras_derecha",
+          "pose": "saludar",
+          "cara": "feliz"
+        },
+        {
+          "personaje": "perro",
+          "lugar": "frente_derecha",
+          "pose": "saltar",
+          "cara": "feliz"
+        }
+      ]
+    },
+    {
+      "texto": "Y si te gustó, suscríbete, o te vuelves de *vidrio*.",
+      "escenario": "pueblo",
+      "plano": "primer_plano",
+      "pose": "saludar",
+      "cara": "malvado",
+      "sfx": [
+        {
+          "sonido": "boing",
+          "palabra": 4
+        }
+      ]
+    }
   ]
 }
