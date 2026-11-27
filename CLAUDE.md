@@ -186,3 +186,14 @@ Detalles clave:
 - Código y textos en español. Python 3.11+ (probado en 3.14) y Blender 5.3.
 - No subas videos ni renders a git; sí sube los `guion.json` de cada episodio.
 - Antes de un render largo, haz siempre la `--preview` y revísala.
+
+## Música y efectos de sonido (biblioteca compartida)
+
+Los 3 proyectos de videos de este PC (stick3DD, STICK 3D y animacion Stick) comparten la misma biblioteca de audio.
+- **En este proyecto está en** `assets/musica/ y assets/sfx/ (catálogo: assets/CATALOGO_AUDIO.md)`. La lista con el ambiente, el origen y la licencia de cada archivo está en el `CATALOGO` de esa carpeta.
+- **Copia maestra:** `C:\Users\cit\Audio-Compartido\` (ahí está también el catálogo original).
+- **Antes de buscar o generar un sonido, mira el catálogo.** Si ya hay uno que sirve, úsalo.
+- **Si agregas uno nuevo:** guárdalo en la carpeta de audio de este proyecto (minúsculas, sin espacios ni acentos) y ejecuta
+  `powershell -ExecutionPolicy Bypass -File C:\Users\cit\Audio-Compartido\sincronizar_audio.ps1`. El script lo copia a los otros proyectos sin sobrescribir nada.
+  Luego describe en `C:\Users\cit\Audio-Compartido\CATALOGO.md` para qué sirve, de dónde salió y su licencia, vuelve a ejecutar el script y haz commit y push de la carpeta de audio.
+- **Dónde buscar audio nuevo:** genéralo con código (`tools/make_sfx.py` y `tools/make_music.py` de stick3DD), o usa YouTube Audio Library, Pixabay o Freesound (solo CC0). Incompetech es CC-BY y hay que dar crédito. **Nunca** uses música comercial ni sonidos "trending" de TikTok.
